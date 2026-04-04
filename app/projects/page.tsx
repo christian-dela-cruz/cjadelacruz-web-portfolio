@@ -22,9 +22,9 @@ const projects: Project[] = [
       "Implemented fog computing concepts for localized data processing",
       "Community-based solution for low-connectivity or disaster-prone environments",
     ],
-    tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking"],
+    tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking", "Kotlin", "Android"],
     duration: "September 2025 – April 2026",
-    status: "in-progress",
+    status: "completed",
   },
   {
     title: "EliteFitness Mobile App",
@@ -41,10 +41,15 @@ const projects: Project[] = [
   {
     title: "Darwin's Game",
     description:
-      "Game project currently in development. Description and technical details will be updated as the project progresses.",
-    bullets: ["Details to be added once the project is finalized."],
-    tech: ["TBD"],
-    status: "planned",
+      "A C# Windows Forms sidescroller game inspired by the theory of evolution. Guide your character through five stages of life — from a primordial creature all the way to modern humanity — dodging obstacles and surviving each era.",
+    bullets: [
+      "Developed a 2D sidescroller game in C# inspired by the theory of evolution.",
+      "Created character progression through five stages of life, from a primordial creature to a complex organism",
+
+
+    ],
+    tech: ["C#", "Game Development"],
+    status: "completed",
   },
 ];
 
