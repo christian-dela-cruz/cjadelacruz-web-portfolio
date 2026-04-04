@@ -1,65 +1,196 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Image from "next/image";
+import Link from "next/link";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaEnvelope,
+  FaDownload,
+  FaArrowRight,
+} from "react-icons/fa";
+import { SiCredly } from "react-icons/si";
+
+const socialLinks = [
+  {
+    icon: FaGithub,
+    href: "https://github.com/christian-dela-cruz",
+    label: "GitHub",
+  },
+  {
+    icon: FaLinkedin,
+    href: "https://www.linkedin.com/in/christian-dela-cruz-629aa6345",
+    label: "LinkedIn",
+  },
+  {
+    icon: FaEnvelope,
+    href: "mailto:cjadelacruz.it@gmail.com",
+    label: "Gmail",
+  },
+  {
+    icon: SiCredly,
+    href: "https://www.credly.com/users/christian-joseph-dela-cruz/badges#credly",
+    label: "Credly",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div
+      className="min-h-screen flex items-center justify-center px-6 py-20"
+      style={{ background: "var(--background)" }}
+    >
+      <div className="max-w-6xl w-full mx-auto">
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-16">
+          {/* Text content */}
+          <div className="flex-1 text-center lg:text-left">
+            {/* Status badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8"
+              style={{ background: "rgba(59,130,246,0.1)", color: "var(--accent)", border: "1px solid rgba(59,130,246,0.2)" }}>
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              Available for opportunities
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
+              style={{ color: "var(--foreground)" }}>
+              Christian{" "}
+              <span style={{ color: "var(--accent)" }}>Dela Cruz</span>
+            </h1>
+
+            <h2 className="text-lg sm:text-xl font-semibold mb-4"
+              style={{ color: "var(--muted)" }}>
+              Information Technology &amp; Cybersecurity Specialist
+            </h2>
+
+            <p className="text-base leading-relaxed max-w-xl mx-auto lg:mx-0 mb-10"
+              style={{ color: "var(--muted)" }}>
+              Full-stack developer with expertise in mobile app development,
+              networking, and cloud infrastructure. Passionate about building
+              secure, scalable, and user-centric solutions.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+              <Link
+                href="/projects"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                style={{ background: "var(--accent)", color: "#fff" }}
+              >
+                View My Work
+                <FaArrowRight size={14} />
+              </Link>
+
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: "transparent",
+                  color: "var(--foreground)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                Contact Me
+              </Link>
+
+              <a
+                href="#"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: "var(--card-bg)",
+                  color: "var(--muted)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                <FaDownload size={13} />
+                Download Resume
+              </a>
+            </div>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-3 justify-center lg:justify-start">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+                  style={{
+                    background: "var(--card-bg)",
+                    color: "var(--muted)",
+                    border: "1px solid var(--card-border)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "var(--accent)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "var(--muted)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "var(--card-border)";
+                  }}
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Profile image */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-4">
+            <div
+              className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden"
+              style={{
+                border: "3px solid var(--accent)",
+                boxShadow: "0 0 40px rgba(59,130,246,0.25)",
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <Image
+                src="/profile-placeholder.svg"
+                alt="Christian Dela Cruz"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+
+            {/* Quick stats */}
+            <div
+              className="grid grid-cols-3 gap-3 w-full max-w-xs"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              {[
+                { value: "3+", label: "Projects" },
+                { value: "1+", label: "Experience" },
+                { value: "5+", label: "Certs" },
+              ].map(({ value, label }) => (
+                <div
+                  key={label}
+                  className="text-center p-3 rounded-xl"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--card-border)",
+                  }}
+                >
+                  <div
+                    className="text-lg font-bold"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {value}
+                  </div>
+                  <div className="text-xs" style={{ color: "var(--muted)" }}>
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
+
