@@ -93,7 +93,8 @@ export default function HomePage() {
               </Link>
 
               <a
-                href="#"
+                href="/resume.pdf"
+                download
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
                 style={{
                   background: "var(--card-bg)",

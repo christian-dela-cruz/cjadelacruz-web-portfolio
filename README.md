@@ -65,6 +65,10 @@ Replace `public/profile-placeholder.svg` with your photo:
 <Image src="/profile.jpg" alt="Christian Dela Cruz" fill className="object-cover" priority />
 ```
 
+## Adding Your Resume
+
+Place your resume PDF at `public/resume.pdf`. The **Download Resume** button on the home page will then serve it automatically.
+
 ## Deployment
 
 Deploy to [Vercel](https://vercel.com/) in one click:
