@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Christian Dela Cruz — Web Portfolio
+
+A modern, professional web portfolio built with **Next.js 16**, **TypeScript**, and **Tailwind CSS**.
+
+## Pages
+
+| Page | Route | Description |
+|------|-------|-------------|
+| Home | `/` | Hero section with profile, social links, and CTAs |
+| About | `/about` | Education, experience, skills, and certifications |
+| Projects | `/projects` | Project showcase cards |
+| Contact | `/contact` | Contact information and message form |
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Icons**: react-icons
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/christian-dela-cruz/cjadelacruz-web-portfolio.git
+cd cjadelacruz-web-portfolio
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+### Lint
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding Your Profile Photo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Replace `public/profile-placeholder.svg` with your photo:
 
-## Deploy on Vercel
+1. Add your image to the `public/` folder (e.g., `public/profile.jpg`)
+2. Update the `src` prop in `app/page.tsx`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```tsx
+<Image src="/profile.jpg" alt="Christian Dela Cruz" fill className="object-cover" priority />
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Adding Your Resume
+
+Place your resume PDF at `public/resume.pdf`. The **Download Resume** button on the home page will then serve it automatically.
+
+## Deployment
+
+Deploy to [Vercel](https://vercel.com/) in one click:
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) → New Project
+3. Import your GitHub repository
+4. Click **Deploy**
+
+Your portfolio will be live at `https://your-project.vercel.app`.
+
