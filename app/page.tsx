@@ -216,6 +216,8 @@ const contactInfo = [
 const accentBg = "rgba(6,182,212,0.1)";
 const accentBorder = "rgba(6,182,212,0.2)";
 const accentBgMd = "rgba(6,182,212,0.15)";
+const accentGlowSm = "rgba(255,127,80,0.12)";
+const accentGlowMd = "rgba(255,127,80,0.5)";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -469,7 +471,7 @@ export default function HomePage() {
                         onMouseEnter={(e) => {
                           const el = e.currentTarget as HTMLAnchorElement;
                           el.style.borderColor = "var(--accent)";
-                          el.style.boxShadow = "0 4px 20px rgba(255,127,80,0.12)";
+                          el.style.boxShadow = `0 4px 20px ${accentGlowSm}`;
                         }}
                         onMouseLeave={(e) => {
                           const el = e.currentTarget as HTMLAnchorElement;
@@ -556,7 +558,7 @@ export default function HomePage() {
                 >
                   <div
                     className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full"
-                    style={{ background: "var(--accent)", boxShadow: "0 0 8px rgba(255,127,80,0.5)" }}
+                    style={{ background: "var(--accent)", boxShadow: `0 0 8px ${accentGlowMd}` }}
                   />
 
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
