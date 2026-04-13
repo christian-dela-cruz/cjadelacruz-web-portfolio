@@ -14,6 +14,13 @@ import {
   FaExternalLinkAlt,
   FaImage,
   FaPaperPlane,
+  FaContao,
+  FaEnvelopeOpen,    // ✉️ Open envelope
+  FaPhone,           // ☎️ Phone icon
+  FaPhoneSquare,     // ☎️ Phone in square
+  FaAddressCard,     // 📋 Address card
+
+
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 import { HiChip, HiCalendar } from "react-icons/hi";
@@ -244,14 +251,14 @@ export default function HomePage() {
 
               <h2
                 className="text-lg sm:text-xl font-semibold mb-4"
-                style={{ color: "var(--muted)" }}
+                style={{ color: "var(--foreground)" }}
               >
                 Information Technology &amp; Cybersecurity Specialist
               </h2>
 
               <p
                 className="text-base leading-relaxed max-w-xl mx-auto lg:mx-0 mb-10"
-                style={{ color: "var(--muted)" }}
+                style={{ color: "var(--foreground)" }}
               >
                 Full-stack developer with expertise in mobile app development,
                 networking, and cloud infrastructure. Passionate about building
@@ -285,11 +292,12 @@ export default function HomePage() {
                   }}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
                   style={{
-                    background: "transparent",
+                    background: "var(--card-bg)",
                     color: "var(--foreground)",
                     border: "1px solid var(--card-border)",
                   }}
                 >
+                    <FaEnvelope size={13} />
                   Contact Me
                 </a>
 
@@ -299,7 +307,7 @@ export default function HomePage() {
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
                   style={{
                     background: "var(--card-bg)",
-                    color: "var(--muted)",
+                    color: "var(--foreground)",
                     border: "1px solid var(--card-border)",
                   }}
                 >
@@ -461,7 +469,7 @@ export default function HomePage() {
                   </p>
                   <p
                     className="text-xs mb-1"
-                    style={{ color: "var(--accent)" }}
+                    style={{ color: "var(--muted)" }}
                   >
                     Cybersecurity Specialization
                   </p>
