@@ -44,7 +44,7 @@ export default function Navbar() {
     <nav
       className="fixed top-0 left-0 right-0 z-50 border-b"
       style={{
-        background: "rgba(7,13,26,0.88)",
+        background: "var(--navbar)",
         backdropFilter: "blur(12px)",
         borderColor: "var(--card-border)",
       }}
@@ -64,7 +64,7 @@ export default function Navbar() {
           </div>
           <span
             className="font-semibold text-sm hidden sm:block"
-            style={{ color: "var(--background)" }}
+            style={{ color: "var(--foreground)" }}
           >
             Christian Dela Cruz
           </span>
@@ -81,7 +81,7 @@ export default function Navbar() {
                   onClick={(e) => handleNavClick(e, id)}
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   style={{
-                    color: isActive ? "var(--accent)" : "var(--background)",
+                    color: isActive ? "var(--accent)" : "var(--foreground)",
                     background: isActive
                       ? "rgba(6,182,212,0.1)"
                       : "transparent",
@@ -94,7 +94,7 @@ export default function Navbar() {
                   onMouseLeave={(e) => {
                     if (!isActive)
                       (e.currentTarget as HTMLAnchorElement).style.color =
-                        "var(--background)";
+                        "var(--foreground)";
                   }}
                 >
                   {label}

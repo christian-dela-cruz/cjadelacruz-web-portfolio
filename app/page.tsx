@@ -61,6 +61,8 @@ const skills: Record<string, string[]> = {
     "Systems Administration",
     "Oracle VirtualBox",
     "Google Cloud Platform",
+    "Windows Server",
+    "Red Hat Interprise Linux",
   ],
   Security: ["Kali Linux", "Security Fundamentals", "Ethical Hacking"],
   Databases: ["MySQL", "Oracle"],
@@ -88,14 +90,14 @@ const certifications = [
     issuer: "Cisco Networking Academy",
     date: "March 2025",
     credlyUrl:
-      "https://www.credly.com/earner/earned/badge/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6",
+      "https://www.credly.com/badges/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6/public_url",
   },
   {
     name: "Ethical Hacker",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
     credlyUrl:
-      "https://www.credly.com/earner/earned/badge/7781dbd5-da20-4852-ab68-84dda25f6895",
+      "https://www.credly.com/badges/7781dbd5-da20-4852-ab68-84dda25f6895/public_url",
   },
   {
     name: "Google Cloud Computing Foundations",
@@ -229,17 +231,6 @@ export default function HomePage() {
           <div className="flex flex-col-reverse lg:flex-row items-center gap-16">
             {/* Text */}
             <div className="flex-1 text-center lg:text-left">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8"
-                style={{
-                  background: accentBg,
-                  color: "var(--accent)",
-                  border: `1px solid ${accentBorder}`,
-                }}
-              >
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                Available for opportunities
-              </div>
 
               <h1
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
@@ -353,7 +344,7 @@ export default function HomePage() {
             </div>
 
             {/* Profile image */}
-            <div className="flex-shrink-0 flex flex-col items-center gap-4">
+            <div className="flex-shrink-0 flex flex-col items-center gap-4 mb-auto">
               <div
                 className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden"
                 style={{
@@ -368,34 +359,6 @@ export default function HomePage() {
                   className="object-cover"
                   priority
                 />
-              </div>
-
-              {/* Quick stats */}
-              <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
-                {[
-                  { value: "3+", label: "Projects" },
-                  { value: "1+", label: "Experience" },
-                  { value: "5+", label: "Certs" },
-                ].map(({ value, label }) => (
-                  <div
-                    key={label}
-                    className="text-center p-3 rounded-xl"
-                    style={{
-                      background: "var(--card-bg)",
-                      border: "1px solid var(--card-border)",
-                    }}
-                  >
-                    <div
-                      className="text-lg font-bold"
-                      style={{ color: "var(--accent)" }}
-                    >
-                      {value}
-                    </div>
-                    <div className="text-xs" style={{ color: "var(--muted)" }}>
-                      {label}
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -465,7 +428,7 @@ export default function HomePage() {
                     className="font-semibold text-sm mb-1"
                     style={{ color: "var(--foreground)" }}
                   >
-                    B.S. Information Technology
+                    Bachelor of Science in Information Technology
                   </p>
                   <p
                     className="text-xs mb-1"

@@ -3,9 +3,12 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Christian Dela Cruz | IT & Cybersecurity Specialist",
+  title: "Christian Dela Cruz | IT",
   description:
     "Full-stack developer with expertise in mobile app development, networking, and cloud infrastructure.",
+  icons: {
+    icon: "/favicon.png?v=" + new Date().getTime(), // Cache buster
+  },
 };
 
 export default function RootLayout({
