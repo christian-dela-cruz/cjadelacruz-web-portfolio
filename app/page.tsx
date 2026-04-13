@@ -449,22 +449,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 gap-8">
 
               {/* Experience */}
-              <div
-                className="rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  background: "var(--card-bg)",
-                  border: "1px solid var(--card-border)",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.2)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 32px rgba(6,182,212,0.15)`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.2)";
-                }}
-              >
+              <div>
                 <div className="flex items-center gap-3 mb-6">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -480,57 +465,156 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                <div
-                  className="rounded-xl p-5"
-                  style={{
-                    background: "rgba(6,182,212,0.04)",
-                    border: `1px solid ${accentBorder}`,
-                  }}
-                >
-                  <div className="flex flex-col gap-2 mb-4">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <h4
-                        className="font-semibold text-sm"
-                        style={{ color: "var(--foreground)" }}
-                      >
-                        Freelance Mobile App Developer
-                      </h4>
-                      <span
-                        className="text-xs px-3 py-1 rounded-full"
-                        style={{
-                          background: accentBg,
-                          color: "var(--accent)",
-                          border: `1px solid ${accentBorder}`,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        Mar 2025 – Jun 2025
-                      </span>
+                {/* Timeline */}
+                <div className="relative pl-9">
+                  {/* Vertical line */}
+                  <div
+                    className="absolute left-[13px] top-1 bottom-1 w-px"
+                    style={{ background: accentBorder }}
+                  />
+
+                  {/* Entry 1: Freelance */}
+                  <div className="relative mb-5">
+                    {/* Dot */}
+                    <div
+                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      style={{
+                        background: "var(--accent)",
+                        boxShadow: `0 0 0 3px ${accentBg}`,
+                      }}
+                    />
+                    <div
+                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+                      style={{
+                        background: "rgba(6,182,212,0.04)",
+                        border: `1px solid ${accentBorder}`,
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                      }}
+                    >
+                      <div className="flex flex-col gap-2 mb-4">
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <h4
+                            className="font-semibold text-sm"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            Freelance Mobile App Developer
+                          </h4>
+                          <span
+                            className="text-xs px-3 py-1 rounded-full"
+                            style={{
+                              background: accentBg,
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            Mar 2025 – Jun 2025
+                          </span>
+                        </div>
+                        <p className="text-sm" style={{ color: "var(--accent)" }}>
+                          EliteFitness
+                        </p>
+                      </div>
+
+                      <ul className="flex flex-col gap-2">
+                        {[
+                          "Developed a native Android fitness application using Xamarin.Android (C#) to help users manage and track their fitness journey.",
+                          "Integrated Firebase for real-time data storage and synchronization of user profiles, workout logs, and progress metrics.",
+                          "Designed and implemented a user-friendly interface for managing fitness schedules, tracking progress, and setting personal goals.",
+                        ].map((point, i) => (
+                          <li
+                            key={i}
+                            className="flex gap-2 text-sm"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            <span
+                              className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ background: "var(--accent)" }}
+                            />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <p className="text-sm" style={{ color: "var(--accent)" }}>
-                      EliteFitness
-                    </p>
                   </div>
 
-                  <ul className="flex flex-col gap-2">
-                    {[
-                      "Developed a native Android fitness application using Xamarin.Android (C#) to help users manage and track their fitness journey.",
-                      "Integrated Firebase for real-time data storage and synchronization of user profiles, workout logs, and progress metrics.",
-                      "Designed and implemented a user-friendly interface for managing fitness schedules, tracking progress, and setting personal goals.",
-                    ].map((point, i) => (
-                      <li
-                        key={i}
-                        className="flex gap-2 text-sm"
-                        style={{ color: "var(--muted)" }}
-                      >
-                        <span
-                          className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style={{ background: "var(--accent)" }}
-                        />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Entry 2: OJT placeholder */}
+                  <div className="relative">
+                    {/* Dot */}
+                    <div
+                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      style={{
+                        background: "var(--muted)",
+                        boxShadow: `0 0 0 3px var(--card-bg)`,
+                        opacity: 0.5,
+                      }}
+                    />
+                    <div
+                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+                      style={{
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid var(--card-border)",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
+                        opacity: 0.65,
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.10)";
+                        (e.currentTarget as HTMLDivElement).style.opacity = "1";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)";
+                        (e.currentTarget as HTMLDivElement).style.opacity = "0.65";
+                      }}
+                    >
+                      <div className="flex flex-col gap-2 mb-4">
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <h4
+                            className="font-semibold text-sm"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            OJT / Internship
+                          </h4>
+                          <span
+                            className="text-xs px-3 py-1 rounded-full"
+                            style={{
+                              background: "rgba(255,255,255,0.04)",
+                              color: "var(--muted)",
+                              border: "1px solid var(--card-border)",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            Coming Soon
+                          </span>
+                        </div>
+                        <p className="text-sm italic" style={{ color: "var(--muted)" }}>
+                          Company TBD
+                        </p>
+                      </div>
+
+                      <ul className="flex flex-col gap-2">
+                        <li
+                          className="flex gap-2 text-sm italic"
+                          style={{ color: "var(--muted)" }}
+                        >
+                          <span
+                            className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{ background: "var(--muted)" }}
+                          />
+                          Details will be updated upon completion of internship.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
 
