@@ -354,7 +354,7 @@ export default function HomePage() {
                 }}
               >
                 <Image
-                  src="/profile-placeholder.svg"
+                  src="/Formal_Picture.jpg"
                   alt="Christian Dela Cruz"
                   fill
                   className="object-cover"
