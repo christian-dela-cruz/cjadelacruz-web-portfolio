@@ -216,8 +216,6 @@ const contactInfo = [
 const accentBg = "rgba(6,182,212,0.1)";
 const accentBorder = "rgba(6,182,212,0.2)";
 const accentBgMd = "rgba(6,182,212,0.15)";
-const accentGlowSm = "rgba(255,127,80,0.12)";
-const accentGlowMd = "rgba(255,127,80,0.5)";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -390,30 +388,41 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid lg:grid-cols-3 gap-8">
             {/* Left column */}
-            <div className="lg:col-span-1 flex flex-col gap-10">
-
+            <div className="lg:col-span-1 flex flex-col gap-6">
               {/* Education */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+              <div
+                className="rounded-2xl p-6"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-5">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
                     style={{ background: accentBgMd }}
                   >
-                    <FaGraduationCap size={15} style={{ color: "var(--accent)" }} />
+                    <FaGraduationCap
+                      size={18}
+                      style={{ color: "var(--accent)" }}
+                    />
                   </div>
                   <h3
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: "var(--accent)" }}
+                    className="font-semibold text-base"
+                    style={{ color: "var(--foreground)" }}
                   >
                     Education
                   </h3>
                 </div>
 
                 <div
-                  className="pl-5"
-                  style={{ borderLeft: "2px solid var(--accent)" }}
+                  className="rounded-xl p-4"
+                  style={{
+                    background: "rgba(6,182,212,0.05)",
+                    border: `1px solid ${accentBorder}`,
+                  }}
                 >
                   <p
                     className="font-semibold text-sm mb-1"
@@ -421,14 +430,20 @@ export default function HomePage() {
                   >
                     Bachelor of Science in Information Technology
                   </p>
-                  <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
+                  <p
+                    className="text-xs mb-1"
+                    style={{ color: "var(--muted)" }}
+                  >
                     Cybersecurity Specialization
                   </p>
-                  <p className="text-xs mb-3" style={{ color: "var(--muted)" }}>
+                  <p
+                    className="text-xs mb-2"
+                    style={{ color: "var(--muted)" }}
+                  >
                     Mapúa Malayan Colleges Laguna
                   </p>
                   <span
-                    className="text-xs px-2.5 py-1 rounded-md"
+                    className="text-xs px-2 py-1 rounded-md"
                     style={{ background: accentBg, color: "var(--accent)" }}
                   >
                     2022 – Present
@@ -437,134 +452,150 @@ export default function HomePage() {
               </div>
 
               {/* Certifications */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+              <div
+                className="rounded-2xl p-6"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-5">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
                     style={{ background: accentBgMd }}
                   >
-                    <FaCertificate size={15} style={{ color: "var(--accent)" }} />
+                    <FaCertificate
+                      size={18}
+                      style={{ color: "var(--accent)" }}
+                    />
                   </div>
                   <h3
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: "var(--accent)" }}
+                    className="font-semibold text-base"
+                    style={{ color: "var(--foreground)" }}
                   >
                     Certifications
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <ul className="flex flex-col gap-3">
                   {certifications.map((cert) =>
                     cert.credlyUrl ? (
-                      <a
-                        key={cert.name}
-                        href={cert.credlyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-col p-3 rounded-xl transition-all duration-200 hover:-translate-y-1"
-                        style={{
-                          background: "rgba(255,255,255,0.03)",
-                          border: "1px solid var(--card-border)",
-                          textDecoration: "none",
-                          boxShadow: "none",
-                        }}
-                        onMouseEnter={(e) => {
-                          const el = e.currentTarget as HTMLAnchorElement;
-                          el.style.borderColor = "var(--accent)";
-                          el.style.boxShadow = `0 4px 20px ${accentGlowSm}`;
-                        }}
-                        onMouseLeave={(e) => {
-                          const el = e.currentTarget as HTMLAnchorElement;
-                          el.style.borderColor = "var(--card-border)";
-                          el.style.boxShadow = "none";
-                        }}
-                      >
-                        <div className="flex items-start justify-between gap-1 mb-1.5">
-                          <p
-                            className="text-xs font-semibold leading-tight"
-                            style={{ color: "var(--foreground)" }}
-                          >
-                            {cert.name}
-                          </p>
-                          <FaExternalLinkAlt
-                            size={9}
-                            style={{ color: "var(--accent)", flexShrink: 0, marginTop: 2 }}
-                          />
-                        </div>
-                        <p className="text-xs" style={{ color: "var(--muted)" }}>
-                          {cert.issuer}
-                        </p>
-                        <p
-                          className="text-xs mt-auto pt-2"
-                          style={{ color: "var(--accent)" }}
+                      <li key={cert.name}>
+                        <a
+                          href={cert.credlyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-3 rounded-xl transition-all hover:-translate-y-0.5 group"
+                          style={{
+                            background: "rgba(255,255,255,0.02)",
+                            border: "1px solid var(--card-border)",
+                            textDecoration: "none",
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                              "var(--accent)";
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                              "var(--card-border)";
+                          }}
                         >
-                          {cert.date}
-                        </p>
-                      </a>
+                          <div className="flex items-start justify-between gap-2">
+                            <p
+                              className="text-xs font-semibold mb-1"
+                              style={{ color: "var(--foreground)" }}
+                            >
+                              {cert.name}
+                            </p>
+                            <FaExternalLinkAlt
+                              size={10}
+                              style={{ color: "var(--accent)", flexShrink: 0, marginTop: 2 }}
+                            />
+                          </div>
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            {cert.issuer}
+                          </p>
+                          <p
+                            className="text-xs mt-1"
+                            style={{ color: "var(--accent)" }}
+                          >
+                            {cert.date}
+                          </p>
+                        </a>
+                      </li>
                     ) : (
-                      <div
+                      <li
                         key={cert.name}
-                        className="flex flex-col p-3 rounded-xl"
+                        className="p-3 rounded-xl"
                         style={{
-                          background: "rgba(255,255,255,0.03)",
+                          background: "rgba(255,255,255,0.02)",
                           border: "1px solid var(--card-border)",
                         }}
                       >
                         <p
-                          className="text-xs font-semibold leading-tight mb-1.5"
+                          className="text-xs font-semibold mb-1"
                           style={{ color: "var(--foreground)" }}
                         >
                           {cert.name}
                         </p>
-                        <p className="text-xs" style={{ color: "var(--muted)" }}>
+                        <p
+                          className="text-xs"
+                          style={{ color: "var(--muted)" }}
+                        >
                           {cert.issuer}
                         </p>
                         <p
-                          className="text-xs mt-auto pt-2"
+                          className="text-xs mt-1"
                           style={{ color: "var(--accent)" }}
                         >
                           {cert.date}
                         </p>
-                      </div>
+                      </li>
                     )
                   )}
-                </div>
+                </ul>
               </div>
             </div>
 
             {/* Right column */}
-            <div className="lg:col-span-2 flex flex-col gap-10">
-
+            <div className="lg:col-span-2 flex flex-col gap-6">
               {/* Experience */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+              <div
+                className="rounded-2xl p-6"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-5">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
                     style={{ background: accentBgMd }}
                   >
-                    <FaBriefcase size={14} style={{ color: "var(--accent)" }} />
+                    <FaBriefcase size={16} style={{ color: "var(--accent)" }} />
                   </div>
                   <h3
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: "var(--accent)" }}
+                    className="font-semibold text-base"
+                    style={{ color: "var(--foreground)" }}
                   >
                     Experience
                   </h3>
                 </div>
 
                 <div
-                  className="relative pl-5"
-                  style={{ borderLeft: "2px solid var(--accent)" }}
+                  className="rounded-xl p-5"
+                  style={{
+                    background: "rgba(6,182,212,0.04)",
+                    border: `1px solid ${accentBorder}`,
+                  }}
                 >
-                  <div
-                    className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full"
-                    style={{ background: "var(--accent)", boxShadow: `0 0 8px ${accentGlowMd}` }}
-                  />
-
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
                     <div>
                       <h4
-                        className="font-semibold text-sm mb-0.5"
+                        className="font-semibold text-sm"
                         style={{ color: "var(--foreground)" }}
                       >
                         Freelance Mobile App Developer
@@ -609,27 +640,36 @@ export default function HomePage() {
               </div>
 
               {/* Technical Skills */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+              <div
+                className="rounded-2xl p-6"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-5">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
                     style={{ background: accentBgMd }}
                   >
-                    <HiChip size={16} style={{ color: "var(--accent)" }} />
+                    <HiChip size={18} style={{ color: "var(--accent)" }} />
                   </div>
                   <h3
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: "var(--accent)" }}
+                    className="font-semibold text-base"
+                    style={{ color: "var(--foreground)" }}
                   >
                     Technical Skills
                   </h3>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-4">
                   {Object.entries(skills).map(([category, items]) => (
                     <div key={category}>
-                      <div className="flex items-center gap-2 mb-2.5">
-                        <FaCode size={11} style={{ color: "var(--accent)" }} />
+                      <div className="flex items-center gap-2 mb-2">
+                        <FaCode
+                          size={12}
+                          style={{ color: "var(--accent)" }}
+                        />
                         <h4
                           className="text-xs font-semibold uppercase tracking-wide"
                           style={{ color: "var(--accent)" }}
@@ -641,23 +681,11 @@ export default function HomePage() {
                         {items.map((skill) => (
                           <span
                             key={skill}
-                            className="text-xs px-2.5 py-1 rounded-lg transition-all duration-150 cursor-default"
+                            className="text-xs px-2.5 py-1 rounded-lg"
                             style={{
                               background: "rgba(255,255,255,0.04)",
                               color: "var(--muted)",
                               border: "1px solid var(--card-border)",
-                            }}
-                            onMouseEnter={(e) => {
-                              const el = e.currentTarget as HTMLSpanElement;
-                              el.style.borderColor = "var(--accent)";
-                              el.style.color = "var(--foreground)";
-                              el.style.transform = "translateY(-2px)";
-                            }}
-                            onMouseLeave={(e) => {
-                              const el = e.currentTarget as HTMLSpanElement;
-                              el.style.borderColor = "var(--card-border)";
-                              el.style.color = "var(--muted)";
-                              el.style.transform = "translateY(0)";
                             }}
                           >
                             {skill}
