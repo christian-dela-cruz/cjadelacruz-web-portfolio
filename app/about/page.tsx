@@ -249,7 +249,7 @@ export default function AboutPage() {
                         href={cert.credlyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex gap-3 p-3 rounded-xl transition-all hover:-translate-y-0.5 group"
+                        className="flex gap-3 p-3 rounded-xl transition-all hover:-translate-y-0.5"
                         style={{
                           background: "var(--background)",
                           border: "1px solid var(--card-border)",
