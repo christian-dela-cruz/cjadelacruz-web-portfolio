@@ -83,7 +83,7 @@ export default function Navbar() {
                   style={{
                     color: isActive ? "var(--accent)" : "var(--background)",
                     background: isActive
-                      ? "rgba(6,182,212,0.1)"
+                      ? "var(--accent-bg)"
                       : "transparent",
                   }}
                   onMouseEnter={(e) => {
@@ -132,7 +132,7 @@ export default function Navbar() {
                 style={{
                   color: isActive ? "var(--accent)" : "var(--muted)",
                   background: isActive
-                    ? "rgba(6,182,212,0.1)"
+                    ? "var(--accent-bg)"
                     : "transparent",
                 }}
               >
