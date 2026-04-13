@@ -1,8 +1,12 @@
+"use client";
+
 import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
+  FaEnvelopeOpen,
   FaPaperPlane,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 
@@ -45,7 +49,7 @@ export default function ContactPage() {
     >
       <div className="max-w-5xl mx-auto">
         {/* Page heading */}
-        <div className="mb-14 text-center">
+        <div className="mb-10 text-center">
           <h1
             className="text-4xl sm:text-5xl font-bold mb-4"
             style={{ color: "var(--foreground)" }}
@@ -61,15 +65,34 @@ export default function ContactPage() {
           </p>
         </div>
 
+        {/* Availability banner */}
+        <div
+          className="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl mb-10 mx-auto max-w-md"
+          style={{
+            background: "var(--accent-bg)",
+            border: "1px solid var(--accent-border)",
+          }}
+        >
+          <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+          <p className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
+            Currently available for freelance &amp; full-time opportunities
+          </p>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Contact info */}
           <div className="flex flex-col gap-4">
-            <h2
-              className="text-lg font-semibold mb-2"
-              style={{ color: "var(--foreground)" }}
-            >
-              Contact Details
-            </h2>
+            <div className="mb-1">
+              <h2
+                className="text-lg font-semibold"
+                style={{ color: "var(--foreground)" }}
+              >
+                Let&apos;s Connect
+              </h2>
+              <p className="text-sm mt-1" style={{ color: "var(--muted)" }}>
+                Reach out through any of these channels.
+              </p>
+            </div>
 
             {contactInfo.map(({ icon: Icon, label, href, display }) => (
               <a
@@ -83,17 +106,25 @@ export default function ContactPage() {
                   border: "1px solid var(--card-border)",
                   textDecoration: "none",
                 }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--card-border)";
+                }}
               >
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{
-                    background: "rgba(59,130,246,0.1)",
+                    background: "var(--accent-bg)",
                     color: "var(--accent)",
                   }}
                 >
                   <Icon size={20} />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p
                     className="text-xs font-semibold uppercase tracking-wide mb-0.5"
                     style={{ color: "var(--accent)" }}
@@ -107,6 +138,11 @@ export default function ContactPage() {
                     {display}
                   </p>
                 </div>
+                <FaExternalLinkAlt
+                  size={11}
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: "var(--accent)" }}
+                />
               </a>
             ))}
           </div>
@@ -119,12 +155,20 @@ export default function ContactPage() {
               border: "1px solid var(--card-border)",
             }}
           >
-            <h2
-              className="text-lg font-semibold mb-6"
-              style={{ color: "var(--foreground)" }}
-            >
-              Send a Message
-            </h2>
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: "var(--accent-bg)", color: "var(--accent)" }}
+              >
+                <FaEnvelopeOpen size={15} />
+              </div>
+              <h2
+                className="text-lg font-semibold"
+                style={{ color: "var(--foreground)" }}
+              >
+                Send a Message
+              </h2>
+            </div>
 
             <form className="flex flex-col gap-4">
               <div className="grid sm:grid-cols-2 gap-4">
@@ -142,9 +186,15 @@ export default function ContactPage() {
                     placeholder="Your name"
                     className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
+                      background: "var(--background)",
                       border: "1px solid var(--card-border)",
                       color: "var(--foreground)",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = "var(--card-border)";
                     }}
                   />
                 </div>
@@ -162,9 +212,15 @@ export default function ContactPage() {
                     placeholder="your@email.com"
                     className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
+                      background: "var(--background)",
                       border: "1px solid var(--card-border)",
                       color: "var(--foreground)",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = "var(--card-border)";
                     }}
                   />
                 </div>
@@ -181,12 +237,18 @@ export default function ContactPage() {
                 <input
                   id="subject"
                   type="text"
-                  placeholder="How can I help?"
+                  placeholder="What's this about?"
                   className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
+                    background: "var(--background)",
                     border: "1px solid var(--card-border)",
                     color: "var(--foreground)",
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "var(--card-border)";
                   }}
                 />
               </div>
@@ -205,9 +267,15 @@ export default function ContactPage() {
                   placeholder="Tell me about your project or just say hi..."
                   className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors resize-none"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
+                    background: "var(--background)",
                     border: "1px solid var(--card-border)",
                     color: "var(--foreground)",
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "var(--card-border)";
                   }}
                 />
               </div>

@@ -14,13 +14,8 @@ import {
   FaExternalLinkAlt,
   FaImage,
   FaPaperPlane,
-  FaContao,
-  FaEnvelopeOpen,    // ✉️ Open envelope
-  FaPhone,           // ☎️ Phone icon
-  FaPhoneSquare,     // ☎️ Phone in square
-  FaAddressCard,     // 📋 Address card
-
-
+  FaEnvelopeOpen,
+  FaAddressCard,
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 import { HiChip, HiCalendar } from "react-icons/hi";
@@ -211,9 +206,9 @@ const contactInfo = [
 
 // ─── Shared style helpers ─────────────────────────────────────────────────────
 
-const accentBg = "rgba(6,182,212,0.1)";
-const accentBorder = "rgba(6,182,212,0.2)";
-const accentBgMd = "rgba(6,182,212,0.15)";
+const accentBg = "var(--accent-bg)";
+const accentBorder = "var(--accent-border)";
+const accentBgMd = "var(--accent-bg-md)";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -358,7 +353,7 @@ export default function HomePage() {
                 className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden"
                 style={{
                   border: "3px solid var(--accent)",
-                  boxShadow: "0 0 40px rgba(6,182,212,0.25)",
+                  boxShadow: "0 0 40px rgba(255,127,80,0.25)",
                 }}
               >
                 <Image
@@ -425,6 +420,68 @@ export default function HomePage() {
             </p>
           </div>
 
+          {/* Bio Card */}
+          <div
+            className="rounded-2xl p-6 mb-8"
+            style={{
+              background: "var(--card-bg)",
+              border: "1px solid var(--card-border)",
+            }}
+          >
+            <div className="flex flex-col sm:flex-row gap-5 items-start">
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{
+                  background: accentBg,
+                  color: "var(--accent)",
+                  border: `1px solid ${accentBorder}`,
+                }}
+              >
+                <FaAddressCard size={18} />
+              </div>
+              <div>
+                <h3
+                  className="text-base font-semibold mb-2"
+                  style={{ color: "var(--foreground)" }}
+                >
+                  Who I Am
+                </h3>
+                <p
+                  className="text-sm leading-relaxed mb-4"
+                  style={{ color: "var(--muted)" }}
+                >
+                  I&apos;m a 4th-year BS Information Technology student
+                  specializing in Cybersecurity at Mapúa Malayan Colleges
+                  Laguna. I&apos;m passionate about building secure applications,
+                  exploring network architectures, and developing solutions that
+                  bridge technology and real-world needs. When I&apos;m not
+                  coding, I&apos;m studying for certifications or tinkering with
+                  networking setups.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "Cybersecurity",
+                    "Full-Stack Dev",
+                    "Networking",
+                    "Mobile Apps",
+                  ].map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-3 py-1 rounded-full font-medium"
+                      style={{
+                        background: accentBg,
+                        color: "var(--accent)",
+                        border: `1px solid ${accentBorder}`,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Left column */}
             <div className="lg:col-span-1 flex flex-col gap-6">
@@ -457,7 +514,7 @@ export default function HomePage() {
                 <div
                   className="rounded-xl p-4"
                   style={{
-                    background: "rgba(6,182,212,0.05)",
+                    background: accentBg,
                     border: `1px solid ${accentBorder}`,
                   }}
                 >
@@ -514,7 +571,7 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                <ul className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-2">
                   {certifications.map((cert) =>
                     cert.credlyUrl ? (
                       <li key={cert.name}>
@@ -522,9 +579,9 @@ export default function HomePage() {
                           href={cert.credlyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block p-3 rounded-xl transition-all hover:-translate-y-0.5 group"
+                          className="flex gap-3 p-3 rounded-xl transition-all hover:-translate-y-0.5"
                           style={{
-                            background: "rgba(255,255,255,0.02)",
+                            background: "var(--background)",
                             border: "1px solid var(--card-border)",
                             textDecoration: "none",
                           }}
@@ -537,59 +594,88 @@ export default function HomePage() {
                               "var(--card-border)";
                           }}
                         >
-                          <div className="flex items-start justify-between gap-2">
-                            <p
-                              className="text-xs font-semibold mb-1"
-                              style={{ color: "var(--foreground)" }}
-                            >
-                              {cert.name}
-                            </p>
-                            <FaExternalLinkAlt
-                              size={10}
-                              style={{ color: "var(--accent)", flexShrink: 0, marginTop: 2 }}
-                            />
+                          <div
+                            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                            style={{
+                              background: accentBg,
+                              color: "var(--accent)",
+                            }}
+                          >
+                            <FaCertificate size={12} />
                           </div>
-                          <p
-                            className="text-xs"
-                            style={{ color: "var(--muted)" }}
-                          >
-                            {cert.issuer}
-                          </p>
-                          <p
-                            className="text-xs mt-1"
-                            style={{ color: "var(--accent)" }}
-                          >
-                            {cert.date}
-                          </p>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-start justify-between gap-1">
+                              <p
+                                className="text-xs font-semibold leading-snug"
+                                style={{ color: "var(--foreground)" }}
+                              >
+                                {cert.name}
+                              </p>
+                              <FaExternalLinkAlt
+                                size={9}
+                                className="flex-shrink-0 mt-0.5"
+                                style={{ color: "var(--accent)", opacity: 0.7 }}
+                              />
+                            </div>
+                            <p
+                              className="text-xs mt-0.5"
+                              style={{ color: "var(--muted)" }}
+                            >
+                              {cert.issuer}
+                            </p>
+                            <span
+                              className="inline-block text-xs px-2 py-0.5 rounded-md mt-1.5 font-medium"
+                              style={{
+                                background: accentBg,
+                                color: "var(--accent)",
+                              }}
+                            >
+                              {cert.date}
+                            </span>
+                          </div>
                         </a>
                       </li>
                     ) : (
                       <li
                         key={cert.name}
-                        className="p-3 rounded-xl"
+                        className="flex gap-3 p-3 rounded-xl"
                         style={{
-                          background: "rgba(255,255,255,0.02)",
+                          background: "var(--background)",
                           border: "1px solid var(--card-border)",
                         }}
                       >
-                        <p
-                          className="text-xs font-semibold mb-1"
-                          style={{ color: "var(--foreground)" }}
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                          style={{
+                            background: accentBg,
+                            color: "var(--accent)",
+                          }}
                         >
-                          {cert.name}
-                        </p>
-                        <p
-                          className="text-xs"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          {cert.issuer}
-                        </p>
-                        <p
-                          className="text-xs mt-1"
-                          style={{ color: "var(--accent)" }}
-                        >
-                          {cert.date}
-                        </p>
+                          <FaCertificate size={12} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p
+                            className="text-xs font-semibold leading-snug"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            {cert.name}
+                          </p>
+                          <p
+                            className="text-xs mt-0.5"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            {cert.issuer}
+                          </p>
+                          <span
+                            className="inline-block text-xs px-2 py-0.5 rounded-md mt-1.5 font-medium"
+                            style={{
+                              background: accentBg,
+                              color: "var(--accent)",
+                            }}
+                          >
+                            {cert.date}
+                          </span>
+                        </div>
                       </li>
                     )
                   )}
@@ -625,7 +711,7 @@ export default function HomePage() {
                 <div
                   className="rounded-xl p-5"
                   style={{
-                    background: "rgba(6,182,212,0.04)",
+                    background: accentBg,
                     border: `1px solid ${accentBorder}`,
                   }}
                 >
@@ -720,7 +806,7 @@ export default function HomePage() {
                             key={skill}
                             className="text-xs px-2.5 py-1 rounded-lg"
                             style={{
-                              background: "rgba(255,255,255,0.04)",
+                              background: "var(--background)",
                               color: "var(--muted)",
                               border: "1px solid var(--card-border)",
                             }}
@@ -915,7 +1001,7 @@ export default function HomePage() {
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
         <div className="max-w-5xl mx-auto">
-          <div className="mb-14 text-center">
+          <div className="mb-10 text-center">
             <h2
               className="text-4xl sm:text-5xl font-bold mb-4"
               style={{ color: "var(--foreground)" }}
@@ -931,15 +1017,34 @@ export default function HomePage() {
             </p>
           </div>
 
+          {/* Availability banner */}
+          <div
+            className="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl mb-10 mx-auto max-w-md"
+            style={{
+              background: accentBg,
+              border: `1px solid ${accentBorder}`,
+            }}
+          >
+            <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+            <p className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
+              Currently available for freelance &amp; full-time opportunities
+            </p>
+          </div>
+
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Contact info */}
             <div className="flex flex-col gap-4">
-              <h3
-                className="text-lg font-semibold mb-2"
-                style={{ color: "var(--foreground)" }}
-              >
-                Contact Details
-              </h3>
+              <div className="mb-1">
+                <h3
+                  className="text-lg font-semibold"
+                  style={{ color: "var(--foreground)" }}
+                >
+                  Let&apos;s Connect
+                </h3>
+                <p className="text-sm mt-1" style={{ color: "var(--muted)" }}>
+                  Reach out through any of these channels.
+                </p>
+              </div>
 
               {contactInfo.map(({ icon: Icon, label, href, display }) => (
                 <a
@@ -947,7 +1052,7 @@ export default function HomePage() {
                   href={href}
                   target={href.startsWith("mailto") ? undefined : "_blank"}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-2xl transition-all hover:-translate-y-0.5"
+                  className="flex items-center gap-4 p-4 rounded-2xl transition-all hover:-translate-y-0.5 group"
                   style={{
                     background: "var(--card-bg)",
                     border: "1px solid var(--card-border)",
@@ -963,12 +1068,12 @@ export default function HomePage() {
                   }}
                 >
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
                     style={{ background: accentBg, color: "var(--accent)" }}
                   >
                     <Icon size={20} />
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p
                       className="text-xs font-semibold uppercase tracking-wide mb-0.5"
                       style={{ color: "var(--accent)" }}
@@ -982,6 +1087,11 @@ export default function HomePage() {
                       {display}
                     </p>
                   </div>
+                  <FaExternalLinkAlt
+                    size={11}
+                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ color: "var(--accent)" }}
+                  />
                 </a>
               ))}
             </div>
@@ -994,12 +1104,20 @@ export default function HomePage() {
                 border: "1px solid var(--card-border)",
               }}
             >
-              <h3
-                className="text-lg font-semibold mb-6"
-                style={{ color: "var(--foreground)" }}
-              >
-                Send a Message
-              </h3>
+              <div className="flex items-center gap-3 mb-6">
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: accentBg, color: "var(--accent)" }}
+                >
+                  <FaEnvelopeOpen size={15} />
+                </div>
+                <h3
+                  className="text-lg font-semibold"
+                  style={{ color: "var(--foreground)" }}
+                >
+                  Send a Message
+                </h3>
+              </div>
 
               <form className="flex flex-col gap-4">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -1015,11 +1133,17 @@ export default function HomePage() {
                       id="contact-name"
                       type="text"
                       placeholder="Your name"
-                      className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                      className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                       style={{
-                        background: "rgba(255,255,255,0.04)",
+                        background: "var(--background)",
                         border: "1px solid var(--card-border)",
                         color: "var(--foreground)",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "var(--card-border)";
                       }}
                     />
                   </div>
@@ -1035,11 +1159,17 @@ export default function HomePage() {
                       id="contact-email"
                       type="email"
                       placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                      className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                       style={{
-                        background: "rgba(255,255,255,0.04)",
+                        background: "var(--background)",
                         border: "1px solid var(--card-border)",
                         color: "var(--foreground)",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "var(--card-border)";
                       }}
                     />
                   </div>
@@ -1056,12 +1186,18 @@ export default function HomePage() {
                   <input
                     id="contact-subject"
                     type="text"
-                    placeholder="How can I help?"
-                    className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                    placeholder="What's this about?"
+                    className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
+                      background: "var(--background)",
                       border: "1px solid var(--card-border)",
                       color: "var(--foreground)",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = "var(--card-border)";
                     }}
                   />
                 </div>
@@ -1078,11 +1214,17 @@ export default function HomePage() {
                     id="contact-message"
                     rows={5}
                     placeholder="Tell me about your project or just say hi..."
-                    className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none"
+                    className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none transition-colors"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
+                      background: "var(--background)",
                       border: "1px solid var(--card-border)",
                       color: "var(--foreground)",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = "var(--card-border)";
                     }}
                   />
                 </div>
@@ -1103,4 +1245,3 @@ export default function HomePage() {
     </div>
   );
 }
-
