@@ -391,13 +391,7 @@ export default function HomePage() {
           <div className="flex flex-col gap-8">
 
             {/* ── Row 1: Technical Skills ──────────────────────────────────── */}
-            <div
-              className="rounded-2xl p-8"
-              style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--card-border)",
-              }}
-            >
+            <div>
               <div className="flex items-center gap-3 mb-6">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -413,11 +407,11 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="flex flex-col gap-5">
                 {Object.entries(skills).map(([category, items]) => (
-                  <div key={category}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <FaCode size={12} style={{ color: "var(--accent)" }} />
+                  <div key={category} className="flex items-start gap-4">
+                    <div className="flex items-center gap-2 w-36 flex-shrink-0 pt-1">
+                      <FaCode size={11} style={{ color: "var(--accent)", flexShrink: 0 }} />
                       <h4
                         className="text-xs font-semibold uppercase tracking-wide"
                         style={{ color: "var(--accent)" }}
@@ -619,22 +613,7 @@ export default function HomePage() {
               </div>
 
               {/* Education */}
-              <div
-                className="rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  background: "var(--card-bg)",
-                  border: "1px solid var(--card-border)",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.2)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 32px rgba(6,182,212,0.15)`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.2)";
-                }}
-              >
+              <div>
                 <div className="flex items-center gap-3 mb-6">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -650,53 +629,128 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                <div
-                  className="rounded-xl p-5"
-                  style={{
-                    background: "rgba(6,182,212,0.05)",
-                    border: `1px solid ${accentBorder}`,
-                  }}
-                >
-                  <p
-                    className="font-semibold text-sm mb-1"
-                    style={{ color: "var(--foreground)" }}
-                  >
-                    Bachelor of Science in Information Technology
-                  </p>
-                  <p
-                    className="text-sm mb-1"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    Cybersecurity Specialization
-                  </p>
-                  <p
-                    className="text-sm mb-3"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    Mapúa Malayan Colleges Laguna
-                  </p>
-                  <span
-                    className="text-xs px-3 py-1 rounded-full"
-                    style={{
-                      background: accentBg,
-                      color: "var(--accent)",
-                      border: `1px solid ${accentBorder}`,
-                    }}
-                  >
-                    2022 – Present
-                  </span>
+                {/* Timeline */}
+                <div className="relative pl-9">
+                  {/* Vertical line */}
+                  <div
+                    className="absolute left-[13px] top-1 bottom-1 w-px"
+                    style={{ background: accentBorder }}
+                  />
+
+                  {/* Entry: BSIT */}
+                  <div className="relative mb-5">
+                    {/* Dot */}
+                    <div
+                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      style={{
+                        background: "var(--accent)",
+                        boxShadow: `0 0 0 3px ${accentBg}`,
+                      }}
+                    />
+                    <div
+                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+                      style={{
+                        background: "rgba(6,182,212,0.04)",
+                        border: `1px solid ${accentBorder}`,
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                      }}
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+                        <h4
+                          className="font-semibold text-sm"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          Bachelor of Science in Information Technology
+                        </h4>
+                        <span
+                          className="text-xs px-3 py-1 rounded-full"
+                          style={{
+                            background: accentBg,
+                            color: "var(--accent)",
+                            border: `1px solid ${accentBorder}`,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          2022 – Present
+                        </span>
+                      </div>
+                      <p className="text-sm mb-1" style={{ color: "var(--accent)" }}>
+                        Cybersecurity Specialization
+                      </p>
+                      <p className="text-sm" style={{ color: "var(--muted)" }}>
+                        Mapúa Malayan Colleges Laguna
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Entry: High School placeholder */}
+                  <div className="relative">
+                    {/* Dot */}
+                    <div
+                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      style={{
+                        background: "var(--muted)",
+                        boxShadow: `0 0 0 3px var(--card-bg)`,
+                        opacity: 0.5,
+                      }}
+                    />
+                    <div
+                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+                      style={{
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid var(--card-border)",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
+                        opacity: 0.65,
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.10)";
+                        (e.currentTarget as HTMLDivElement).style.opacity = "1";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)";
+                        (e.currentTarget as HTMLDivElement).style.opacity = "0.65";
+                      }}
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+                        <h4
+                          className="font-semibold text-sm"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          Senior High School
+                        </h4>
+                        <span
+                          className="text-xs px-3 py-1 rounded-full"
+                          style={{
+                            background: "rgba(255,255,255,0.04)",
+                            color: "var(--muted)",
+                            border: "1px solid var(--card-border)",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          Coming Soon
+                        </span>
+                      </div>
+                      <p className="text-sm italic" style={{ color: "var(--muted)" }}>
+                        Details will be updated soon.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* ── Row 3: Certifications ────────────────────────────────────── */}
-            <div
-              className="rounded-2xl p-8"
-              style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--card-border)",
-              }}
-            >
+            <div>
               <div className="flex items-center gap-3 mb-6">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -712,15 +766,15 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <ul className="flex flex-wrap gap-4">
                 {certifications.map((cert) =>
                   cert.credlyUrl ? (
-                    <li key={cert.name}>
+                    <li key={cert.name} className="flex-1 min-w-[160px]">
                       <a
                         href={cert.credlyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block p-4 rounded-xl transition-all duration-300 hover:-translate-y-1"
+                        className="block p-4 rounded-xl h-full transition-all duration-300 hover:-translate-y-1"
                         style={{
                           background: "rgba(255,255,255,0.02)",
                           border: "1px solid var(--card-border)",
@@ -765,7 +819,7 @@ export default function HomePage() {
                   ) : (
                     <li
                       key={cert.name}
-                      className="p-4 rounded-xl"
+                      className="flex-1 min-w-[160px] p-4 rounded-xl"
                       style={{
                         background: "rgba(255,255,255,0.02)",
                         border: "1px solid var(--card-border)",
