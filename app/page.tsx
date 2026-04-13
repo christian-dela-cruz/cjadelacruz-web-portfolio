@@ -407,7 +407,7 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {Object.entries(skills).map(([category, items]) => (
                   <div key={category} className="flex items-start gap-4">
                     <div className="flex items-center gap-2 w-36 flex-shrink-0 pt-1">
@@ -471,7 +471,7 @@ export default function HomePage() {
                   <div className="relative mb-5">
                     {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
                       style={{
                         background: "var(--accent)",
                         boxShadow: `0 0 0 3px ${accentBg}`,
@@ -537,6 +537,23 @@ export default function HomePage() {
                           </li>
                         ))}
                       </ul>
+
+                      {/* Tech stack badges */}
+                      <div className="flex flex-wrap gap-2 mt-4 pt-4" style={{ borderTop: "1px solid var(--card-border)" }}>
+                        {["Xamarin.Android", "C#", "Firebase", "Android"].map((tech) => (
+                          <span
+                            key={tech}
+                            className="text-xs px-2.5 py-1 rounded-lg"
+                            style={{
+                              background: accentBg,
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
+                            }}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -544,7 +561,7 @@ export default function HomePage() {
                   <div className="relative">
                     {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
                       style={{
                         background: "var(--muted)",
                         boxShadow: `0 0 0 3px var(--card-bg)`,
@@ -641,7 +658,7 @@ export default function HomePage() {
                   <div className="relative mb-5">
                     {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
                       style={{
                         background: "var(--accent)",
                         boxShadow: `0 0 0 3px ${accentBg}`,
@@ -691,60 +708,6 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Entry: High School placeholder */}
-                  <div className="relative">
-                    {/* Dot */}
-                    <div
-                      className="absolute -left-[20px] top-5 w-2.5 h-2.5 rounded-full"
-                      style={{
-                        background: "var(--muted)",
-                        boxShadow: `0 0 0 3px var(--card-bg)`,
-                        opacity: 0.5,
-                      }}
-                    />
-                    <div
-                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
-                      style={{
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
-                        opacity: 0.65,
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.10)";
-                        (e.currentTarget as HTMLDivElement).style.opacity = "1";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)";
-                        (e.currentTarget as HTMLDivElement).style.opacity = "0.65";
-                      }}
-                    >
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-                        <h4
-                          className="font-semibold text-sm"
-                          style={{ color: "var(--foreground)" }}
-                        >
-                          Senior High School
-                        </h4>
-                        <span
-                          className="text-xs px-3 py-1 rounded-full"
-                          style={{
-                            background: "rgba(255,255,255,0.04)",
-                            color: "var(--muted)",
-                            border: "1px solid var(--card-border)",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          Coming Soon
-                        </span>
-                      </div>
-                      <p className="text-sm italic" style={{ color: "var(--muted)" }}>
-                        Details will be updated soon.
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -766,87 +729,110 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              <ul className="flex flex-wrap gap-4">
-                {certifications.map((cert) =>
-                  cert.credlyUrl ? (
-                    <li key={cert.name} className="flex-1 min-w-[160px]">
-                      <a
-                        href={cert.credlyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block p-4 rounded-xl h-full transition-all duration-300 hover:-translate-y-1"
+              {/* Horizontal scrollable slider */}
+              <div
+                className="flex gap-5 overflow-x-auto pb-3"
+                style={{ scrollSnapType: "x mandatory", scrollbarWidth: "thin", scrollbarColor: "var(--accent) transparent" }}
+              >
+                {certifications.map((cert) => {
+                  const inner = (
+                    <>
+                      {/* Badge placeholder */}
+                      <div
+                        className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-4 flex-shrink-0"
                         style={{
-                          background: "rgba(255,255,255,0.02)",
-                          border: "1px solid var(--card-border)",
-                          textDecoration: "none",
-                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)";
-                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--card-border)";
-                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                          background: "rgba(6,182,212,0.08)",
+                          border: "2px dashed rgba(6,182,212,0.3)",
                         }}
                       >
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <p
-                            className="text-sm font-semibold"
-                            style={{ color: "var(--foreground)" }}
-                          >
-                            {cert.name}
-                          </p>
-                          <FaExternalLinkAlt
-                            size={10}
-                            style={{ color: "var(--accent)", flexShrink: 0, marginTop: 3 }}
+                        <div className="text-center">
+                          <FaImage
+                            size={28}
+                            style={{ color: "var(--accent)", opacity: 0.5, margin: "0 auto 4px" }}
                           />
+                          <p className="text-[9px]" style={{ color: "var(--accent)", opacity: 0.6 }}>
+                            Badge
+                          </p>
                         </div>
-                        <p
-                          className="text-xs mb-1"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          {cert.issuer}
-                        </p>
-                        <p
-                          className="text-xs"
-                          style={{ color: "var(--accent)" }}
-                        >
-                          {cert.date}
-                        </p>
-                      </a>
-                    </li>
-                  ) : (
-                    <li
-                      key={cert.name}
-                      className="flex-1 min-w-[160px] p-4 rounded-xl"
-                      style={{
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                      }}
-                    >
+                      </div>
+
                       <p
-                        className="text-sm font-semibold mb-1"
+                        className="text-sm font-semibold text-center mb-1 leading-snug"
                         style={{ color: "var(--foreground)" }}
                       >
                         {cert.name}
                       </p>
                       <p
-                        className="text-xs mb-1"
+                        className="text-xs text-center mb-1"
                         style={{ color: "var(--muted)" }}
                       >
                         {cert.issuer}
                       </p>
                       <p
-                        className="text-xs"
+                        className="text-xs text-center"
                         style={{ color: "var(--accent)" }}
                       >
                         {cert.date}
                       </p>
-                    </li>
-                  )
-                )}
-              </ul>
+                      {cert.credlyUrl && (
+                        <div className="flex justify-center mt-3">
+                          <span
+                            className="inline-flex items-center gap-1 text-xs"
+                            style={{ color: "var(--accent)" }}
+                          >
+                            <FaExternalLinkAlt size={9} />
+                            View on Credly
+                          </span>
+                        </div>
+                      )}
+                    </>
+                  );
+
+                  return cert.credlyUrl ? (
+                    <a
+                      key={cert.name}
+                      href={cert.credlyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 flex flex-col p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+                      style={{
+                        width: 220,
+                        scrollSnapAlign: "start",
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid var(--card-border)",
+                        textDecoration: "none",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
+                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(6,182,212,0.05)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--card-border)";
+                        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.02)";
+                      }}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div
+                      key={cert.name}
+                      className="flex-shrink-0 flex flex-col p-5 rounded-2xl"
+                      style={{
+                        width: 220,
+                        scrollSnapAlign: "start",
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid var(--card-border)",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                      }}
+                    >
+                      {inner}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
           </div>
