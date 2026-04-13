@@ -1,12 +1,8 @@
-"use client";
-
 import {
   FaGraduationCap,
   FaBriefcase,
   FaCertificate,
   FaCode,
-  FaExternalLinkAlt,
-  FaUser,
 } from "react-icons/fa";
 import { HiChip } from "react-icons/hi";
 
@@ -40,35 +36,26 @@ const certifications = [
     name: "CompTIA Tech+",
     issuer: "CompTIA",
     date: "December 2025",
-    credlyUrl:
-      "https://www.credly.com/badges/1577cccf-5f34-46bd-8d09-b7e837a28d03/public_url",
   },
   {
     name: "CCNA: Switching, Routing, and Wireless Essentials",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
-    credlyUrl:
-      "https://www.credly.com/earner/earned/badge/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6",
   },
   {
     name: "Ethical Hacker",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
-    credlyUrl:
-      "https://www.credly.com/earner/earned/badge/7781dbd5-da20-4852-ab68-84dda25f6895",
   },
   {
     name: "Google Cloud Computing Foundations",
     issuer: "Google Cloud",
     date: "March 2025",
-    credlyUrl:
-      "https://www.credly.com/badges/cffe1fbf-7b99-4b79-a873-03031e7fd62d/public_url",
   },
   {
     name: "TOEIC",
     issuer: "ETS",
     date: "L&R: 940/990 | S: 160 | W: 190",
-    credlyUrl: null,
   },
 ];
 
@@ -96,68 +83,6 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Bio Card */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{
-            background: "var(--card-bg)",
-            border: "1px solid var(--card-border)",
-          }}
-        >
-          <div className="flex flex-col sm:flex-row gap-5 items-start">
-            <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{
-                background: "var(--accent-bg)",
-                color: "var(--accent)",
-                border: "1px solid var(--accent-border)",
-              }}
-            >
-              <FaUser size={18} />
-            </div>
-            <div>
-              <h2
-                className="text-base font-semibold mb-2"
-                style={{ color: "var(--foreground)" }}
-              >
-                Who I Am
-              </h2>
-              <p
-                className="text-sm leading-relaxed mb-4"
-                style={{ color: "var(--muted)" }}
-              >
-                I&apos;m a 4th-year BS Information Technology student
-                specializing in Cybersecurity at Mapúa Malayan Colleges Laguna.
-                I&apos;m passionate about building secure applications, exploring
-                network architectures, and developing solutions that bridge
-                technology and real-world needs. When I&apos;m not coding,
-                I&apos;m studying for certifications or tinkering with
-                networking setups.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "Cybersecurity",
-                  "Full-Stack Dev",
-                  "Networking",
-                  "Mobile Apps",
-                ].map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-3 py-1 rounded-full font-medium"
-                    style={{
-                      background: "var(--accent-bg)",
-                      color: "var(--accent)",
-                      border: "1px solid var(--accent-border)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left column */}
           <div className="lg:col-span-1 flex flex-col gap-6">
@@ -172,7 +97,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-5">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: "var(--accent-bg-md)" }}
+                  style={{ background: "rgba(59,130,246,0.15)" }}
                 >
                   <FaGraduationCap size={18} style={{ color: "var(--accent)" }} />
                 </div>
@@ -186,10 +111,7 @@ export default function AboutPage() {
 
               <div
                 className="rounded-xl p-4"
-                style={{
-                  background: "var(--accent-bg)",
-                  border: "1px solid var(--accent-border)",
-                }}
+                style={{ background: "rgba(59,130,246,0.05)", border: "1px solid rgba(59,130,246,0.15)" }}
               >
                 <p
                   className="font-semibold text-sm mb-1"
@@ -204,9 +126,9 @@ export default function AboutPage() {
                   Mapúa Malayan Colleges Laguna
                 </p>
                 <span
-                  className="text-xs px-2 py-1 rounded-md font-medium"
+                  className="text-xs px-2 py-1 rounded-md"
                   style={{
-                    background: "var(--accent-bg-md)",
+                    background: "rgba(59,130,246,0.1)",
                     color: "var(--accent)",
                   }}
                 >
@@ -226,7 +148,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-5">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: "var(--accent-bg-md)" }}
+                  style={{ background: "rgba(59,130,246,0.15)" }}
                 >
                   <FaCertificate
                     size={18}
@@ -241,116 +163,33 @@ export default function AboutPage() {
                 </h2>
               </div>
 
-              <ul className="flex flex-col gap-2">
-                {certifications.map((cert) =>
-                  cert.credlyUrl ? (
-                    <li key={cert.name}>
-                      <a
-                        href={cert.credlyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex gap-3 p-3 rounded-xl transition-all hover:-translate-y-0.5"
-                        style={{
-                          background: "var(--background)",
-                          border: "1px solid var(--card-border)",
-                          textDecoration: "none",
-                        }}
-                        onMouseEnter={(e) => {
-                          (
-                            e.currentTarget as HTMLAnchorElement
-                          ).style.borderColor = "var(--accent)";
-                        }}
-                        onMouseLeave={(e) => {
-                          (
-                            e.currentTarget as HTMLAnchorElement
-                          ).style.borderColor = "var(--card-border)";
-                        }}
-                      >
-                        <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                          style={{
-                            background: "var(--accent-bg)",
-                            color: "var(--accent)",
-                          }}
-                        >
-                          <FaCertificate size={12} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-start justify-between gap-1">
-                            <p
-                              className="text-xs font-semibold leading-snug"
-                              style={{ color: "var(--foreground)" }}
-                            >
-                              {cert.name}
-                            </p>
-                            <FaExternalLinkAlt
-                              size={9}
-                              className="flex-shrink-0 mt-0.5"
-                              style={{ color: "var(--accent)", opacity: 0.7 }}
-                            />
-                          </div>
-                          <p
-                            className="text-xs mt-0.5"
-                            style={{ color: "var(--muted)" }}
-                          >
-                            {cert.issuer}
-                          </p>
-                          <span
-                            className="inline-block text-xs px-2 py-0.5 rounded-md mt-1.5 font-medium"
-                            style={{
-                              background: "var(--accent-bg)",
-                              color: "var(--accent)",
-                            }}
-                          >
-                            {cert.date}
-                          </span>
-                        </div>
-                      </a>
-                    </li>
-                  ) : (
-                    <li
-                      key={cert.name}
-                      className="flex gap-3 p-3 rounded-xl"
-                      style={{
-                        background: "var(--background)",
-                        border: "1px solid var(--card-border)",
-                      }}
+              <ul className="flex flex-col gap-3">
+                {certifications.map((cert) => (
+                  <li
+                    key={cert.name}
+                    className="p-3 rounded-xl"
+                    style={{
+                      background: "rgba(255,255,255,0.02)",
+                      border: "1px solid var(--card-border)",
+                    }}
+                  >
+                    <p
+                      className="text-xs font-semibold mb-1"
+                      style={{ color: "var(--foreground)" }}
                     >
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                        style={{
-                          background: "var(--accent-bg)",
-                          color: "var(--accent)",
-                        }}
-                      >
-                        <FaCertificate size={12} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p
-                          className="text-xs font-semibold leading-snug"
-                          style={{ color: "var(--foreground)" }}
-                        >
-                          {cert.name}
-                        </p>
-                        <p
-                          className="text-xs mt-0.5"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          {cert.issuer}
-                        </p>
-                        <span
-                          className="inline-block text-xs px-2 py-0.5 rounded-md mt-1.5 font-medium"
-                          style={{
-                            background: "var(--accent-bg)",
-                            color: "var(--accent)",
-                          }}
-                        >
-                          {cert.date}
-                        </span>
-                      </div>
-                    </li>
-                  )
-                )}
+                      {cert.name}
+                    </p>
+                    <p className="text-xs" style={{ color: "var(--muted)" }}>
+                      {cert.issuer}
+                    </p>
+                    <p
+                      className="text-xs mt-1"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {cert.date}
+                    </p>
+                  </li>
+                ))}
               </ul>
             </section>
           </div>
@@ -368,7 +207,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-5">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: "var(--accent-bg-md)" }}
+                  style={{ background: "rgba(59,130,246,0.15)" }}
                 >
                   <FaBriefcase size={16} style={{ color: "var(--accent)" }} />
                 </div>
@@ -383,8 +222,8 @@ export default function AboutPage() {
               <div
                 className="rounded-xl p-5"
                 style={{
-                  background: "var(--accent-bg)",
-                  border: "1px solid var(--accent-border)",
+                  background: "rgba(59,130,246,0.04)",
+                  border: "1px solid rgba(59,130,246,0.15)",
                 }}
               >
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
@@ -403,11 +242,11 @@ export default function AboutPage() {
                     </p>
                   </div>
                   <span
-                    className="text-xs px-3 py-1 rounded-full self-start font-medium"
+                    className="text-xs px-3 py-1 rounded-full self-start"
                     style={{
-                      background: "var(--accent-bg-md)",
+                      background: "rgba(59,130,246,0.1)",
                       color: "var(--accent)",
-                      border: "1px solid var(--accent-border)",
+                      border: "1px solid rgba(59,130,246,0.2)",
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -448,7 +287,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-5">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: "var(--accent-bg-md)" }}
+                  style={{ background: "rgba(59,130,246,0.15)" }}
                 >
                   <HiChip size={18} style={{ color: "var(--accent)" }} />
                 </div>
@@ -481,7 +320,7 @@ export default function AboutPage() {
                           key={skill}
                           className="text-xs px-2.5 py-1 rounded-lg"
                           style={{
-                            background: "var(--background)",
+                            background: "rgba(255,255,255,0.04)",
                             color: "var(--muted)",
                             border: "1px solid var(--card-border)",
                           }}
