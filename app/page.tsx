@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useRef } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -15,12 +16,12 @@ import {
   FaImage,
   FaPaperPlane,
   FaContao,
-  FaEnvelopeOpen,    // ✉️ Open envelope
-  FaPhone,           // ☎️ Phone icon
-  FaPhoneSquare,     // ☎️ Phone in square
-  FaAddressCard,     // 📋 Address card
-
-
+  FaEnvelopeOpen,
+  FaPhone,
+  FaPhoneSquare,
+  FaAddressCard,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 import { HiChip, HiCalendar } from "react-icons/hi";
@@ -82,6 +83,7 @@ const certifications = [
     name: "CompTIA Tech+",
     issuer: "CompTIA",
     date: "December 2025",
+    badge: "/comptia.png",
     credlyUrl:
       "https://www.credly.com/badges/1577cccf-5f34-46bd-8d09-b7e837a28d03/public_url",
   },
@@ -89,6 +91,7 @@ const certifications = [
     name: "CCNA: Switching, Routing, and Wireless Essentials",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
+    badge: null,
     credlyUrl:
       "https://www.credly.com/badges/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6/public_url",
   },
@@ -96,6 +99,7 @@ const certifications = [
     name: "Ethical Hacker",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
+    badge: null,
     credlyUrl:
       "https://www.credly.com/badges/7781dbd5-da20-4852-ab68-84dda25f6895/public_url",
   },
@@ -103,6 +107,7 @@ const certifications = [
     name: "Google Cloud Computing Foundations",
     issuer: "Google Cloud",
     date: "March 2025",
+    badge: null,
     credlyUrl:
       "https://www.credly.com/badges/cffe1fbf-7b99-4b79-a873-03031e7fd62d/public_url",
   },
@@ -110,6 +115,7 @@ const certifications = [
     name: "TOEIC",
     issuer: "ETS",
     date: "L&R: 940/990 | S: 160 | W: 190",
+    badge: null,
     credlyUrl: null,
   },
 ];
@@ -220,6 +226,14 @@ const accentBgMd = "rgba(6,182,212,0.15)";
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  const certScrollRef = useRef<HTMLDivElement>(null);
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
+
+  const scrollCerts = (dir: "left" | "right") => {
+    certScrollRef.current?.scrollBy({ left: dir === "left" ? -260 : 260, behavior: "smooth" });
+  };
+
   return (
     <div style={{ background: "var(--background)" }}>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -468,13 +482,20 @@ export default function HomePage() {
                   />
 
                   {/* Entry 1: Freelance */}
-                  <div className="relative mb-5">
+                  <div
+                    className="relative mb-5"
+                    onMouseEnter={() => setHoveredEntry("exp-0")}
+                    onMouseLeave={() => setHoveredEntry(null)}
+                  >
                     {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-7 top-3 w-3 h-3 rounded-full transition-all duration-300"
                       style={{
                         background: "var(--accent)",
-                        boxShadow: `0 0 0 3px ${accentBg}`,
+                        boxShadow: hoveredEntry === "exp-0"
+                          ? `0 0 0 5px ${accentBg}, 0 0 12px rgba(6,182,212,0.5)`
+                          : `0 0 0 3px ${accentBg}`,
+                        transform: hoveredEntry === "exp-0" ? "scale(1.35)" : "scale(1)",
                       }}
                     />
                     <div
@@ -557,34 +578,37 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Entry 2: OJT placeholder */}
-                  <div className="relative">
+                  {/* Entry 2: OJT */}
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setHoveredEntry("exp-1")}
+                    onMouseLeave={() => setHoveredEntry(null)}
+                  >
                     {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-7 top-3 w-3 h-3 rounded-full transition-all duration-300"
                       style={{
-                        background: "var(--muted)",
-                        boxShadow: `0 0 0 3px var(--card-bg)`,
-                        opacity: 0.5,
+                        background: "var(--accent)",
+                        boxShadow: hoveredEntry === "exp-1"
+                          ? `0 0 0 5px ${accentBg}, 0 0 12px rgba(6,182,212,0.5)`
+                          : `0 0 0 3px ${accentBg}`,
+                        transform: hoveredEntry === "exp-1" ? "scale(1.35)" : "scale(1)",
                       }}
                     />
                     <div
                       className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
                       style={{
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
-                        opacity: 0.65,
+                        background: "rgba(6,182,212,0.04)",
+                        border: `1px solid ${accentBorder}`,
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
                       }}
                       onMouseEnter={(e) => {
                         (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.10)";
-                        (e.currentTarget as HTMLDivElement).style.opacity = "1";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
                       }}
                       onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--card-border)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)";
-                        (e.currentTarget as HTMLDivElement).style.opacity = "0.65";
+                        (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
                       }}
                     >
                       <div className="flex flex-col gap-2 mb-4">
@@ -593,36 +617,46 @@ export default function HomePage() {
                             className="font-semibold text-sm"
                             style={{ color: "var(--foreground)" }}
                           >
-                            OJT / Internship
+                            Software Developer
                           </h4>
                           <span
                             className="text-xs px-3 py-1 rounded-full"
                             style={{
-                              background: "rgba(255,255,255,0.04)",
-                              color: "var(--muted)",
-                              border: "1px solid var(--card-border)",
+                              background: accentBg,
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
                               whiteSpace: "nowrap",
                             }}
                           >
-                            Coming Soon
+                            April 2026 – July 2026
                           </span>
                         </div>
-                        <p className="text-sm italic" style={{ color: "var(--muted)" }}>
-                          Company TBD
+                        <p className="text-sm" style={{ color: "var(--accent)" }}>
+                          The Bellevue Manila
+                        </p>
+                        <p className="text-xs" style={{ color: "var(--muted)" }}>
+                          486 Hours
                         </p>
                       </div>
 
                       <ul className="flex flex-col gap-2">
-                        <li
-                          className="flex gap-2 text-sm italic"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          <span
-                            className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                            style={{ background: "var(--muted)" }}
-                          />
-                          Details will be updated upon completion of internship.
-                        </li>
+                        {[
+                          "Assisted in the development and maintenance of internal web-based systems used by hotel staff and management.",
+                          "Collaborated with the IT department to troubleshoot software issues and implement minor feature enhancements.",
+                          "Documented technical processes and supported data management tasks across hotel operations.",
+                        ].map((point, i) => (
+                          <li
+                            key={i}
+                            className="flex gap-2 text-sm"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            <span
+                              className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ background: "var(--accent)" }}
+                            />
+                            {point}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -655,13 +689,20 @@ export default function HomePage() {
     />
 
     {/* Entry: BSIT */}
-    <div className="relative mb-5">
+    <div
+      className="relative mb-5"
+      onMouseEnter={() => setHoveredEntry("edu-0")}
+      onMouseLeave={() => setHoveredEntry(null)}
+    >
 {/* Dot */}
                     <div
-                      className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
+                      className="absolute -left-7 top-3 w-3 h-3 rounded-full transition-all duration-300"
                       style={{
                         background: "var(--accent)",
-                        boxShadow: `0 0 0 3px ${accentBg}`,
+                        boxShadow: hoveredEntry === "edu-0"
+                          ? `0 0 0 5px ${accentBg}, 0 0 12px rgba(6,182,212,0.5)`
+                          : `0 0 0 3px ${accentBg}`,
+                        transform: hoveredEntry === "edu-0" ? "scale(1.35)" : "scale(1)",
                       }}
                     />
                     <div
@@ -734,102 +775,165 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              {/* Horizontal scrollable slider */}
-              <div
-                className="flex gap-5 overflow-x-auto pb-3"
-                style={{ scrollSnapType: "x mandatory", scrollbarWidth: "thin", scrollbarColor: "var(--accent) transparent" }}
-              >
-                {certifications.map((cert) => {
-                  const inner = (
-                    <>
-                      {/* Badge placeholder */}
-                      <div
-                        className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-4 flex-shrink-0"
+              {/* Horizontal scrollable slider with navigation */}
+              <div className="relative">
+                {/* Gradient fade – left */}
+                <div
+                  className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 z-10"
+                  style={{ background: "linear-gradient(to right, var(--background), transparent)" }}
+                />
+                {/* Gradient fade – right */}
+                <div
+                  className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 z-10"
+                  style={{ background: "linear-gradient(to left, var(--background), transparent)" }}
+                />
+                {/* Left arrow */}
+                <button
+                  onClick={() => scrollCerts("left")}
+                  className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--card-border)",
+                    color: "var(--accent)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
+                  }}
+                >
+                  <FaChevronLeft size={12} />
+                </button>
+                {/* Right arrow */}
+                <button
+                  onClick={() => scrollCerts("right")}
+                  className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--card-border)",
+                    color: "var(--accent)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
+                  }}
+                >
+                  <FaChevronRight size={12} />
+                </button>
+
+                {/* Scrollable track */}
+                <div
+                  ref={certScrollRef}
+                  className="flex gap-5 overflow-x-auto pb-3 px-4 no-scrollbar"
+                  style={{ scrollSnapType: "x mandatory" }}
+                >
+                  {certifications.map((cert) => {
+                    const inner = (
+                      <>
+                        {/* Badge image or placeholder */}
+                        <div
+                          className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-4 flex-shrink-0 overflow-hidden"
+                          style={{
+                            background: cert.badge ? "transparent" : "rgba(6,182,212,0.08)",
+                            border: cert.badge ? "none" : "2px dashed rgba(6,182,212,0.3)",
+                          }}
+                        >
+                          {cert.badge ? (
+                            <Image
+                              src={cert.badge}
+                              alt={`${cert.name} badge`}
+                              width={96}
+                              height={96}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <div className="text-center">
+                              <FaImage
+                                size={28}
+                                style={{ color: "var(--accent)", opacity: 0.5, margin: "0 auto 4px" }}
+                              />
+                              <p className="text-[9px]" style={{ color: "var(--accent)", opacity: 0.6 }}>
+                                Badge
+                              </p>
+                            </div>
+                          )}
+                        </div>
+
+                        <p
+                          className="text-sm font-semibold text-center mb-1 leading-snug"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          {cert.name}
+                        </p>
+                        <p
+                          className="text-xs text-center mb-1"
+                          style={{ color: "var(--muted)" }}
+                        >
+                          {cert.issuer}
+                        </p>
+                        <p
+                          className="text-xs text-center"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          {cert.date}
+                        </p>
+                        {cert.credlyUrl && (
+                          <div className="flex justify-center mt-3">
+                          </div>
+                        )}
+                      </>
+                    );
+
+                    return cert.credlyUrl ? (
+                      <a
+                        key={cert.name}
+                        href={cert.credlyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 flex flex-col p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1"
                         style={{
-                          background: "rgba(6,182,212,0.08)",
-                          border: "2px dashed rgba(6,182,212,0.3)",
+                          width: 220,
+                          scrollSnapAlign: "start",
+                          background: "rgba(255,255,255,0.02)",
+                          border: "1px solid var(--card-border)",
+                          textDecoration: "none",
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)";
+                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
+                          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(6,182,212,0.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--card-border)";
+                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.02)";
                         }}
                       >
-                        <div className="text-center">
-                          <FaImage
-                            size={28}
-                            style={{ color: "var(--accent)", opacity: 0.5, margin: "0 auto 4px" }}
-                          />
-                          <p className="text-[9px]" style={{ color: "var(--accent)", opacity: 0.6 }}>
-                            Badge
-                          </p>
-                        </div>
+                        {inner}
+                      </a>
+                    ) : (
+                      <div
+                        key={cert.name}
+                        className="flex-shrink-0 flex flex-col p-5 rounded-2xl"
+                        style={{
+                          width: 220,
+                          scrollSnapAlign: "start",
+                          background: "rgba(255,255,255,0.02)",
+                          border: "1px solid var(--card-border)",
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        {inner}
                       </div>
-
-                      <p
-                        className="text-sm font-semibold text-center mb-1 leading-snug"
-                        style={{ color: "var(--foreground)" }}
-                      >
-                        {cert.name}
-                      </p>
-                      <p
-                        className="text-xs text-center mb-1"
-                        style={{ color: "var(--muted)" }}
-                      >
-                        {cert.issuer}
-                      </p>
-                      <p
-                        className="text-xs text-center"
-                        style={{ color: "var(--accent)" }}
-                      >
-                        {cert.date}
-                      </p>
-                      {cert.credlyUrl && (
-                        <div className="flex justify-center mt-3">
-                        </div>
-                      )}
-                    </>
-                  );
-
-                  return cert.credlyUrl ? (
-                    <a
-                      key={cert.name}
-                      href={cert.credlyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-shrink-0 flex flex-col p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-                      style={{
-                        width: 220,
-                        scrollSnapAlign: "start",
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                        textDecoration: "none",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)";
-                        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(6,182,212,0.05)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--card-border)";
-                        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.02)";
-                      }}
-                    >
-                      {inner}
-                    </a>
-                  ) : (
-                    <div
-                      key={cert.name}
-                      className="flex-shrink-0 flex flex-col p-5 rounded-2xl"
-                      style={{
-                        width: 220,
-                        scrollSnapAlign: "start",
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                      }}
-                    >
-                      {inner}
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -843,7 +947,7 @@ export default function HomePage() {
         className="py-24 px-6 scroll-mt-16"
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="mb-14 text-center">
             <h2
               className="text-4xl sm:text-5xl font-bold mb-4"
@@ -860,23 +964,28 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((project, idx) => {
               const status = statusConfig[project.status];
               const hasLink = project.github && project.github !== "#";
+              const isHovered = hoveredProject === idx;
               return (
                 <article
                   key={idx}
-                  className="rounded-2xl overflow-hidden transition-all hover:-translate-y-1"
+                  className="rounded-2xl overflow-hidden transition-all duration-300"
                   style={{
                     background: "var(--card-bg)",
                     border: "1px solid var(--card-border)",
-                    boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
+                    boxShadow: isHovered ? "0 8px 32px rgba(6,182,212,0.15)" : "0 4px 24px rgba(0,0,0,0.3)",
+                    transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+                    borderColor: isHovered ? "var(--accent)" : "var(--card-border)",
                   }}
+                  onMouseEnter={() => setHoveredProject(idx)}
+                  onMouseLeave={() => setHoveredProject(null)}
                 >
                   {/* Screenshot placeholder */}
                   <div
-                    className="h-48 relative flex items-center justify-center"
+                    className="h-36 relative flex items-center justify-center"
                     style={{
                       background:
                         "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
@@ -885,7 +994,7 @@ export default function HomePage() {
                   >
                     <div className="text-center">
                       <FaImage
-                        size={36}
+                        size={30}
                         style={{
                           color: "var(--muted)",
                           margin: "0 auto 8px",
@@ -916,46 +1025,29 @@ export default function HomePage() {
                     </span>
                   </div>
 
-                  <div className="p-6 sm:p-8">
+                  <div className="p-5 sm:p-6">
                     <h3
-                      className="text-lg sm:text-xl font-bold mb-3"
+                      className="text-base sm:text-lg font-bold mb-2"
                       style={{ color: "var(--foreground)" }}
                     >
                       {project.title}
                     </h3>
 
                     <p
-                      className="text-sm leading-relaxed mb-5"
+                      className="text-sm leading-relaxed mb-4"
                       style={{ color: "var(--muted)" }}
                     >
                       {project.description}
                     </p>
 
-                    {/* Bullets */}
-                    <ul className="flex flex-col gap-2 mb-5">
-                      {project.bullets.map((bullet, i) => (
-                        <li
-                          key={i}
-                          className="flex gap-2 text-sm"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          <span
-                            className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                            style={{ background: "var(--accent)" }}
-                          />
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-
                     {/* Duration */}
                     {project.duration && (
                       <div
-                        className="flex items-center gap-2 text-xs mb-5"
+                        className="flex items-center gap-2 text-xs mb-4"
                         style={{ color: "var(--muted)" }}
                       >
                         <HiCalendar
-                          size={14}
+                          size={13}
                           style={{ color: "var(--accent)" }}
                         />
                         {project.duration}
@@ -963,7 +1055,7 @@ export default function HomePage() {
                     )}
 
                     {/* Tech tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech.map((t) => (
                         <span
                           key={t}
@@ -979,24 +1071,25 @@ export default function HomePage() {
                       ))}
                     </div>
 
-                    {/* GitHub link */}
+                    {/* GitHub link – visible on hover only */}
                     <a
                       href={hasLink ? project.github : undefined}
                       target={hasLink ? "_blank" : undefined}
                       rel="noopener noreferrer"
                       aria-disabled={!hasLink}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all hover:scale-105"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold"
                       style={{
-                        background: hasLink
-                          ? "rgba(255,255,255,0.05)"
-                          : "rgba(255,255,255,0.02)",
-                        color: hasLink ? "var(--muted)" : "var(--card-border)",
-                        border: "1px solid var(--card-border)",
+                        background: "rgba(255,255,255,0.05)",
+                        color: "var(--accent)",
+                        border: `1px solid ${accentBorder}`,
                         cursor: hasLink ? "pointer" : "default",
                         pointerEvents: hasLink ? "auto" : "none",
+                        opacity: isHovered ? 1 : 0,
+                        transform: isHovered ? "translateY(0)" : "translateY(4px)",
+                        transition: "opacity 0.2s ease, transform 0.2s ease",
                       }}
                     >
-                      <FaGithub size={14} />
+                      <FaGithub size={13} />
                       {hasLink ? "View on GitHub" : "GitHub (link pending)"}
                     </a>
                   </div>
@@ -1013,7 +1106,7 @@ export default function HomePage() {
         className="py-24 px-6 scroll-mt-16"
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="mb-14 text-center">
             <h2
               className="text-4xl sm:text-5xl font-bold mb-4"
