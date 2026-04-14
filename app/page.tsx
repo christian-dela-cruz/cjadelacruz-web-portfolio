@@ -630,33 +630,33 @@ export default function HomePage() {
               </div>
 
               {/* Education */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: accentBgMd }}
-                  >
-                    <FaGraduationCap size={20} style={{ color: "var(--accent)" }} />
-                  </div>
-                  <h3
-                    className="font-semibold text-lg"
-                    style={{ color: "var(--foreground)" }}
-                  >
-                    Education
-                  </h3>
-                </div>
+<div>
+  <div className="flex items-center gap-3 mb-6">
+    <div
+      className="w-10 h-10 rounded-xl flex items-center justify-center"
+      style={{ background: accentBgMd }}
+    >
+      <FaGraduationCap size={20} style={{ color: "var(--accent)" }} />
+    </div>
+    <h3
+      className="font-semibold text-lg"
+      style={{ color: "var(--foreground)" }}
+    >
+      Education
+    </h3>
+  </div>
 
-                {/* Timeline */}
-                <div className="relative pl-9">
-                  {/* Vertical line */}
-                  <div
-                    className="absolute left-[13px] top-1 bottom-1 w-px"
-                    style={{ background: accentBorder }}
-                  />
+  {/* Timeline */}
+  <div className="relative pl-9">
+    {/* Vertical line */}
+    <div
+      className="absolute left-[13px] top-1 bottom-1 w-px"
+      style={{ background: accentBorder }}
+    />
 
-                  {/* Entry: BSIT */}
-                  <div className="relative mb-5">
-                    {/* Dot */}
+    {/* Entry: BSIT */}
+    <div className="relative mb-5">
+{/* Dot */}
                     <div
                       className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
                       style={{
@@ -665,51 +665,56 @@ export default function HomePage() {
                       }}
                     />
                     <div
-                      className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
-                      style={{
-                        background: "rgba(6,182,212,0.04)",
-                        border: `1px solid ${accentBorder}`,
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
-                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-                      }}
-                    >
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-                        <h4
-                          className="font-semibold text-sm"
-                          style={{ color: "var(--foreground)" }}
-                        >
-                          Bachelor of Science in Information Technology
-                        </h4>
-                        <span
-                          className="text-xs px-3 py-1 rounded-full"
-                          style={{
-                            background: accentBg,
-                            color: "var(--accent)",
-                            border: `1px solid ${accentBorder}`,
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          2022 – Present
-                        </span>
-                      </div>
-                      <p className="text-sm mb-1" style={{ color: "var(--accent)" }}>
-                        Cybersecurity Specialization
-                      </p>
-                      <p className="text-sm" style={{ color: "var(--muted)" }}>
-                        Mapúa Malayan Colleges Laguna
-                      </p>
-                    </div>
-                  </div>
+        className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+        style={{
+          background: "rgba(6,182,212,0.04)",
+          border: `1px solid ${accentBorder}`,
+          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+        }}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+          <div className="flex-1">
+            <h4
+              className="font-semibold text-sm mb-1"
+              style={{ color: "var(--foreground)" }}
+            >
+              Bachelor of Science in Information Technology
+            </h4>
+            <p className="text-xs" style={{ color: "var(--foreground)" }}>
+              Cybersecurity Specialization
+            </p>
+          </div>
+          <span
+            className="text-xs px-3 py-1 rounded-full whitespace-nowrap"
+            style={{
+              background: accentBg,
+              color: "var(--accent)",
+              border: `1px solid ${accentBorder}`,
+            }}
+          >
+            2022 – Present
+          </span>
+        </div>
 
-                </div>
-              </div>
+        <p className="text-sm mb-3" style={{ color: "var(--accent)" }}>
+          Mapúa Malayan Colleges Laguna
+        </p>
+
+        <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+          Currently enrolled. Gained strong fundamentals in cybersecurity, networking, software engineering, cloud infrastructure, and full-stack development. Active in hands-on projects including multi-hop mesh networking systems, mobile app development, and ethical hacking implementations.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
             </div>
 
             {/* ── Row 3: Certifications ────────────────────────────────────── */}
@@ -776,13 +781,6 @@ export default function HomePage() {
                       </p>
                       {cert.credlyUrl && (
                         <div className="flex justify-center mt-3">
-                          <span
-                            className="inline-flex items-center gap-1 text-xs"
-                            style={{ color: "var(--accent)" }}
-                          >
-                            <FaExternalLinkAlt size={9} />
-                            View on Credly
-                          </span>
                         </div>
                       )}
                     </>
