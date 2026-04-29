@@ -22,6 +22,8 @@ import {
   FaAddressCard,
   FaChevronLeft,
   FaChevronRight,
+  FaChalkboardTeacher,
+  FaTimes,
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 import { HiChip, HiCalendar } from "react-icons/hi";
@@ -190,6 +192,27 @@ const statusConfig = {
   },
 };
 
+const seminars = [
+  {
+    title: "Pathways to Employability: Career Readiness Toolkit",
+    organizer: "Mapúa Malayan Colleges Laguna & Arizona State University",
+    date: "April 21, 2026",
+    image: "https://github.com/user-attachments/assets/bead45aa-3aa9-4650-abf2-145886afe857",
+  },
+  {
+    title: "Technopreneurship: A Journey in Building Your Own Tech Start Up",
+    organizer: "CCIS – Mapúa MCL & Prosperna",
+    date: "March 7, 2024",
+    image: "https://github.com/user-attachments/assets/a435f8ad-382a-4fe0-88de-e5cd85acdff9",
+  },
+  {
+    title: "Architecting the Future with Decentralization: An Introduction to Blockchain",
+    organizer: "JPCS Mapúa MCL",
+    date: "February 5, 2025",
+    image: "https://github.com/user-attachments/assets/7e92d12b-92f8-45a5-87da-86df7e956a60",
+  },
+];
+
 const contactInfo = [
   {
     icon: FaGithub,
@@ -227,11 +250,17 @@ const accentBgMd = "rgba(6,182,212,0.15)";
 
 export default function HomePage() {
   const certScrollRef = useRef<HTMLDivElement>(null);
+  const seminarScrollRef = useRef<HTMLDivElement>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
+  const [selectedSeminar, setSelectedSeminar] = useState<(typeof seminars)[number] | null>(null);
 
   const scrollCerts = (dir: "left" | "right") => {
     certScrollRef.current?.scrollBy({ left: dir === "left" ? -260 : 260, behavior: "smooth" });
+  };
+
+  const scrollSeminars = (dir: "left" | "right") => {
+    seminarScrollRef.current?.scrollBy({ left: dir === "left" ? -260 : 260, behavior: "smooth" });
   };
 
   return (
@@ -937,9 +966,190 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* ── Row 4: Seminars Attended ──────────────────────────────────── */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: accentBgMd }}
+                >
+                  <FaChalkboardTeacher size={20} style={{ color: "var(--accent)" }} />
+                </div>
+                <h3
+                  className="font-semibold text-lg"
+                  style={{ color: "var(--foreground)" }}
+                >
+                  Seminars Attended
+                </h3>
+              </div>
+
+              {/* Horizontal scrollable slider with navigation */}
+              <div className="relative">
+                {/* Gradient fade – left */}
+                <div
+                  className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 z-10"
+                  style={{ background: "linear-gradient(to right, var(--background), transparent)" }}
+                />
+                {/* Gradient fade – right */}
+                <div
+                  className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 z-10"
+                  style={{ background: "linear-gradient(to left, var(--background), transparent)" }}
+                />
+                {/* Left arrow */}
+                <button
+                  onClick={() => scrollSeminars("left")}
+                  className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--card-border)",
+                    color: "var(--accent)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
+                  }}
+                >
+                  <FaChevronLeft size={12} />
+                </button>
+                {/* Right arrow */}
+                <button
+                  onClick={() => scrollSeminars("right")}
+                  className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--card-border)",
+                    color: "var(--accent)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
+                  }}
+                >
+                  <FaChevronRight size={12} />
+                </button>
+
+                {/* Scrollable track */}
+                <div
+                  ref={seminarScrollRef}
+                  className="flex gap-5 overflow-x-auto pb-3 px-4 no-scrollbar"
+                  style={{ scrollSnapType: "x mandatory" }}
+                >
+                  {seminars.map((seminar) => (
+                    <button
+                      key={seminar.title}
+                      onClick={() => setSelectedSeminar(seminar)}
+                      className="flex-shrink-0 flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1 text-left cursor-pointer overflow-hidden"
+                      style={{
+                        width: 260,
+                        scrollSnapAlign: "start",
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid var(--card-border)",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
+                        (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(6,182,212,0.05)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
+                        (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.02)";
+                      }}
+                    >
+                      {/* Certificate thumbnail */}
+                      <div className="w-full h-36 overflow-hidden relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={seminar.image}
+                          alt={seminar.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div
+                          className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200"
+                          style={{ background: "rgba(6,182,212,0.15)" }}
+                        >
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "var(--accent)", color: "#fff" }}>
+                            Click to expand
+                          </span>
+                        </div>
+                      </div>
+                      {/* Info */}
+                      <div className="p-4 flex flex-col gap-1">
+                        <p
+                          className="text-sm font-semibold leading-snug"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          {seminar.title}
+                        </p>
+                        <p
+                          className="text-xs"
+                          style={{ color: "var(--muted)" }}
+                        >
+                          {seminar.organizer}
+                        </p>
+                        <p
+                          className="text-xs"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          {seminar.date}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
+
+      {/* ── SEMINAR LIGHTBOX ──────────────────────────────────────────────── */}
+      {selectedSeminar && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.85)" }}
+          onClick={() => setSelectedSeminar(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full rounded-2xl overflow-hidden"
+            style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedSeminar(null)}
+              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+              style={{ background: "rgba(0,0,0,0.6)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}
+            >
+              <FaTimes size={14} />
+            </button>
+            {/* Full image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={selectedSeminar.image}
+              alt={selectedSeminar.title}
+              className="w-full h-auto"
+            />
+            {/* Caption */}
+            <div className="p-4">
+              <p className="font-semibold text-sm" style={{ color: "var(--foreground)" }}>
+                {selectedSeminar.title}
+              </p>
+              <p className="text-xs mt-1" style={{ color: "var(--muted)" }}>
+                {selectedSeminar.organizer} · {selectedSeminar.date}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── PROJECTS ──────────────────────────────────────────────────────── */}
       <section
