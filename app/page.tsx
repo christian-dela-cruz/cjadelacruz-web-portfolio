@@ -91,7 +91,7 @@ const certifications = [
     name: "CCNA: Switching, Routing, and Wireless Essentials",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
-    badge: null,
+    badge: "/ccna.png",
     credlyUrl:
       "https://www.credly.com/badges/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6/public_url",
   },
@@ -99,7 +99,7 @@ const certifications = [
     name: "Ethical Hacker",
     issuer: "Cisco Networking Academy",
     date: "March 2025",
-    badge: null,
+    badge: "/ethicalhacker.png",
     credlyUrl:
       "https://www.credly.com/badges/7781dbd5-da20-4852-ab68-84dda25f6895/public_url",
   },
@@ -107,7 +107,7 @@ const certifications = [
     name: "Google Cloud Computing Foundations",
     issuer: "Google Cloud",
     date: "March 2025",
-    badge: null,
+    badge: "/cgc.png",
     credlyUrl:
       "https://www.credly.com/badges/cffe1fbf-7b99-4b79-a873-03031e7fd62d/public_url",
   },
@@ -115,7 +115,7 @@ const certifications = [
     name: "TOEIC",
     issuer: "ETS",
     date: "L&R: 940/990 | S: 160 | W: 190",
-    badge: null,
+    badge: "/toeic.jpeg",
     credlyUrl: null,
   },
 ];
