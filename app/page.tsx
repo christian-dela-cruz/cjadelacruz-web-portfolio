@@ -250,17 +250,12 @@ const accentBgMd = "rgba(6,182,212,0.15)";
 
 export default function HomePage() {
   const certScrollRef = useRef<HTMLDivElement>(null);
-  const seminarScrollRef = useRef<HTMLDivElement>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof seminars)[number] | null>(null);
 
   const scrollCerts = (dir: "left" | "right") => {
-    certScrollRef.current?.scrollBy({ left: dir === "left" ? -260 : 260, behavior: "smooth" });
-  };
-
-  const scrollSeminars = (dir: "left" | "right") => {
-    seminarScrollRef.current?.scrollBy({ left: dir === "left" ? -260 : 260, behavior: "smooth" });
+    certScrollRef.current?.scrollBy({ left: dir === "left" ? -275 : 275, behavior: "smooth" });
   };
 
   return (
@@ -866,7 +861,7 @@ export default function HomePage() {
                       <>
                         {/* Badge image or placeholder */}
                         <div
-                          className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-4 flex-shrink-0 overflow-hidden"
+                          className="w-32 h-32 rounded-2xl flex items-center justify-center mx-auto mb-5 flex-shrink-0 overflow-hidden"
                           style={{
                             background: cert.badge ? "transparent" : "rgba(6,182,212,0.08)",
                             border: cert.badge ? "none" : "2px dashed rgba(6,182,212,0.3)",
@@ -876,8 +871,8 @@ export default function HomePage() {
                             <Image
                               src={cert.badge}
                               alt={`${cert.name} badge`}
-                              width={96}
-                              height={96}
+                              width={128}
+                              height={128}
                               className="object-contain"
                             />
                           ) : (
@@ -894,7 +889,7 @@ export default function HomePage() {
                         </div>
 
                         <p
-                          className="text-sm font-semibold text-center mb-1 leading-snug"
+                          className="text-sm font-semibold text-center mb-1.5 leading-snug"
                           style={{ color: "var(--foreground)" }}
                         >
                           {cert.name}
@@ -924,9 +919,9 @@ export default function HomePage() {
                         href={cert.credlyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-shrink-0 flex flex-col p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+                        className="flex-shrink-0 flex flex-col p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
                         style={{
-                          width: 220,
+                          width: 255,
                           scrollSnapAlign: "start",
                           background: "rgba(255,255,255,0.02)",
                           border: "1px solid var(--card-border)",
@@ -949,9 +944,9 @@ export default function HomePage() {
                     ) : (
                       <div
                         key={cert.name}
-                        className="flex-shrink-0 flex flex-col p-5 rounded-2xl"
+                        className="flex-shrink-0 flex flex-col p-6 rounded-2xl"
                         style={{
-                          width: 220,
+                          width: 255,
                           scrollSnapAlign: "start",
                           background: "rgba(255,255,255,0.02)",
                           border: "1px solid var(--card-border)",
@@ -983,71 +978,14 @@ export default function HomePage() {
                 </h3>
               </div>
 
-              {/* Horizontal scrollable slider with navigation */}
-              <div className="relative">
-                {/* Gradient fade – left */}
-                <div
-                  className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 z-10"
-                  style={{ background: "linear-gradient(to right, var(--background), transparent)" }}
-                />
-                {/* Gradient fade – right */}
-                <div
-                  className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 z-10"
-                  style={{ background: "linear-gradient(to left, var(--background), transparent)" }}
-                />
-                {/* Left arrow */}
-                <button
-                  onClick={() => scrollSeminars("left")}
-                  className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    color: "var(--accent)",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
-                  }}
-                >
-                  <FaChevronLeft size={12} />
-                </button>
-                {/* Right arrow */}
-                <button
-                  onClick={() => scrollSeminars("right")}
-                  className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    color: "var(--accent)",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
-                  }}
-                >
-                  <FaChevronRight size={12} />
-                </button>
-
-                {/* Scrollable track */}
-                <div
-                  ref={seminarScrollRef}
-                  className="flex gap-5 overflow-x-auto pb-3 px-4 no-scrollbar"
-                  style={{ scrollSnapType: "x mandatory" }}
-                >
+              {/* Grid layout – no scroll needed */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {seminars.map((seminar) => (
                     <button
                       key={seminar.title}
                       onClick={() => setSelectedSeminar(seminar)}
-                      className="flex-shrink-0 flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1 text-left cursor-pointer overflow-hidden"
+                      className="flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1 text-left cursor-pointer overflow-hidden w-full"
                       style={{
-                        width: 260,
-                        scrollSnapAlign: "start",
                         background: "rgba(255,255,255,0.02)",
                         border: "1px solid var(--card-border)",
                         boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
@@ -1064,7 +1002,7 @@ export default function HomePage() {
                       }}
                     >
                       {/* Certificate thumbnail */}
-                      <div className="w-full h-36 overflow-hidden relative">
+                      <div className="w-full h-48 overflow-hidden relative">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={seminar.image}
@@ -1081,7 +1019,7 @@ export default function HomePage() {
                         </div>
                       </div>
                       {/* Info */}
-                      <div className="p-4 flex flex-col gap-1">
+                      <div className="p-5 flex flex-col gap-1.5">
                         <p
                           className="text-sm font-semibold leading-snug"
                           style={{ color: "var(--foreground)" }}
@@ -1104,7 +1042,6 @@ export default function HomePage() {
                     </button>
                   ))}
                 </div>
-              </div>
             </div>
 
           </div>
