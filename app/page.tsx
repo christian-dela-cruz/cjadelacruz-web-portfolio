@@ -1244,7 +1244,7 @@ export default function HomePage() {
                       >
                         {/* Screenshot area */}
                         <div
-                          className="h-52 relative flex items-center justify-center overflow-hidden"
+                          className="h-72 relative flex items-center justify-center overflow-hidden"
                           style={{
                             background:
                               "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
@@ -1260,7 +1260,7 @@ export default function HomePage() {
                                   alt={`${project.title} screenshot ${sIdx + 1}`}
                                   fill
                                   className="object-cover transition-opacity duration-500"
-                                  style={{ opacity: slideshowIdx === sIdx ? 1 : 0 }}
+                                  style={{ opacity: slideshowIdx === sIdx ? 1 : 0, objectPosition: "top" }}
                                   sizes="(max-width: 768px) 100vw, 50vw"
                                 />
                               ))}
