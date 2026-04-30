@@ -144,7 +144,20 @@ const projects: Project[] = [
     ],
     tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking"],
     duration: "September 2025 – April 2026",
-    github: "#", // TODO: Replace with GitHub repository URL
+    github: "#",
+    status: "in-progress",
+  },
+  {
+    title: "HopFogMobile",
+    description:
+      "The official mobile application for the HopFog capstone project. This app provides a user interface for the multi-hop messaging and communication system designed for community information relay in low-connectivity environments.",
+    bullets: [
+      "Mobile UI for the HopFog multi-hop messaging system",
+      "Designed for community information relay in low-connectivity environments",
+      "Built with Kotlin for native Android performance",
+    ],
+    tech: ["Kotlin", "Mobile", "Android", "Networking"],
+    github: "#",
     status: "in-progress",
   },
   {
@@ -157,17 +170,73 @@ const projects: Project[] = [
       "User profiles, workout logs, and progress metrics tracking",
     ],
     tech: ["Xamarin.Android", "C#", "Firebase", "Android"],
-    github: "#", // TODO: Replace with GitHub repository URL
+    github: "#",
+    status: "completed",
+  },
+  {
+    title: "MaluPET",
+    description:
+      "Your Pet's Best Friend — A native Android app for managing your pets and scheduling their care appointments. Helps pet owners keep track of pets and manage feeding, grooming, and veterinary visits.",
+    bullets: [
+      "Register & Login — Create an account and securely sign in",
+      "Manage Pets — Add and view pet profiles (name, type, breed, age)",
+      "Schedule Appointments — Track feeding times, grooming dates, and veterinary visits",
+    ],
+    tech: ["Kotlin", "Jetpack Compose", "Material Design 3", "Ktor Client", "Gradle"],
+    github: "https://github.com/christian-dela-cruz/MaluPET",
     status: "completed",
   },
   {
     title: "Darwin's Game",
     description:
-      "Game project currently in development. Description and technical details will be updated as the project progresses.",
-    bullets: ["Details to be added once the project is finalized."],
-    tech: ["TBD"],
-    github: "#", // TODO: Replace with GitHub repository URL
-    status: "planned",
+      "A C# Windows Forms sidescroller game inspired by the theory of evolution. Guide your character through five stages of life — from a primordial creature all the way to modern humanity — dodging obstacles and surviving each era.",
+    bullets: [
+      "Side-scrolling game with five evolutionary stages",
+      "Built with C# Windows Forms",
+      "Dodge obstacles and survive each era of evolution",
+    ],
+    tech: ["C#", "Windows Forms", ".NET"],
+    github: "https://github.com/christian-dela-cruz/Darwins-Game",
+    status: "completed",
+  },
+  {
+    title: "Crossroads Coffee House",
+    description:
+      "A comprehensive UI/UX design project for Crossroads Coffee House, developed as part of a fully documented system development process following the Software Development Life Cycle (SDLC).",
+    bullets: [
+      "Full UI/UX design following SDLC methodology",
+      "Comprehensive documentation at each phase of development",
+      "Wireframes, mockups, and prototypes created in Figma",
+    ],
+    tech: ["UI/UX", "Figma", "SDLC"],
+    github: "https://github.com/christian-dela-cruz/Crossroads-Coffee-House",
+    status: "completed",
+  },
+  {
+    title: "TollGate Web App",
+    description:
+      "An IoT-based automated toll gate system with a web dashboard for real-time monitoring and manual control.",
+    bullets: [
+      "IoT-based automated toll gate hardware integration",
+      "Web dashboard for real-time monitoring",
+      "Manual override and control capabilities",
+    ],
+    tech: ["C++", "IoT", "Web Dashboard"],
+    github: "https://github.com/christian-dela-cruz/TollGate-Web-App",
+    status: "completed",
+  },
+  {
+    title: "TriHex Cipher",
+    description:
+      "A custom symmetric encryption algorithm implemented in Python that combines substitution, transposition, and bit-level transformations for enhanced confusion and diffusion.",
+    bullets: [
+      "Custom symmetric encryption combining substitution and transposition",
+      "Bit-level transformations for enhanced confusion and diffusion",
+      "Implemented entirely in Python",
+    ],
+    tech: ["Python", "Cryptography", "Algorithms"],
+    github: "https://github.com/christian-dela-cruz/TriHex-Cipher",
+    status: "completed",
   },
 ];
 
@@ -252,6 +321,7 @@ export default function HomePage() {
   const certScrollRef = useRef<HTMLDivElement>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
+  const [projectPage, setProjectPage] = useState(0);
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof seminars)[number] | null>(null);
 
   const scrollCerts = (dir: "left" | "right") => {
@@ -1111,139 +1181,202 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project, idx) => {
-              const status = statusConfig[project.status];
-              const hasLink = project.github && project.github !== "#";
-              const isHovered = hoveredProject === idx;
-              return (
-                <article
-                  key={idx}
-                  className="rounded-2xl overflow-hidden transition-all duration-300"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    boxShadow: isHovered ? "0 8px 32px rgba(6,182,212,0.15)" : "0 4px 24px rgba(0,0,0,0.3)",
-                    transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-                    borderColor: isHovered ? "var(--accent)" : "var(--card-border)",
-                  }}
-                  onMouseEnter={() => setHoveredProject(idx)}
-                  onMouseLeave={() => setHoveredProject(null)}
-                >
-                  {/* Screenshot placeholder */}
-                  <div
-                    className="h-36 relative flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
-                      borderBottom: "1px solid var(--card-border)",
-                    }}
-                  >
-                    <div className="text-center">
-                      <FaImage
-                        size={30}
+          {(() => {
+            const projectsPerPage = 4;
+            const totalPages = Math.ceil(projects.length / projectsPerPage);
+            const pageProjects = projects.slice(
+              projectPage * projectsPerPage,
+              projectPage * projectsPerPage + projectsPerPage
+            );
+            return (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {pageProjects.map((project, idx) => {
+                    const globalIdx = projectPage * projectsPerPage + idx;
+                    const status = statusConfig[project.status];
+                    const hasLink = project.github && project.github !== "#";
+                    const isHovered = hoveredProject === globalIdx;
+                    return (
+                      <article
+                        key={globalIdx}
+                        className="rounded-2xl overflow-hidden transition-all duration-300"
                         style={{
-                          color: "var(--muted)",
-                          margin: "0 auto 8px",
-                          opacity: 0.4,
+                          background: "var(--card-bg)",
+                          border: "1px solid var(--card-border)",
+                          boxShadow: isHovered ? "0 8px 32px rgba(6,182,212,0.15)" : "0 4px 24px rgba(0,0,0,0.3)",
+                          transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+                          borderColor: isHovered ? "var(--accent)" : "var(--card-border)",
                         }}
-                      />
-                      <p
-                        className="text-xs font-medium"
-                        style={{ color: "var(--muted)", opacity: 0.5 }}
+                        onMouseEnter={() => setHoveredProject(globalIdx)}
+                        onMouseLeave={() => setHoveredProject(null)}
                       >
-                        Project Screenshot
-                      </p>
-                    </div>
-                    {/* Status badge overlay */}
-                    <span
-                      className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
-                      style={{
-                        color: status.color,
-                        background: status.bg,
-                        border: `1px solid ${status.border}`,
-                      }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: status.color }}
-                      />
-                      {status.label}
-                    </span>
-                  </div>
-
-                  <div className="p-5 sm:p-6">
-                    <h3
-                      className="text-base sm:text-lg font-bold mb-2"
-                      style={{ color: "var(--foreground)" }}
-                    >
-                      {project.title}
-                    </h3>
-
-                    <p
-                      className="text-sm leading-relaxed mb-4"
-                      style={{ color: "var(--muted)" }}
-                    >
-                      {project.description}
-                    </p>
-
-                    {/* Duration */}
-                    {project.duration && (
-                      <div
-                        className="flex items-center gap-2 text-xs mb-4"
-                        style={{ color: "var(--muted)" }}
-                      >
-                        <HiCalendar
-                          size={13}
-                          style={{ color: "var(--accent)" }}
-                        />
-                        {project.duration}
-                      </div>
-                    )}
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="text-xs px-2.5 py-1 rounded-lg"
+                        {/* Screenshot placeholder */}
+                        <div
+                          className="h-36 relative flex items-center justify-center"
                           style={{
-                            background: accentBg,
-                            color: "var(--accent)",
-                            border: `1px solid ${accentBorder}`,
+                            background:
+                              "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
+                            borderBottom: "1px solid var(--card-border)",
                           }}
                         >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+                          <div className="text-center">
+                            <FaImage
+                              size={30}
+                              style={{
+                                color: "var(--muted)",
+                                margin: "0 auto 8px",
+                                opacity: 0.4,
+                              }}
+                            />
+                            <p
+                              className="text-xs font-medium"
+                              style={{ color: "var(--muted)", opacity: 0.5 }}
+                            >
+                              Project Screenshot
+                            </p>
+                          </div>
+                          {/* Status badge overlay */}
+                          <span
+                            className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
+                            style={{
+                              color: status.color,
+                              background: status.bg,
+                              border: `1px solid ${status.border}`,
+                            }}
+                          >
+                            <span
+                              className="w-1.5 h-1.5 rounded-full"
+                              style={{ background: status.color }}
+                            />
+                            {status.label}
+                          </span>
+                        </div>
 
-                    {/* GitHub link – visible on hover only */}
-                    <a
-                      href={hasLink ? project.github : undefined}
-                      target={hasLink ? "_blank" : undefined}
-                      rel="noopener noreferrer"
-                      aria-disabled={!hasLink}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold"
+                        <div className="p-5 sm:p-6">
+                          <h3
+                            className="text-base sm:text-lg font-bold mb-2"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            {project.title}
+                          </h3>
+
+                          <p
+                            className="text-sm leading-relaxed mb-4"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            {project.description}
+                          </p>
+
+                          {/* Duration */}
+                          {project.duration && (
+                            <div
+                              className="flex items-center gap-2 text-xs mb-4"
+                              style={{ color: "var(--muted)" }}
+                            >
+                              <HiCalendar
+                                size={13}
+                                style={{ color: "var(--accent)" }}
+                              />
+                              {project.duration}
+                            </div>
+                          )}
+
+                          {/* Tech tags */}
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {project.tech.map((t) => (
+                              <span
+                                key={t}
+                                className="text-xs px-2.5 py-1 rounded-lg"
+                                style={{
+                                  background: accentBg,
+                                  color: "var(--accent)",
+                                  border: `1px solid ${accentBorder}`,
+                                }}
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* GitHub link – visible on hover only */}
+                          <a
+                            href={hasLink ? project.github : undefined}
+                            target={hasLink ? "_blank" : undefined}
+                            rel="noopener noreferrer"
+                            aria-disabled={!hasLink}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold"
+                            style={{
+                              background: "rgba(255,255,255,0.05)",
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
+                              cursor: hasLink ? "pointer" : "default",
+                              pointerEvents: hasLink ? "auto" : "none",
+                              opacity: isHovered ? 1 : 0,
+                              transform: isHovered ? "translateY(0)" : "translateY(4px)",
+                              transition: "opacity 0.2s ease, transform 0.2s ease",
+                            }}
+                          >
+                            <FaGithub size={13} />
+                            {hasLink ? "View on GitHub" : "GitHub (link pending)"}
+                          </a>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+
+                {/* Pagination controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-3 mt-10">
+                    <button
+                      onClick={() => { setProjectPage((p) => Math.max(0, p - 1)); setHoveredProject(null); }}
+                      disabled={projectPage === 0}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                       style={{
-                        background: "rgba(255,255,255,0.05)",
-                        color: "var(--accent)",
-                        border: `1px solid ${accentBorder}`,
-                        cursor: hasLink ? "pointer" : "default",
-                        pointerEvents: hasLink ? "auto" : "none",
-                        opacity: isHovered ? 1 : 0,
-                        transform: isHovered ? "translateY(0)" : "translateY(4px)",
-                        transition: "opacity 0.2s ease, transform 0.2s ease",
+                        background: "var(--card-bg)",
+                        border: "1px solid var(--card-border)",
+                        color: "var(--foreground)",
                       }}
+                      aria-label="Previous page"
                     >
-                      <FaGithub size={13} />
-                      {hasLink ? "View on GitHub" : "GitHub (link pending)"}
-                    </a>
+                      <FaChevronLeft size={12} />
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => { setProjectPage(i); setHoveredProject(null); }}
+                        className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-semibold transition-all hover:scale-105 active:scale-95"
+                        style={{
+                          background: projectPage === i ? "var(--accent)" : "var(--card-bg)",
+                          border: `1px solid ${projectPage === i ? "var(--accent)" : "var(--card-border)"}`,
+                          color: projectPage === i ? "#fff" : "var(--foreground)",
+                        }}
+                        aria-label={`Page ${i + 1}`}
+                        aria-current={projectPage === i ? "page" : undefined}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => { setProjectPage((p) => Math.min(totalPages - 1, p + 1)); setHoveredProject(null); }}
+                      disabled={projectPage === totalPages - 1}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+                      style={{
+                        background: "var(--card-bg)",
+                        border: "1px solid var(--card-border)",
+                        color: "var(--foreground)",
+                      }}
+                      aria-label="Next page"
+                    >
+                      <FaChevronRight size={12} />
+                    </button>
                   </div>
-                </article>
-              );
-            })}
-          </div>
+                )}
+              </>
+            );
+          })()}
         </div>
       </section>
 
