@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -54,7 +54,7 @@ const socialLinks = [
 ];
 
 const skills: Record<string, string[]> = {
-  Programming: ["Python", "C#", "Kotlin", "HTML", "ASP.NET MVC"],
+  Programming: ["Python", "C#", "Kotlin", "HTML", "TypeScript", "ASP.NET MVC"],
   Networking: [
     "Routing & Switching",
     "Network Infrastructure",
@@ -77,6 +77,8 @@ const skills: Record<string, string[]> = {
     "Figma",
     "GitHub",
     "Canva",
+    "Next.js",
+    "XAMPP",
   ],
 };
 
@@ -130,6 +132,7 @@ interface Project {
   duration?: string;
   github: string; // TODO: Replace placeholder "#" with actual GitHub repository URL
   status: "completed" | "in-progress" | "planned";
+  screenshots?: string[];
 }
 
 const projects: Project[] = [
@@ -142,21 +145,8 @@ const projects: Project[] = [
       "Implemented fog computing concepts for localized data processing",
       "Community-based solution for low-connectivity or disaster-prone environments",
     ],
-    tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking"],
+    tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking", "Kotlin", "Android"],
     duration: "September 2025 – April 2026",
-    github: "#",
-    status: "completed",
-  },
-  {
-    title: "HopFogMobile",
-    description:
-      "The official mobile application for the HopFog capstone project. This app provides a user interface for the multi-hop messaging and communication system designed for community information relay in low-connectivity environments.",
-    bullets: [
-      "Mobile UI for the HopFog multi-hop messaging system",
-      "Designed for community information relay in low-connectivity environments",
-      "Built with Kotlin for native Android performance",
-    ],
-    tech: ["Kotlin", "Mobile", "Android", "Networking"],
     github: "#",
     status: "completed",
   },
@@ -198,6 +188,7 @@ const projects: Project[] = [
     tech: ["C#", "Windows Forms", ".NET"],
     github: "https://github.com/christian-dela-cruz/Darwins-Game",
     status: "completed",
+    screenshots: ["/darwin1.jpeg", "/darwin2.jpeg"],
   },
   {
     title: "Crossroads Coffee House",
@@ -211,6 +202,7 @@ const projects: Project[] = [
     tech: ["UI/UX", "Figma", "SDLC"],
     github: "https://github.com/christian-dela-cruz/Crossroads-Coffee-House",
     status: "completed",
+    screenshots: ["/crossroad1.png", "/crossroad2.png"],
   },
   {
     title: "TollGate Web App",
@@ -237,6 +229,7 @@ const projects: Project[] = [
     tech: ["Python", "Cryptography", "Algorithms"],
     github: "https://github.com/christian-dela-cruz/TriHex-Cipher",
     status: "completed",
+    screenshots: ["/trihex1.jpeg", "/trihex2.jpeg"],
   },
 ];
 
@@ -323,6 +316,34 @@ export default function HomePage() {
   const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
   const [projectPage, setProjectPage] = useState(0);
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof seminars)[number] | null>(null);
+  const [slideshowIdx, setSlideshowIdx] = useState(0);
+  const slideshowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startSlideshow = (screenshots: string[]) => {
+    setSlideshowIdx(0);
+    if (screenshots.length > 1) {
+      slideshowIntervalRef.current = setInterval(() => {
+        setSlideshowIdx((i) => (i + 1) % screenshots.length);
+      }, 1200);
+    }
+  };
+
+  const stopSlideshow = () => {
+    if (slideshowIntervalRef.current) {
+      clearInterval(slideshowIntervalRef.current);
+      slideshowIntervalRef.current = null;
+    }
+    setSlideshowIdx(0);
+  };
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (slideshowIntervalRef.current) {
+        clearInterval(slideshowIntervalRef.current);
+      }
+    };
+  }, []);
 
   const scrollCerts = (dir: "left" | "right") => {
     certScrollRef.current?.scrollBy({ left: dir === "left" ? -275 : 275, behavior: "smooth" });
@@ -846,6 +867,9 @@ export default function HomePage() {
         <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
           Currently enrolled. Gained strong fundamentals in cybersecurity, networking, software engineering, cloud infrastructure, and full-stack development. Active in hands-on projects including multi-hop mesh networking systems, mobile app development, and ethical hacking implementations.
         </p>
+        <p className="text-xs mt-3 font-medium" style={{ color: "var(--accent)" }}>
+          🏅 Dean&apos;s Lister: T1 &amp; T3 (AY 2022–2023), T1 (AY 2024–2025)
+        </p>
       </div>
     </div>
   </div>
@@ -1207,34 +1231,58 @@ export default function HomePage() {
                           transform: isHovered ? "translateY(-4px)" : "translateY(0)",
                           borderColor: isHovered ? "var(--accent)" : "var(--card-border)",
                         }}
-                        onMouseEnter={() => setHoveredProject(globalIdx)}
-                        onMouseLeave={() => setHoveredProject(null)}
+                        onMouseEnter={() => {
+                          setHoveredProject(globalIdx);
+                          if (project.screenshots && project.screenshots.length > 0) {
+                            startSlideshow(project.screenshots);
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredProject(null);
+                          stopSlideshow();
+                        }}
                       >
-                        {/* Screenshot placeholder */}
+                        {/* Screenshot area */}
                         <div
-                          className="h-36 relative flex items-center justify-center"
+                          className="h-52 relative flex items-center justify-center overflow-hidden"
                           style={{
                             background:
                               "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
                             borderBottom: "1px solid var(--card-border)",
                           }}
                         >
-                          <div className="text-center">
-                            <FaImage
-                              size={30}
-                              style={{
-                                color: "var(--muted)",
-                                margin: "0 auto 8px",
-                                opacity: 0.4,
-                              }}
-                            />
-                            <p
-                              className="text-xs font-medium"
-                              style={{ color: "var(--muted)", opacity: 0.5 }}
-                            >
-                              Project Screenshot
-                            </p>
-                          </div>
+                          {project.screenshots && project.screenshots.length > 0 ? (
+                            <>
+                              {project.screenshots.map((src, sIdx) => (
+                                <Image
+                                  key={src}
+                                  src={src}
+                                  alt={`${project.title} screenshot ${sIdx + 1}`}
+                                  fill
+                                  className="object-cover transition-opacity duration-500"
+                                  style={{ opacity: slideshowIdx === sIdx ? 1 : 0 }}
+                                  sizes="(max-width: 768px) 100vw, 50vw"
+                                />
+                              ))}
+                            </>
+                          ) : (
+                            <div className="text-center">
+                              <FaImage
+                                size={30}
+                                style={{
+                                  color: "var(--muted)",
+                                  margin: "0 auto 8px",
+                                  opacity: 0.4,
+                                }}
+                              />
+                              <p
+                                className="text-xs font-medium"
+                                style={{ color: "var(--muted)", opacity: 0.5 }}
+                              >
+                                Project Screenshot
+                              </p>
+                            </div>
+                          )}
                           {/* Status badge overlay */}
                           <span
                             className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
@@ -1250,6 +1298,30 @@ export default function HomePage() {
                             />
                             {status.label}
                           </span>
+                          {/* GitHub link overlay — visible on hover */}
+                          <a
+                            href={hasLink ? project.github : undefined}
+                            target={hasLink ? "_blank" : undefined}
+                            rel="noopener noreferrer"
+                            aria-disabled={!hasLink}
+                            onClick={(e) => { if (!hasLink) e.preventDefault(); }}
+                            className="absolute bottom-3 left-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                            style={{
+                              background: "rgba(0,0,0,0.65)",
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
+                              backdropFilter: "blur(4px)",
+                              cursor: hasLink ? "pointer" : "default",
+                              pointerEvents: isHovered ? "auto" : "none",
+                              opacity: isHovered ? 1 : 0,
+                              transform: isHovered ? "translateY(0)" : "translateY(6px)",
+                              transition: "opacity 0.2s ease, transform 0.2s ease",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <FaGithub size={12} />
+                            {hasLink ? "View on GitHub" : "GitHub (link pending)"}
+                          </a>
                         </div>
 
                         <div className="p-5 sm:p-6">
@@ -1282,7 +1354,7 @@ export default function HomePage() {
                           )}
 
                           {/* Tech tags */}
-                          <div className="flex flex-wrap gap-2 mb-4">
+                          <div className="flex flex-wrap gap-2">
                             {project.tech.map((t) => (
                               <span
                                 key={t}
@@ -1297,28 +1369,6 @@ export default function HomePage() {
                               </span>
                             ))}
                           </div>
-
-                          {/* GitHub link – visible on hover only */}
-                          <a
-                            href={hasLink ? project.github : undefined}
-                            target={hasLink ? "_blank" : undefined}
-                            rel="noopener noreferrer"
-                            aria-disabled={!hasLink}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold"
-                            style={{
-                              background: "rgba(255,255,255,0.05)",
-                              color: "var(--accent)",
-                              border: `1px solid ${accentBorder}`,
-                              cursor: hasLink ? "pointer" : "default",
-                              pointerEvents: hasLink ? "auto" : "none",
-                              opacity: isHovered ? 1 : 0,
-                              transform: isHovered ? "translateY(0)" : "translateY(4px)",
-                              transition: "opacity 0.2s ease, transform 0.2s ease",
-                            }}
-                          >
-                            <FaGithub size={13} />
-                            {hasLink ? "View on GitHub" : "GitHub (link pending)"}
-                          </a>
                         </div>
                       </article>
                     );
