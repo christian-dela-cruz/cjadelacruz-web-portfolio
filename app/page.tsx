@@ -145,7 +145,7 @@ const projects: Project[] = [
     tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking"],
     duration: "September 2025 – April 2026",
     github: "#",
-    status: "in-progress",
+    status: "completed",
   },
   {
     title: "HopFogMobile",
@@ -158,7 +158,7 @@ const projects: Project[] = [
     ],
     tech: ["Kotlin", "Mobile", "Android", "Networking"],
     github: "#",
-    status: "in-progress",
+    status: "completed",
   },
   {
     title: "EliteFitness Mobile App",
