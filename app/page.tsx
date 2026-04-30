@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -335,6 +335,15 @@ export default function HomePage() {
     }
     setSlideshowIdx(0);
   };
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (slideshowIntervalRef.current) {
+        clearInterval(slideshowIntervalRef.current);
+      }
+    };
+  }, []);
 
   const scrollCerts = (dir: "left" | "right") => {
     certScrollRef.current?.scrollBy({ left: dir === "left" ? -275 : 275, behavior: "smooth" });
@@ -1245,13 +1254,14 @@ export default function HomePage() {
                           {project.screenshots && project.screenshots.length > 0 ? (
                             <>
                               {project.screenshots.map((src, sIdx) => (
-                                /* eslint-disable-next-line @next/next/no-img-element */
-                                <img
+                                <Image
                                   key={src}
                                   src={src}
                                   alt={`${project.title} screenshot ${sIdx + 1}`}
-                                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                                  fill
+                                  className="object-cover transition-opacity duration-500"
                                   style={{ opacity: slideshowIdx === sIdx ? 1 : 0 }}
+                                  sizes="(max-width: 768px) 100vw, 50vw"
                                 />
                               ))}
                             </>
