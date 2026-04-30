@@ -151,7 +151,7 @@ const projects: Project[] = [
     status: "completed",
   },
   {
-    title: "EliteFitness Mobile App",
+    title: "EliteFitness Mobile Application",
     description:
       "A native Android fitness application built with Xamarin.Android (C#) helping users manage and track their fitness journey with real-time data sync.",
     bullets: [
@@ -205,7 +205,7 @@ const projects: Project[] = [
     screenshots: ["/crossroad1.png", "/crossroad2.png"],
   },
   {
-    title: "TollGate Web App",
+    title: "TollGate Web AppLication",
     description:
       "An IoT-based automated toll gate system with a web dashboard for real-time monitoring and manual control.",
     bullets: [
@@ -324,7 +324,7 @@ export default function HomePage() {
     if (screenshots.length > 1) {
       slideshowIntervalRef.current = setInterval(() => {
         setSlideshowIdx((i) => (i + 1) % screenshots.length);
-      }, 1200);
+      }, 2200);
     }
   };
 
@@ -1244,7 +1244,7 @@ export default function HomePage() {
                       >
                         {/* Screenshot area */}
                         <div
-                          className="h-72 relative flex items-center justify-center overflow-hidden"
+                          className="h-68 relative flex items-center justify-center overflow-hidden"
                           style={{
                             background:
                               "linear-gradient(135deg, #0d1625 0%, #0a1c30 100%)",
@@ -1260,7 +1260,7 @@ export default function HomePage() {
                                   alt={`${project.title} screenshot ${sIdx + 1}`}
                                   fill
                                   className="object-cover transition-opacity duration-500"
-                                  style={{ opacity: slideshowIdx === sIdx ? 1 : 0, objectPosition: "top" }}
+                                  style={{ opacity: slideshowIdx === sIdx ? 1 : 0, objectPosition: "fit" }}
                                   sizes="(max-width: 768px) 100vw, 50vw"
                                 />
                               ))}
