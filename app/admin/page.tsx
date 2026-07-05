@@ -42,7 +42,7 @@ const Dithering = typeof window !== "undefined" && detectWebGL()
   ? lazy(() => import("@paper-design/shaders-react").then((mod) => ({ default: mod.Dithering })))
   : () => <div className="absolute inset-0 bg-transparent" />;
 
-class ShaderErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
+class ShaderErrorBoundary extends Component<{ children: React.ReactNode; onError?: () => void }, { hasError: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { hasError: false };
@@ -54,6 +54,9 @@ class ShaderErrorBoundary extends Component<{ children: React.ReactNode }, { has
 
   componentDidCatch(error: any) {
     console.warn("Shader WebGL error caught:", error);
+    if (this.props.onError) {
+      this.props.onError();
+    }
   }
 
   render() {
@@ -971,7 +974,7 @@ export default function AdminPage() {
         >
           <div className="absolute inset-0 z-0 pointer-events-none opacity-30 dark:opacity-20 mix-blend-normal transition-opacity duration-500">
             {!shaderError && isWebGLSupported ? (
-              <ShaderErrorBoundary>
+              <ShaderErrorBoundary onError={() => setShaderError(true)}>
                 <Suspense fallback={<div className="absolute inset-0 bg-transparent" />}>
                   <Dithering
                     colorBack="#00000000" // Transparent
