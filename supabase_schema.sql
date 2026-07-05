@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS public.certifications (
   date TEXT NOT NULL,
   badge_url TEXT,
   credly_url TEXT,
+  sort_order INT DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -38,6 +39,7 @@ CREATE TABLE IF NOT EXISTS public.seminars (
   organizer TEXT NOT NULL,
   date TEXT NOT NULL,
   image_url TEXT,
+  sort_order INT DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

@@ -725,6 +725,7 @@ export default function PortfolioClient({
                   src={profile.profile_image_url}
                   alt={profile.name}
                   fill
+                  sizes="(max-width: 640px) 224px, (max-width: 1024px) 256px, 288px"
                   className="object-cover"
                   priority
                   unoptimized={profile.profile_image_url.startsWith("http")}

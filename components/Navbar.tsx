@@ -20,7 +20,12 @@ export default function Navbar({ logoImageUrl }: { logoImageUrl?: string }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
+    let savedTheme = "dark";
+    try {
+      savedTheme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      console.warn("Storage access blocked:", e);
+    }
     setTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
@@ -40,7 +45,11 @@ export default function Navbar({ logoImageUrl }: { logoImageUrl?: string }) {
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
+    try {
+      localStorage.setItem("theme", nextTheme);
+    } catch (e) {
+      console.warn("Storage access blocked:", e);
+    }
     document.documentElement.setAttribute("data-theme", nextTheme);
   };
 
