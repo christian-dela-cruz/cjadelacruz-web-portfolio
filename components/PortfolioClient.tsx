@@ -530,6 +530,100 @@ export default function PortfolioClient({
   const [hoveredEntry, setHoveredEntry] = useState<string | null>(null);
   const [projectPage, setProjectPage] = useState(0);
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof initialSeminars)[number] | null>(null);
+  const [selectedCert, setSelectedCert] = useState<(typeof initialCertifications)[number] | null>(null);
+  const [activeSeminarIndex, setActiveSeminarIndex] = useState(0);
+  const seminarSliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = seminarSliderRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      const children = el.children;
+      if (children.length === 0) return;
+      
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      const containerLeft = el.getBoundingClientRect().left;
+
+      for (let i = 0; i < children.length; i++) {
+        const childRect = children[i].getBoundingClientRect();
+        const distance = Math.abs(childRect.left - containerLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = i;
+        }
+      }
+      setActiveSeminarIndex(closestIndex);
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    const timer = setTimeout(handleScroll, 100);
+
+    return () => {
+      el.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
+  }, [seminars]);
+
+  const navigateSeminar = (direction: "prev" | "next") => {
+    const el = seminarSliderRef.current;
+    if (!el) return;
+    
+    const children = el.children;
+    if (children.length === 0) return;
+
+    let targetIndex = activeSeminarIndex;
+    if (direction === "prev") {
+      targetIndex = Math.max(0, activeSeminarIndex - 1);
+    } else {
+      targetIndex = Math.min(children.length - 1, activeSeminarIndex + 1);
+    }
+
+    const child = children[targetIndex] as HTMLElement;
+    if (child) {
+      el.scrollTo({
+        left: child.offsetLeft - el.offsetLeft,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const scrollToSeminarIndex = (index: number) => {
+    const el = seminarSliderRef.current;
+    if (!el) return;
+    const children = el.children;
+    const child = children[index] as HTMLElement;
+    if (child) {
+      el.scrollTo({
+        left: child.offsetLeft - el.offsetLeft,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const handleSeminarCardMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((centerY - y) / centerY) * 8; 
+    const rotateY = ((x - centerX) / centerX) * 8; 
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleSeminarCardMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const card = e.currentTarget;
+    card.style.transform = "rotateX(0deg) rotateY(0deg)";
+  };
+
   const [slideshowIdx, setSlideshowIdx] = useState(0);
   const slideshowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isHeroHovered, setIsHeroHovered] = useState(false);
@@ -1071,251 +1165,247 @@ export default function PortfolioClient({
                 </h3>
               </div>
 
-              {/* Horizontal scrollable slider with navigation */}
-              <div className="relative">
+              {/* Infinite marquee slider */}
+              <div className="relative infinite-slider-container">
                 {/* Gradient fade – left */}
                 <div
-                  className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 z-10"
+                  className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10"
                   style={{ background: "linear-gradient(to right, var(--background), transparent)" }}
                 />
                 {/* Gradient fade – right */}
                 <div
-                  className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 z-10"
+                  className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10"
                   style={{ background: "linear-gradient(to left, var(--background), transparent)" }}
                 />
-                {/* Left arrow */}
-                <button
-                  onClick={() => scrollCerts("left")}
-                  className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    color: "var(--accent)",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
-                  }}
-                >
-                  <FaChevronLeft size={12} />
-                </button>
-                {/* Right arrow */}
-                <button
-                  onClick={() => scrollCerts("right")}
-                  className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    color: "var(--accent)",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
-                  }}
-                >
-                  <FaChevronRight size={12} />
-                </button>
 
-                {/* Scrollable track */}
-                <div
-                  ref={certScrollRef}
-                  className="flex gap-5 overflow-x-auto pb-3 px-4 no-scrollbar"
-                  style={{ scrollSnapType: "x mandatory" }}
-                >
-                  {certifications.map((cert) => {
-                    const inner = (
-                      <>
-                        {/* Badge image or placeholder */}
+                {/* Scrolling track — cards duplicated for seamless loop */}
+                <div className="overflow-hidden py-6">
+                  <div className="infinite-slider-track gap-5">
+                    {/* First set */}
+                    {certifications.map((cert, i) => (
+                      <button
+                        key={`cert-a-${i}`}
+                        onClick={() => setSelectedCert(cert)}
+                        className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl cursor-pointer text-center"
+                        style={{
+                          width: 240,
+                          minWidth: 240,
+                          background: "rgba(255,255,255,0.02)",
+                          border: "1px solid var(--card-border)",
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                          marginRight: 20,
+                        }}
+                      >
+                        {/* Badge */}
                         <div
-                          className="w-32 h-32 rounded-2xl flex items-center justify-center mx-auto mb-5 flex-shrink-0 overflow-hidden"
+                          className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
                           style={{
-                            background: cert.badge ? "transparent" : "rgba(6,182,212,0.08)",
-                            border: cert.badge ? "none" : "2px dashed rgba(6,182,212,0.3)",
+                            background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
+                            border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
                           }}
                         >
                           {cert.badge ? (
                             <Image
                               src={cert.badge}
                               alt={`${cert.name} badge`}
-                              width={128}
-                              height={128}
+                              width={112}
+                              height={112}
                               className="object-contain"
                             />
                           ) : (
-                            <div className="text-center">
-                              <FaImage
-                                size={28}
-                                style={{ color: "var(--accent)", opacity: 0.5, margin: "0 auto 4px" }}
-                              />
-                              <p className="text-[9px]" style={{ color: "var(--accent)", opacity: 0.6 }}>
-                                Badge
-                              </p>
-                            </div>
+                            <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
                           )}
                         </div>
-
-                        <p
-                          className="text-sm font-semibold text-center mb-1.5 leading-snug"
-                          style={{ color: "var(--foreground)" }}
-                        >
+                        <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
                           {cert.name}
                         </p>
-                        <p
-                          className="text-xs text-center mb-1"
-                          style={{ color: "var(--muted)" }}
-                        >
+                        <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
                           {cert.issuer}
                         </p>
-                        <p
-                          className="text-xs text-center"
-                          style={{ color: "var(--accent)" }}
-                        >
+                        <p className="text-[11px]" style={{ color: "var(--accent)" }}>
                           {cert.date}
                         </p>
-                        {cert.credlyUrl && (
-                          <div className="flex justify-center mt-3">
-                          </div>
-                        )}
-                      </>
-                    );
-
-                    return cert.credlyUrl ? (
-                      <a
-                        key={cert.name}
-                        href={cert.credlyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-shrink-0 flex flex-col p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+                      </button>
+                    ))}
+                    {/* Second set (duplicate for infinite loop) */}
+                    {certifications.map((cert, i) => (
+                      <button
+                        key={`cert-b-${i}`}
+                        onClick={() => setSelectedCert(cert)}
+                        className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl cursor-pointer text-center"
                         style={{
-                          width: 255,
-                          scrollSnapAlign: "start",
-                          background: "rgba(255,255,255,0.02)",
-                          border: "1px solid var(--card-border)",
-                          textDecoration: "none",
-                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)";
-                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
-                          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(6,182,212,0.05)";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--card-border)";
-                          (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-                          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.02)";
-                        }}
-                      >
-                        {inner}
-                      </a>
-                    ) : (
-                      <div
-                        key={cert.name}
-                        className="flex-shrink-0 flex flex-col p-6 rounded-2xl"
-                        style={{
-                          width: 255,
-                          scrollSnapAlign: "start",
+                          width: 240,
+                          minWidth: 240,
                           background: "rgba(255,255,255,0.02)",
                           border: "1px solid var(--card-border)",
                           boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                          marginRight: 20,
                         }}
                       >
-                        {inner}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* ── Row 4: Seminars Attended ──────────────────────────────────── */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: accentBgMd }}
-                >
-                  <FaChalkboardTeacher size={20} style={{ color: "var(--accent)" }} />
-                </div>
-                <h3
-                  className="font-semibold text-lg"
-                  style={{ color: "var(--foreground)" }}
-                >
-                  Seminars Attended
-                </h3>
-              </div>
-
-              {/* Grid layout – no scroll needed */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {seminars.map((seminar) => (
-                    <button
-                      key={seminar.title}
-                      onClick={() => setSelectedSeminar(seminar)}
-                      className="flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1 text-left cursor-pointer overflow-hidden w-full"
-                      style={{
-                        background: "rgba(255,255,255,0.02)",
-                        border: "1px solid var(--card-border)",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--accent)";
-                        (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 28px rgba(6,182,212,0.18)";
-                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(6,182,212,0.05)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--card-border)";
-                        (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.02)";
-                      }}
-                    >
-                      {/* Certificate thumbnail */}
-                      <div className="w-full h-48 overflow-hidden relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={seminar.image}
-                          alt={seminar.title}
-                          className="w-full h-full object-cover"
-                        />
+                        {/* Badge */}
                         <div
-                          className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200"
-                          style={{ background: "rgba(6,182,212,0.15)" }}
+                          className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
+                          style={{
+                            background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
+                            border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
+                          }}
                         >
-                          <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "var(--accent)", color: "#fff" }}>
-                            Click to expand
-                          </span>
+                          {cert.badge ? (
+                            <Image
+                              src={cert.badge}
+                              alt={`${cert.name} badge`}
+                              width={112}
+                              height={112}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
+                          )}
                         </div>
-                      </div>
-                      {/* Info */}
-                      <div className="p-5 flex flex-col gap-1.5">
-                        <p
-                          className="text-sm font-semibold leading-snug"
-                          style={{ color: "var(--foreground)" }}
-                        >
-                          {seminar.title}
+                        <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
+                          {cert.name}
                         </p>
-                        <p
-                          className="text-xs"
-                          style={{ color: "var(--muted)" }}
-                        >
-                          {seminar.organizer}
+                        <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
+                          {cert.issuer}
                         </p>
-                        <p
-                          className="text-xs"
-                          style={{ color: "var(--accent)" }}
-                        >
-                          {seminar.date}
+                        <p className="text-[11px]" style={{ color: "var(--accent)" }}>
+                          {cert.date}
                         </p>
-                      </div>
-                    </button>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>            {/* ── Row 4: Seminars Attended ──────────────────────────────────── */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: accentBgMd }}
+                  >
+                    <FaChalkboardTeacher size={20} style={{ color: "var(--accent)" }} />
+                  </div>
+                  <h3
+                    className="font-semibold text-lg"
+                    style={{ color: "var(--foreground)" }}
+                  >
+                    Seminars Attended
+                  </h3>
+                </div>
+
+                {/* Navigation Buttons */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => navigateSeminar("prev")}
+                    disabled={activeSeminarIndex === 0}
+                    className="seminar-nav-button w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer"
+                    aria-label="Previous Seminar"
+                  >
+                    <FaChevronLeft size={12} />
+                  </button>
+                  <button
+                    onClick={() => navigateSeminar("next")}
+                    disabled={activeSeminarIndex === seminars.length - 1}
+                    className="seminar-nav-button w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer"
+                    aria-label="Next Seminar"
+                  >
+                    <FaChevronRight size={12} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Interactive Carousel */}
+              <div className="relative seminar-slider-container">
+                {/* Gradient fade – left */}
+                <div
+                  className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10"
+                  style={{ background: "linear-gradient(to right, var(--background), transparent)" }}
+                />
+                {/* Gradient fade – right */}
+                <div
+                  className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10"
+                  style={{ background: "linear-gradient(to left, var(--background), transparent)" }}
+                />
+
+                {/* Scrolling track */}
+                <div 
+                  ref={seminarSliderRef}
+                  className="seminar-slider-track no-scrollbar overflow-x-auto scroll-smooth snap-x snap-mandatory py-4"
+                >
+                  {seminars.map((seminar, i) => (
+                    <div
+                      key={`seminar-wrap-${i}`}
+                      className="seminar-card-wrapper snap-center w-full min-w-full md:w-1/2 md:min-w-[50%] lg:w-1/3 lg:min-w-[33.333%]"
+                    >
+                      <button
+                        onClick={() => setSelectedSeminar(seminar)}
+                        onMouseMove={handleSeminarCardMouseMove}
+                        onMouseLeave={handleSeminarCardMouseLeave}
+                        className="seminar-card-tilt cursor-pointer relative w-full text-left"
+                      >
+                        {/* Spotlight Glow Overlay */}
+                        <div className="seminar-card-glow" />
+
+                        {/* Certificate thumbnail container */}
+                        <div className="seminar-image-container w-full h-48 overflow-hidden relative z-10">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={seminar.image}
+                            alt={seminar.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div
+                            className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200"
+                            style={{ background: "rgba(255, 127, 80, 0.15)" }}
+                          >
+                            <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "var(--accent)", color: "#fff" }}>
+                              Click to expand
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Info */}
+                        <div className="p-5 flex flex-col gap-1.5 relative z-10">
+                          <p
+                            className="text-sm font-semibold leading-snug"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            {seminar.title}
+                          </p>
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            {seminar.organizer}
+                          </p>
+                          <p
+                            className="text-xs mt-auto font-medium"
+                            style={{ color: "var(--accent)" }}
+                          >
+                            {seminar.date}
+                          </p>
+                        </div>
+                      </button>
+                    </div>
                   ))}
                 </div>
+
+                {/* Dot Indicators */}
+                <div className="flex justify-center gap-2 mt-4">
+                  {seminars.map((_, idx) => (
+                    <button
+                      key={`seminar-dot-${idx}`}
+                      onClick={() => scrollToSeminarIndex(idx)}
+                      className={`seminar-dot cursor-pointer ${activeSeminarIndex === idx ? 'active' : ''}`}
+                      aria-label={`Go to seminar slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
 
+            {/* End of section */}
           </div>
         </div>
       </section>
