@@ -45,7 +45,9 @@ Featuring an immersive WebGL-powered 3D background shader and a fully-integrated
 │   ├── supabase.ts           # Supabase client instantiation with fallback helpers
 │   └── webgl.ts              # WebGL support checking & custom React hook
 ├── public/                   # Static assets (images, logos, certifications, resume)
-├── supabase_schema.sql       # Full database migration query (Tables, RLS Policies, Seed Mock Data)
+├── docs/                     # Setup documentation, instructions, and database schemas
+│   ├── setup-instructions.pdf
+│   └── supabase_schema.sql
 └── package.json              # Project dependencies & build/run configuration
 ```
 
@@ -64,7 +66,7 @@ Make sure you have the following installed on your machine:
 
 1. Go to the [Supabase Dashboard](https://supabase.com/) and create a new project.
 2. Navigate to the **SQL Editor** in the left sidebar.
-3. Open the local file [supabase_schema.sql](file:///c:/Users/Christian/Desktop/web-portfolio/supabase_schema.sql) in your workspace, copy its contents, paste them into the SQL Editor, and click **Run**.
+3. Open the local file [supabase_schema.sql](file:///c:/Users/Christian/Desktop/web-portfolio/docs/supabase_schema.sql) in your workspace, copy its contents, paste them into the SQL Editor, and click **Run**.
 4. This script automatically:
    - Creates all tables (`profile`, `skills`, `projects`, `certifications`, `seminars`, `experience`, `education`).
    - Enables Row Level Security (RLS) on all tables.
