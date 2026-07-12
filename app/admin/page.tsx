@@ -145,6 +145,7 @@ export default function AdminPage() {
   const [profDesc, setProfDesc] = useState("");
   const [profImageUrl, setProfImageUrl] = useState("");
   const [profResumeUrl, setProfResumeUrl] = useState("");
+  const [profCvUrl, setProfCvUrl] = useState("");
   const [profLogoImageUrl, setProfLogoImageUrl] = useState("");
   const [isSavingProfile, setIsSavingProfile] = useState(false);
 
@@ -201,6 +202,7 @@ export default function AdminPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const profileImageInputRef = useRef<HTMLInputElement>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null);
+  const cvInputRef = useRef<HTMLInputElement>(null);
   const logoImageInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -286,6 +288,7 @@ export default function AdminPage() {
         setProfDesc(profRes.data.description || "");
         setProfImageUrl(profRes.data.profile_image_url || "");
         setProfResumeUrl(profRes.data.resume_url || "");
+        setProfCvUrl(profRes.data.cv_url || "");
         setProfLogoImageUrl(profRes.data.logo_image_url || "");
       }
     } catch (err) {
@@ -559,6 +562,7 @@ export default function AdminPage() {
         description: profDesc,
         profile_image_url: profImageUrl,
         resume_url: profResumeUrl,
+        cv_url: profCvUrl,
         logo_image_url: profLogoImageUrl,
         updated_at: new Date().toISOString(),
       });
@@ -1275,6 +1279,21 @@ export default function AdminPage() {
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-sm font-medium text-[var(--foreground)]/80 block">CV Document (PDF)</label>
+                      <div className="flex gap-2">
+                        <input type="text" placeholder="Paste PDF link or upload a file" value={profCvUrl}
+                          onChange={(e) => setProfCvUrl(e.target.value)}
+                          className="flex-1 bg-[var(--background)] border border-[var(--card-border)] rounded-xl py-2 px-3 text-[var(--foreground)] focus:outline-none focus:border-[#FF7F50] text-sm" />
+                        <button type="button" onClick={() => cvInputRef.current?.click()} disabled={isUploading}
+                          className="bg-[var(--card-bg)] hover:bg-[var(--card-border)] border border-[var(--card-border)] px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 cursor-pointer disabled:opacity-50 text-[var(--foreground)]">
+                          {isUploading ? <FaSpinner className="animate-spin" /> : <FaUpload />} Upload
+                        </button>
+                      </div>
+                      <input type="file" ref={cvInputRef} className="hidden" accept="application/pdf"
+                        onChange={(e) => handleImageUpload(e, setProfCvUrl)} />
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="text-sm font-medium text-[var(--foreground)]/80 block">Navbar Logo / Icon Image</label>
                       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                         <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-[var(--card-border)] bg-[var(--background)] flex-shrink-0 flex items-center justify-center p-2">
@@ -1305,10 +1324,11 @@ export default function AdminPage() {
                         <FaInfoCircle /> First-Time Setup: Database Action Required
                       </p>
                       <p>
-                        If your Supabase database was created before this update, you must add the new <code>logo_image_url</code> column to your <code>profile</code> table. Run this command in your Supabase SQL Editor:
+                        If your Supabase database was created before this update, you must add the new <code>logo_image_url</code> and <code>cv_url</code> columns to your <code>profile</code> table. Run these commands in your Supabase SQL Editor:
                       </p>
                       <pre className="bg-black/40 p-2 rounded-lg font-mono select-all overflow-x-auto text-[10px] text-left">
-                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS logo_image_url TEXT DEFAULT &apos;/favicon.png&apos;;
+                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS logo_image_url TEXT DEFAULT &apos;/favicon.png&apos;;{"\n"}
+                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS cv_url TEXT DEFAULT &apos;/ChristianDelaCruz_CV.pdf&apos;;
                       </pre>
                     </div>
 

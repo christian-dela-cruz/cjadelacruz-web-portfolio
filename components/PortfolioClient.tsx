@@ -195,7 +195,7 @@ export default function PortfolioClient({
   }, []);
 
   const certScrollRef = useRef<HTMLDivElement>(null);
-  
+
   // Dynamic State variables initialized with server-fetched database data or local seed fallbacks
   const [skills, setSkills] = useState<Record<string, string[]>>(() => {
     if (databaseSkills && databaseSkills.length > 0) {
@@ -286,7 +286,8 @@ export default function PortfolioClient({
         title: databaseProfile.title || initialProfile.title,
         description: databaseProfile.description || initialProfile.description,
         profile_image_url: databaseProfile.profile_image_url || initialProfile.profile_image_url,
-        resume_url: databaseProfile.resume_url || initialProfile.resume_url
+        resume_url: databaseProfile.resume_url || initialProfile.resume_url,
+        cv_url: databaseProfile.cv_url || initialProfile.cv_url
       };
     }
     return initialProfile;
@@ -307,7 +308,7 @@ export default function PortfolioClient({
     const handleScroll = () => {
       const children = el.children;
       if (children.length === 0) return;
-      
+
       let closestIndex = 0;
       let minDistance = Infinity;
       const containerLeft = el.getBoundingClientRect().left;
@@ -335,7 +336,7 @@ export default function PortfolioClient({
   const navigateSeminar = (direction: "prev" | "next") => {
     const el = seminarSliderRef.current;
     if (!el) return;
-    
+
     const children = el.children;
     if (children.length === 0) return;
 
@@ -373,14 +374,14 @@ export default function PortfolioClient({
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     card.style.setProperty("--mouse-x", `${x}px`);
     card.style.setProperty("--mouse-y", `${y}px`);
 
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((centerY - y) / centerY) * 8; 
-    const rotateY = ((x - centerX) / centerX) * 8; 
+    const rotateX = ((centerY - y) / centerY) * 8;
+    const rotateY = ((x - centerX) / centerX) * 8;
 
     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   };
@@ -516,7 +517,7 @@ export default function PortfolioClient({
                     border: "1px solid var(--card-border)",
                   }}
                 >
-                    <FaEnvelope size={13} />
+                  <FaEnvelope size={13} />
                   Contact Me
                 </a>
 
@@ -533,6 +534,21 @@ export default function PortfolioClient({
                 >
                   <FaDownload size={13} />
                   View Resume
+                </a>
+
+                <a
+                  href={profile.cv_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "var(--card-bg)",
+                    color: "var(--foreground)",
+                    border: "1px solid var(--card-border)",
+                  }}
+                >
+                  <FaDownload size={13} />
+                  View CV
                 </a>
               </div>
 
@@ -808,110 +824,110 @@ export default function PortfolioClient({
               </div>
 
               {/* Education */}
-<div>
-  <div className="flex items-center gap-3 mb-6">
-    <div
-      className="w-10 h-10 rounded-xl flex items-center justify-center"
-      style={{ background: accentBgMd }}
-    >
-      <FaGraduationCap size={20} style={{ color: "var(--accent)" }} />
-    </div>
-    <h3
-      className="font-semibold text-lg"
-      style={{ color: "var(--foreground)" }}
-    >
-      Education
-    </h3>
-  </div>
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: accentBgMd }}
+                  >
+                    <FaGraduationCap size={20} style={{ color: "var(--accent)" }} />
+                  </div>
+                  <h3
+                    className="font-semibold text-lg"
+                    style={{ color: "var(--foreground)" }}
+                  >
+                    Education
+                  </h3>
+                </div>
 
-  {/* Timeline */}
-  <div className="relative pl-9">
-    {/* Vertical line */}
-    <div
-      className="absolute left-[13px] top-1 bottom-1 w-px"
-      style={{ background: accentBorder }}
-    />
+                {/* Timeline */}
+                <div className="relative pl-9">
+                  {/* Vertical line */}
+                  <div
+                    className="absolute left-[13px] top-1 bottom-1 w-px"
+                    style={{ background: accentBorder }}
+                  />
 
-    {education.map((edu, index) => (
-      <div
-        key={edu.id || index}
-        className={`relative ${index < education.length - 1 ? "mb-5" : ""}`}
-        onMouseEnter={() => setHoveredEntry(`edu-${index}`)}
-        onMouseLeave={() => setHoveredEntry(null)}
-      >
-        {/* Dot */}
-        <div
-          className="absolute -left-7 top-3 w-3 h-3 rounded-full transition-all duration-300"
-          style={{
-            background: "var(--accent)",
-            boxShadow: hoveredEntry === `edu-${index}`
-              ? `0 0 0 5px ${accentBg}, 0 0 12px rgba(6,182,212,0.5)`
-              : `0 0 0 3px ${accentBg}`,
-            transform: hoveredEntry === `edu-${index}` ? "scale(1.35)" : "scale(1)",
-          }}
-        />
-        <div
-          className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
-          style={{
-            background: "rgba(6,182,212,0.04)",
-            border: `1px solid ${accentBorder}`,
-            boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
-            (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
-            (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
-          }}
-        >
-          <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-            <div className="flex-1">
-              <h4
-                className="font-semibold text-sm mb-1"
-                style={{ color: "var(--foreground)" }}
-              >
-                {edu.degree}
-              </h4>
-              {edu.specialization && (
-                <p className="text-xs" style={{ color: "var(--foreground)" }}>
-                  {edu.specialization}
-                </p>
-              )}
-            </div>
-            <span
-              className="text-xs px-3 py-1 rounded-full whitespace-nowrap"
-              style={{
-                background: accentBg,
-                color: "var(--accent)",
-                border: `1px solid ${accentBorder}`,
-              }}
-            >
-              {edu.duration}
-            </span>
-          </div>
+                  {education.map((edu, index) => (
+                    <div
+                      key={edu.id || index}
+                      className={`relative ${index < education.length - 1 ? "mb-5" : ""}`}
+                      onMouseEnter={() => setHoveredEntry(`edu-${index}`)}
+                      onMouseLeave={() => setHoveredEntry(null)}
+                    >
+                      {/* Dot */}
+                      <div
+                        className="absolute -left-7 top-3 w-3 h-3 rounded-full transition-all duration-300"
+                        style={{
+                          background: "var(--accent)",
+                          boxShadow: hoveredEntry === `edu-${index}`
+                            ? `0 0 0 5px ${accentBg}, 0 0 12px rgba(6,182,212,0.5)`
+                            : `0 0 0 3px ${accentBg}`,
+                          transform: hoveredEntry === `edu-${index}` ? "scale(1.35)" : "scale(1)",
+                        }}
+                      />
+                      <div
+                        className="rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
+                        style={{
+                          background: "rgba(6,182,212,0.04)",
+                          border: `1px solid ${accentBorder}`,
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)";
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(6,182,212,0.15)";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLDivElement).style.borderColor = accentBorder;
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)";
+                        }}
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+                          <div className="flex-1">
+                            <h4
+                              className="font-semibold text-sm mb-1"
+                              style={{ color: "var(--foreground)" }}
+                            >
+                              {edu.degree}
+                            </h4>
+                            {edu.specialization && (
+                              <p className="text-xs" style={{ color: "var(--foreground)" }}>
+                                {edu.specialization}
+                              </p>
+                            )}
+                          </div>
+                          <span
+                            className="text-xs px-3 py-1 rounded-full whitespace-nowrap"
+                            style={{
+                              background: accentBg,
+                              color: "var(--accent)",
+                              border: `1px solid ${accentBorder}`,
+                            }}
+                          >
+                            {edu.duration}
+                          </span>
+                        </div>
 
-          <p className="text-sm mb-3" style={{ color: "var(--accent)" }}>
-            {edu.school}
-          </p>
+                        <p className="text-sm mb-3" style={{ color: "var(--accent)" }}>
+                          {edu.school}
+                        </p>
 
-          <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-            {edu.description}
-          </p>
-          {edu.honors && (
-            <p className="text-xs mt-3 font-medium" style={{ color: "var(--accent)" }}>
-              {edu.honors}
-            </p>
-          )}
-        </div>
-      </div>
-    ))}
-    {education.length === 0 && (
-      <div className="text-[var(--muted)] text-sm italic py-4">No education entries found.</div>
-    )}
-  </div>
-</div>
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+                          {edu.description}
+                        </p>
+                        {edu.honors && (
+                          <p className="text-xs mt-3 font-medium" style={{ color: "var(--accent)" }}>
+                            {edu.honors}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {education.length === 0 && (
+                    <div className="text-[var(--muted)] text-sm italic py-4">No education entries found.</div>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* ── Row 3: Certifications ────────────────────────────────────── */}
@@ -948,97 +964,109 @@ export default function PortfolioClient({
                 <div className="overflow-hidden py-6">
                   <div className="infinite-slider-track gap-5">
                     {/* First set */}
-                    {certifications.map((cert, i) => (
-                      <button
-                        key={`cert-a-${i}`}
-                        onClick={() => setSelectedCert(cert)}
-                        className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl cursor-pointer text-center"
-                        style={{
-                          width: 240,
-                          minWidth: 240,
-                          background: "rgba(255,255,255,0.02)",
-                          border: "1px solid var(--card-border)",
-                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                          marginRight: 20,
-                        }}
-                      >
-                        {/* Badge */}
-                        <div
-                          className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
+                    {certifications.map((cert, i) => {
+                      const CardComponent = cert.credlyUrl ? "a" : "div";
+                      return (
+                        <CardComponent
+                          key={`cert-a-${i}`}
+                          href={cert.credlyUrl || undefined}
+                          target={cert.credlyUrl ? "_blank" : undefined}
+                          rel={cert.credlyUrl ? "noopener noreferrer" : undefined}
+                          className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl text-center"
                           style={{
-                            background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
-                            border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
+                            width: 240,
+                            minWidth: 240,
+                            background: "rgba(255,255,255,0.02)",
+                            border: "1px solid var(--card-border)",
+                            boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                            marginRight: 20,
+                            cursor: cert.credlyUrl ? "pointer" : "default",
                           }}
                         >
-                          {cert.badge ? (
-                            <Image
-                              src={cert.badge}
-                              alt={`${cert.name} badge`}
-                              width={112}
-                              height={112}
-                              className="object-contain"
-                            />
-                          ) : (
-                            <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
-                          )}
-                        </div>
-                        <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
-                          {cert.name}
-                        </p>
-                        <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
-                          {cert.issuer}
-                        </p>
-                        <p className="text-[11px]" style={{ color: "var(--accent)" }}>
-                          {cert.date}
-                        </p>
-                      </button>
-                    ))}
+                          {/* Badge */}
+                          <div
+                            className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
+                            style={{
+                              background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
+                              border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
+                            }}
+                          >
+                            {cert.badge ? (
+                              <Image
+                                src={cert.badge}
+                                alt={`${cert.name} badge`}
+                                width={112}
+                                height={112}
+                                className="object-contain"
+                              />
+                            ) : (
+                              <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
+                            )}
+                          </div>
+                          <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
+                            {cert.name}
+                          </p>
+                          <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
+                            {cert.issuer}
+                          </p>
+                          <p className="text-[11px]" style={{ color: "var(--accent)" }}>
+                            {cert.date}
+                          </p>
+                        </CardComponent>
+                      );
+                    })}
                     {/* Second set (duplicate for infinite loop) */}
-                    {certifications.map((cert, i) => (
-                      <button
-                        key={`cert-b-${i}`}
-                        onClick={() => setSelectedCert(cert)}
-                        className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl cursor-pointer text-center"
-                        style={{
-                          width: 240,
-                          minWidth: 240,
-                          background: "rgba(255,255,255,0.02)",
-                          border: "1px solid var(--card-border)",
-                          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                          marginRight: 20,
-                        }}
-                      >
-                        {/* Badge */}
-                        <div
-                          className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
+                    {certifications.map((cert, i) => {
+                      const CardComponent = cert.credlyUrl ? "a" : "div";
+                      return (
+                        <CardComponent
+                          key={`cert-b-${i}`}
+                          href={cert.credlyUrl || undefined}
+                          target={cert.credlyUrl ? "_blank" : undefined}
+                          rel={cert.credlyUrl ? "noopener noreferrer" : undefined}
+                          className="cert-card flex-shrink-0 flex flex-col items-center p-6 rounded-2xl text-center"
                           style={{
-                            background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
-                            border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
+                            width: 240,
+                            minWidth: 240,
+                            background: "rgba(255,255,255,0.02)",
+                            border: "1px solid var(--card-border)",
+                            boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+                            marginRight: 20,
+                            cursor: cert.credlyUrl ? "pointer" : "default",
                           }}
                         >
-                          {cert.badge ? (
-                            <Image
-                              src={cert.badge}
-                              alt={`${cert.name} badge`}
-                              width={112}
-                              height={112}
-                              className="object-contain"
-                            />
-                          ) : (
-                            <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
-                          )}
-                        </div>
-                        <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
-                          {cert.name}
-                        </p>
-                        <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
-                          {cert.issuer}
-                        </p>
-                        <p className="text-[11px]" style={{ color: "var(--accent)" }}>
-                          {cert.date}
-                        </p>
-                      </button>
-                    ))}
+                          {/* Badge */}
+                          <div
+                            className="w-28 h-28 rounded-2xl flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden"
+                            style={{
+                              background: cert.badge ? "transparent" : "rgba(255,127,80,0.08)",
+                              border: cert.badge ? "none" : "2px dashed rgba(255,127,80,0.3)",
+                            }}
+                          >
+                            {cert.badge ? (
+                              <Image
+                                src={cert.badge}
+                                alt={`${cert.name} badge`}
+                                width={112}
+                                height={112}
+                                className="object-contain"
+                              />
+                            ) : (
+                              <FaImage size={24} style={{ color: "var(--accent)", opacity: 0.4 }} />
+                            )}
+                          </div>
+                          <p className="text-sm font-semibold leading-snug mb-1" style={{ color: "var(--foreground)" }}>
+                            {cert.name}
+                          </p>
+                          <p className="text-xs mb-0.5" style={{ color: "var(--muted)" }}>
+                            {cert.issuer}
+                          </p>
+                          <p className="text-[11px]" style={{ color: "var(--accent)" }}>
+                            {cert.date}
+                          </p>
+                        </CardComponent>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -1056,7 +1084,7 @@ export default function PortfolioClient({
                     className="font-semibold text-lg"
                     style={{ color: "var(--foreground)" }}
                   >
-                    Seminars Attended
+                    Seminars & Affiliations
                   </h3>
                 </div>
 
@@ -1095,7 +1123,7 @@ export default function PortfolioClient({
                 />
 
                 {/* Scrolling track */}
-                <div 
+                <div
                   ref={seminarSliderRef}
                   className="seminar-slider-track no-scrollbar overflow-x-auto scroll-smooth snap-x snap-mandatory py-4"
                 >
@@ -1466,7 +1494,7 @@ export default function PortfolioClient({
 
       {/* ── CTA SECTION ────────────────────────────────────────────────────── */}
       <section className="py-12 w-full flex justify-center items-center px-6 md:px-8 relative z-10 max-w-6xl mx-auto">
-        <div 
+        <div
           className="w-full relative"
           onMouseEnter={() => setIsCTAHovered(true)}
           onMouseLeave={() => setIsCTAHovered(false)}
@@ -1508,15 +1536,15 @@ export default function PortfolioClient({
                 Ready to elevate <br />
                 <span className="text-[var(--muted)]">your next project?</span>
               </h2>
-              
+
               {/* Description */}
               <p className="text-[var(--muted)] text-sm sm:text-base max-w-xl mb-8 leading-relaxed font-medium">
-                Looking for a skilled IT & Cybersecurity Specialist or a Full-Stack Developer? 
+                Looking for a skilled IT & Cybersecurity Specialist or a Full-Stack Developer?
                 Let's discuss how we can build secure, reliable, and premium systems together.
               </p>
 
               {/* Button */}
-              <button 
+              <button
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });

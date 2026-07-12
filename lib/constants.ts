@@ -50,6 +50,7 @@ export interface Profile {
   description: string;
   profile_image_url: string;
   resume_url: string;
+  cv_url: string;
   logo_image_url: string;
 }
 
@@ -58,7 +59,8 @@ export const initialProfile: Profile = {
   title: "Information Technology & Cybersecurity Specialist",
   description: "Full-stack developer with expertise in system development, networking, and cloud infrastructure. Passionate about building secure, scalable, and user-centric solutions.",
   profile_image_url: "https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/Hero%20Assets/683780893_1640906230542278_3183331104777219875_n.jpg",
-  resume_url: "/resume.pdf",
+  resume_url: "https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF's/ChristianDelaCruz_Resume.pdf",
+  cv_url: "https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF's/ChristianDelaCruz_CV.pdf",
   logo_image_url: "https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/Logo/Gemini_Generated_Image_3rzmmw3rzmmw3rzm%20-%20Edited.png"
 };
 

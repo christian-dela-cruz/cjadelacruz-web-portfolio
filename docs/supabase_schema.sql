@@ -102,7 +102,8 @@ CREATE TABLE IF NOT EXISTS public.profile (
   title TEXT NOT NULL DEFAULT 'Information Technology & Cybersecurity Specialist',
   description TEXT NOT NULL DEFAULT 'Full-stack developer with expertise in mobile app development, networking, and cloud infrastructure. Passionate about building secure, scalable, and user-centric solutions.',
   profile_image_url TEXT DEFAULT '/Formal_Picture.jpg',
-  resume_url TEXT DEFAULT '/resume.pdf',
+  resume_url TEXT DEFAULT 'https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF''s/ChristianDelaCruz_Resume.pdf',
+  cv_url TEXT DEFAULT 'https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF''s/ChristianDelaCruz_CV.pdf',
   logo_image_url TEXT DEFAULT '/favicon.png',
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -115,14 +116,15 @@ CREATE POLICY "Allow public read access on profile" ON public.profile FOR SELECT
 CREATE POLICY "Allow auth write access on profile" ON public.profile FOR ALL TO authenticated USING (true);
 
 -- Insert original mock profile data
-INSERT INTO public.profile (id, name, title, description, profile_image_url, resume_url, logo_image_url)
+INSERT INTO public.profile (id, name, title, description, profile_image_url, resume_url, cv_url, logo_image_url)
 VALUES (
   '00000000-0000-0000-0000-000000000000',
   'Christian Dela Cruz',
   'Information Technology & Cybersecurity Specialist',
   'Full-stack developer with expertise in mobile app development, networking, and cloud infrastructure. Passionate about building secure, scalable, and user-centric solutions.',
   '/Formal_Picture.jpg',
-  '/resume.pdf',
+  'https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF''s/ChristianDelaCruz_Resume.pdf',
+  'https://fxjenzzffykyccctnmkk.supabase.co/storage/v1/object/public/portfolio-assets/PDF''s/ChristianDelaCruz_CV.pdf',
   '/favicon.png'
 )
 ON CONFLICT (id) DO NOTHING;
