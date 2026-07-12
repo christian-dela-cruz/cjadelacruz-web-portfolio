@@ -30,6 +30,16 @@ import { HiChip, HiCalendar } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
 import { detectWebGL } from "@/lib/webgl";
 import { ShaderFallback } from "@/components/ShaderFallback";
+import {
+  initialProfile,
+  initialSkills,
+  initialProjects,
+  initialCertifications,
+  initialSeminars,
+  initialExperience,
+  initialEducation,
+  type Project
+} from "@/lib/constants";
 
 const Dithering = typeof window !== "undefined" && detectWebGL()
   ? lazy(() => import("@paper-design/shaders-react").then((mod) => ({ default: mod.Dithering })))
@@ -85,187 +95,6 @@ const socialLinks = [
   },
 ];
 
-const initialSkills: Record<string, string[]> = {
-  Programming: ["Python", "C#", "Kotlin", "HTML", "TypeScript", "ASP.NET MVC"],
-  Networking: [
-    "Routing & Switching",
-    "Network Infrastructure",
-    "IEEE 802.15.4",
-  ],
-  "Systems & Cloud": [
-    "Systems Administration",
-    "Oracle VirtualBox",
-    "Google Cloud Platform",
-    "Windows Server",
-    "Red Hat Interprise Linux",
-  ],
-  Security: ["Kali Linux", "Security Fundamentals", "Ethical Hacking"],
-  Databases: ["MySQL", "Oracle"],
-  "Tools & Platforms": [
-    "Cisco Packet Tracer",
-    "Visual Studio Code",
-    "Visual Studio",
-    "Arduino IDE",
-    "Figma",
-    "GitHub",
-    "Canva",
-    "Next.js",
-    "XAMPP",
-  ],
-};
-
-const initialCertifications = [
-  {
-    name: "CompTIA Tech+",
-    issuer: "CompTIA",
-    date: "December 2025",
-    badge: "/comptia.png",
-    credlyUrl:
-      "https://www.credly.com/badges/1577cccf-5f34-46bd-8d09-b7e837a28d03/public_url",
-  },
-  {
-    name: "CCNA: Switching, Routing, and Wireless Essentials",
-    issuer: "Cisco Networking Academy",
-    date: "March 2025",
-    badge: "/ccna.png",
-    credlyUrl:
-      "https://www.credly.com/badges/b78ed2f8-74f1-4fbc-8cb2-a7f622e80ea6/public_url",
-  },
-  {
-    name: "Ethical Hacker",
-    issuer: "Cisco Networking Academy",
-    date: "March 2025",
-    badge: "/ethicalhacker.png",
-    credlyUrl:
-      "https://www.credly.com/badges/7781dbd5-da20-4852-ab68-84dda25f6895/public_url",
-  },
-  {
-    name: "Google Cloud Computing Foundations",
-    issuer: "Google Cloud",
-    date: "March 2025",
-    badge: "/cgc.png",
-    credlyUrl:
-      "https://www.credly.com/badges/cffe1fbf-7b99-4b79-a873-03031e7fd62d/public_url",
-  },
-  {
-    name: "TOEIC",
-    issuer: "ETS",
-    date: "L&R: 940/990 | S: 160 | W: 190",
-    badge: "/toeic.jpeg",
-    credlyUrl: null,
-  },
-];
-
-interface Project {
-  title: string;
-  description: string;
-  bullets: string[];
-  tech: string[];
-  duration?: string;
-  github: string; // TODO: Replace placeholder "#" with actual GitHub repository URL
-  status: "completed" | "in-progress" | "planned";
-  screenshots?: string[];
-}
-
-const initialProjects: Project[] = [
-  {
-    title: "HOPFOG: Multi-Hop Messaging and Communication Application (Mobile)",
-    description:
-      "A community-based communication solution designed for low-connectivity or disaster-prone environments. Leverages fog computing concepts and a multi-hop mesh architecture.",
-    bullets: [
-      "Multi-hop communication system utilizing IEEE 802.15.4 standard",
-      "Implemented fog computing concepts for localized data processing",
-      "Community-based solution for low-connectivity or disaster-prone environments",
-    ],
-    tech: ["IEEE 802.15.4", "Fog Computing", "Mobile", "Networking", "Kotlin", "Android"],
-    duration: "September 2025 – April 2026",
-    github: "https://github.com/christian-dela-cruz/HopFogMobile.git",
-    status: "completed",
-    screenshots: ["/projects/hopfog1.png", "/projects/hopfog2.png"],
-  },
-  {
-    title: "EliteFitness Mobile Application",
-    description:
-      "A native Android fitness application built with Xamarin.Android (C#) helping users manage and track their fitness journey with real-time data sync.",
-    bullets: [
-      "Native Android application using Xamarin.Android (C#)",
-      "Firebase integration for real-time data storage and sync",
-      "User profiles, workout logs, and progress metrics tracking",
-    ],
-    tech: ["Xamarin.Android", "C#", "Firebase", "Android"],
-    github: "#",
-    status: "completed",
-  },
-  {
-    title: "MaluPET",
-    description:
-      "Your Pet's Best Friend — A native Android app for managing your pets and scheduling their care appointments. Helps pet owners keep track of pets and manage feeding, grooming, and veterinary visits.",
-    bullets: [
-      "Register & Login — Create an account and securely sign in",
-      "Manage Pets — Add and view pet profiles (name, type, breed, age)",
-      "Schedule Appointments — Track feeding times, grooming dates, and veterinary visits",
-    ],
-    tech: ["Kotlin", "Jetpack Compose", "Material Design 3", "Ktor Client", "Gradle"],
-    github: "https://github.com/christian-dela-cruz/MaluPET",
-    status: "completed",
-    screenshots: ["/projects/malupet1.png"],
-  },
-  {
-    title: "Darwin's Game",
-    description:
-      "A C# Windows Forms sidescroller game inspired by the theory of evolution. Guide your character through five stages of life — from a primordial creature all the way to modern humanity — dodging obstacles and surviving each era.",
-    bullets: [
-      "Side-scrolling game with five evolutionary stages",
-      "Built with C# Windows Forms",
-      "Dodge obstacles and survive each era of evolution",
-    ],
-    tech: ["C#", "Windows Forms", ".NET"],
-    github: "https://github.com/christian-dela-cruz/Darwins-Game",
-    status: "completed",
-    screenshots: ["/projects/darwin1.jpeg", "/projects/darwin2.jpeg"],
-  },
-  {
-    title: "Crossroads Coffee House",
-    description:
-      "A comprehensive UI/UX design project for Crossroads Coffee House, developed as part of a fully documented system development process following the Software Development Life Cycle (SDLC).",
-    bullets: [
-      "Full UI/UX design following SDLC methodology",
-      "Comprehensive documentation at each phase of development",
-      "Wireframes, mockups, and prototypes created in Figma",
-    ],
-    tech: ["UI/UX", "Figma", "SDLC"],
-    github: "https://github.com/christian-dela-cruz/Crossroads-Coffee-House",
-    status: "completed",
-    screenshots: ["/projects/crossroad1.png", "/projects/crossroad2.png"],
-  },
-  {
-    title: "TollGate Web AppLication",
-    description:
-      "An IoT-based automated toll gate system with a web dashboard for real-time monitoring and manual control.",
-    bullets: [
-      "IoT-based automated toll gate hardware integration",
-      "Web dashboard for real-time monitoring",
-      "Manual override and control capabilities",
-    ],
-    tech: ["C++", "IoT", "Web Dashboard"],
-    github: "https://github.com/christian-dela-cruz/TollGate-Web-App",
-    status: "completed",
-  },
-  {
-    title: "TriHex Cipher",
-    description:
-      "A custom symmetric encryption algorithm implemented in Python that combines substitution, transposition, and bit-level transformations for enhanced confusion and diffusion.",
-    bullets: [
-      "Custom symmetric encryption combining substitution and transposition",
-      "Bit-level transformations for enhanced confusion and diffusion",
-      "Implemented entirely in Python",
-    ],
-    tech: ["Python", "Cryptography", "Algorithms"],
-    github: "https://github.com/christian-dela-cruz/TriHex-Cipher",
-    status: "completed",
-    screenshots: ["/projects/trihex1.jpeg", "/projects/trihex2.jpeg"],
-  },
-];
 
 const statusConfig = {
   completed: {
@@ -288,64 +117,7 @@ const statusConfig = {
   },
 };
 
-const initialSeminars = [
-  {
-    title: "Pathways to Employability: Career Readiness Toolkit",
-    organizer: "Mapúa Malayan Colleges Laguna & Arizona State University",
-    date: "April 21, 2026",
-    image: "https://github.com/user-attachments/assets/bead45aa-3aa9-4650-abf2-145886afe857",
-  },
-  {
-    title: "Technopreneurship: A Journey in Building Your Own Tech Start Up",
-    organizer: "CCIS – Mapúa MCL & Prosperna",
-    date: "March 7, 2024",
-    image: "https://github.com/user-attachments/assets/a435f8ad-382a-4fe0-88de-e5cd85acdff9",
-  },
-  {
-    title: "Architecting the Future with Decentralization: An Introduction to Blockchain",
-    organizer: "JPCS Mapúa MCL",
-    date: "February 5, 2025",
-    image: "https://github.com/user-attachments/assets/7e92d12b-92f8-45a5-87da-86df7e956a60",
-  },
-];
 
-const initialExperience = [
-  {
-    title: "Freelance Mobile App Developer",
-    company: "EliteFitness",
-    duration: "Mar 2025 – Jun 2025",
-    hours: null,
-    bullets: [
-      "Developed a native Android fitness application using Xamarin.Android (C#) to help users manage and track their fitness journey.",
-      "Integrated Firebase for real-time data storage and synchronization of user profiles, workout logs, and progress metrics.",
-      "Designed and implemented a user-friendly interface for managing fitness schedules, tracking progress, and setting personal goals."
-    ],
-    tech: ["Xamarin.Android", "C#", "Firebase", "Android"]
-  },
-  {
-    title: "Software Developer",
-    company: "The Bellevue Manila",
-    duration: "April 2026 – July 2026",
-    hours: "486 Hours",
-    bullets: [
-      "Assisted in the development and maintenance of internal web-based systems used by hotel staff and management.",
-      "Collaborated with the IT department to troubleshoot software issues and implement minor feature enhancements.",
-      "Documented technical processes and supported data management tasks across hotel operations."
-    ],
-    tech: []
-  }
-];
-
-const initialEducation = [
-  {
-    degree: "Bachelor of Science in Information Technology",
-    specialization: "Cybersecurity Specialization",
-    school: "Mapúa Malayan Colleges Laguna",
-    duration: "2022 – Present",
-    description: "Currently enrolled. Gained strong fundamentals in cybersecurity, networking, software engineering, cloud infrastructure, and full-stack development. Active in hands-on projects including multi-hop mesh networking systems, mobile app development, and ethical hacking implementations.",
-    honors: "🏅 Dean's Lister: T1 & T3 (AY 2022–2023), T1 (AY 2024–2025)"
-  }
-];
 
 const contactInfo = [
   {
@@ -510,20 +282,14 @@ export default function PortfolioClient({
   const [profile, setProfile] = useState<any>(() => {
     if (databaseProfile) {
       return {
-        name: databaseProfile.name || "Christian Dela Cruz",
-        title: databaseProfile.title || "Information Technology & Cybersecurity Specialist",
-        description: databaseProfile.description || "",
-        profile_image_url: databaseProfile.profile_image_url || "/Formal_Picture.jpg",
-        resume_url: databaseProfile.resume_url || "/resume.pdf"
+        name: databaseProfile.name || initialProfile.name,
+        title: databaseProfile.title || initialProfile.title,
+        description: databaseProfile.description || initialProfile.description,
+        profile_image_url: databaseProfile.profile_image_url || initialProfile.profile_image_url,
+        resume_url: databaseProfile.resume_url || initialProfile.resume_url
       };
     }
-    return {
-      name: "Christian Dela Cruz",
-      title: "Information Technology & Cybersecurity Specialist",
-      description: "Full-stack developer with expertise in mobile app development, networking, and cloud infrastructure. Passionate about building secure, scalable, and user-centric solutions.",
-      profile_image_url: "/Formal_Picture.jpg",
-      resume_url: "/resume.pdf"
-    };
+    return initialProfile;
   });
 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);

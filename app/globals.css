@@ -127,3 +127,133 @@ body {
   animation: gradientBG 15s ease infinite;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ✨ Infinite Scroll Marquee & Carousel Slider Custom Styling (Certifications & Seminars)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 🌌 Certifications Infinite Marquee Slider */
+.infinite-slider-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.infinite-slider-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.infinite-slider-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Translate exactly half (since we duplicated items for loop) */
+    transform: translateX(-50%);
+  }
+}
+
+.cert-card {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.cert-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent) !important;
+  box-shadow: 0 10px 25px -5px rgba(255, 127, 80, 0.25) !important;
+  background: rgba(255, 127, 80, 0.04) !important;
+}
+
+/* 🎤 Seminars Interactive Carousel */
+.seminar-slider-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.seminar-slider-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.seminar-card-wrapper {
+  flex-shrink: 0;
+  padding: 0 10px;
+}
+
+.seminar-card-tilt {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.seminar-card-tilt:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent) !important;
+  box-shadow: 0 10px 25px -5px rgba(255, 127, 80, 0.25) !important;
+  background: rgba(255, 127, 80, 0.04) !important;
+}
+
+/* Spotlight card hover glow overlay */
+.seminar-card-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 127, 80, 0.08),
+    transparent 40%
+  );
+}
+
+.seminar-card-tilt:hover .seminar-card-glow {
+  opacity: 1;
+}
+
+/* Carousel controls */
+.seminar-nav-button {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  transition: all 0.3s ease;
+}
+
+.seminar-nav-button:hover:not(:disabled) {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.seminar-nav-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Dots navigation indicators */
+.seminar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--card-border);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.seminar-dot.active {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+
+
