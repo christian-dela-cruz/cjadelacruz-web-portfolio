@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS public.skills (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   category TEXT NOT NULL UNIQUE,
   items TEXT[] NOT NULL DEFAULT '{}'::TEXT[],
+  sort_order INT DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -62,14 +63,16 @@ CREATE POLICY "Allow auth write access on projects" ON public.projects FOR ALL T
 CREATE POLICY "Allow auth write access on seminars" ON public.seminars FOR ALL TO authenticated USING (true);
 
 -- Insert original mock data for Skills
-INSERT INTO public.skills (category, items) VALUES
-('Programming', ARRAY['Python', 'C#', 'Kotlin', 'HTML', 'TypeScript', 'ASP.NET MVC']),
-('Networking', ARRAY['Routing & Switching', 'Network Infrastructure', 'IEEE 802.15.4']),
-('Systems & Cloud', ARRAY['Systems Administration', 'Oracle VirtualBox', 'Google Cloud Platform', 'Windows Server', 'Red Hat Enterprise Linux']),
-('Security', ARRAY['Kali Linux', 'Security Fundamentals', 'Ethical Hacking']),
-('Databases', ARRAY['MySQL', 'Oracle']),
-('Tools & Platforms', ARRAY['Cisco Packet Tracer', 'Visual Studio Code', 'Visual Studio', 'Arduino IDE', 'Figma', 'GitHub', 'Canva', 'Next.js', 'XAMPP'])
-ON CONFLICT (category) DO UPDATE SET items = EXCLUDED.items;
+INSERT INTO public.skills (category, items, sort_order) VALUES
+('Programming', ARRAY['Python', 'C#', 'Kotlin', 'HTML', 'TypeScript', 'ASP.NET MVC', 'PHP (PHP 8.2+)', 'React (React 19)', 'Laravel (Laravel 12)', 'Node.js'], 1),
+('Networking', ARRAY['Routing & Switching', 'Network Infrastructure', 'IEEE 802.15.4'], 2),
+('Systems & Cloud', ARRAY['Systems Administration', 'Oracle VirtualBox', 'Google Cloud Platform', 'Windows Server', 'Red Hat Enterprise Linux', 'Docker & Docker Compose', 'Supabase (Cloud BaaS)'], 3),
+('Security', ARRAY['Kali Linux', 'Security Fundamentals', 'Ethical Hacking', 'Custom TOTP (2FA) Security', 'Laravel Sanctum Authentication', 'Supabase RLS Policies'], 4),
+('Databases', ARRAY['MySQL', 'Oracle', 'SQLite', 'PostgreSQL', 'Automated Database Backups (Spatie)'], 5),
+('Tools & Platforms', ARRAY['Cisco Packet Tracer', 'Visual Studio Code', 'Visual Studio', 'Arduino IDE', 'Figma', 'GitHub', 'Canva', 'Next.js (Turbopack)', 'XAMPP', 'Vite (Vite 7)', 'Postman API Testing', 'Mailpit SMTP Testing'], 6),
+('Web Protocols & APIs', ARRAY['WebSockets (Real-time Sync)', 'Web Audio API (Browser Frequency Synthesis)', 'Web Speech API (Text-to-Speech)', 'REST APIs (JSON Endpoints)', 'Supabase Real-time Listener'], 7),
+('Interactive UI & Animations', ARRAY['Drag & Drop (dnd-kit Canvas)', 'Framer Motion & GSAP Transitions', 'Recharts Data Visualization', 'Vibrant CSS Glassmorphism'], 8)
+ON CONFLICT (category) DO UPDATE SET items = EXCLUDED.items, sort_order = EXCLUDED.sort_order;
 
 -- Insert original mock data for Certifications
 INSERT INTO public.certifications (name, issuer, date, badge_url, credly_url) VALUES

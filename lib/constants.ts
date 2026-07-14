@@ -71,7 +71,11 @@ export const initialSkills: Record<string, string[]> = {
     "Kotlin",
     "HTML",
     "TypeScript",
-    "ASP.NET MVC"
+    "ASP.NET MVC",
+    "PHP (PHP 8.2+)",
+    "React (React 19)",
+    "Laravel (Laravel 12)",
+    "Node.js"
   ],
   Networking: [
     "Routing & Switching",
@@ -83,16 +87,24 @@ export const initialSkills: Record<string, string[]> = {
     "Oracle VirtualBox",
     "Google Cloud Platform",
     "Windows Server",
-    "Red Hat Enterprise Linux"
+    "Red Hat Enterprise Linux",
+    "Docker & Docker Compose",
+    "Supabase (Cloud BaaS)"
   ],
   Security: [
     "Kali Linux",
     "Security Fundamentals",
-    "Ethical Hacking"
+    "Ethical Hacking",
+    "Custom TOTP (2FA) Security",
+    "Laravel Sanctum Authentication",
+    "Supabase RLS Policies"
   ],
   Databases: [
     "MySQL",
-    "Oracle"
+    "Oracle",
+    "SQLite",
+    "PostgreSQL",
+    "Automated Database Backups (Spatie)"
   ],
   "Tools & Platforms": [
     "Cisco Packet Tracer",
@@ -102,8 +114,24 @@ export const initialSkills: Record<string, string[]> = {
     "Figma",
     "GitHub",
     "Canva",
-    "Next.js",
-    "XAMPP"
+    "Next.js (Turbopack)",
+    "XAMPP",
+    "Vite (Vite 7)",
+    "Postman API Testing",
+    "Mailpit SMTP Testing"
+  ],
+  "Web Protocols & APIs": [
+    "WebSockets (Real-time Sync)",
+    "Web Audio API (Browser Frequency Synthesis)",
+    "Web Speech API (Text-to-Speech)",
+    "REST APIs (JSON Endpoints)",
+    "Supabase Real-time Listener"
+  ],
+  "Interactive UI & Animations": [
+    "Drag & Drop (dnd-kit Canvas)",
+    "Framer Motion & GSAP Transitions",
+    "Recharts Data Visualization",
+    "Vibrant CSS Glassmorphism"
   ]
 };
 

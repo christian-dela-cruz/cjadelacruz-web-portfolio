@@ -24,9 +24,16 @@ import {
   FaChevronRight,
   FaChalkboardTeacher,
   FaTimes,
+  FaShieldAlt,
+  FaDatabase,
+  FaNetworkWired,
+  FaToolbox,
+  FaPlug,
+  FaMagic,
 } from "react-icons/fa";
 import { SiCredly } from "react-icons/si";
 import { HiChip, HiCalendar } from "react-icons/hi";
+import { HiCloud } from "react-icons/hi2";
 import { supabase } from "@/lib/supabase";
 import { detectWebGL } from "@/lib/webgl";
 import { ShaderFallback } from "@/components/ShaderFallback";
@@ -299,6 +306,7 @@ export default function PortfolioClient({
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof initialSeminars)[number] | null>(null);
   const [selectedCert, setSelectedCert] = useState<(typeof initialCertifications)[number] | null>(null);
   const [activeSeminarIndex, setActiveSeminarIndex] = useState(0);
+  const [activeSkillTab, setActiveSkillTab] = useState<string | null>(null);
   const seminarSliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -638,8 +646,37 @@ export default function PortfolioClient({
           <div className="flex flex-col gap-8">
 
             {/* ── Row 1: Technical Skills ──────────────────────────────────── */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
+            <div className="skills-section-card" style={{
+              background: "var(--card-bg, rgba(255,255,255,0.6))",
+              border: "1px solid var(--card-border)",
+              borderRadius: "1.25rem",
+              padding: "2rem",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              {/* Decorative gradient orbs */}
+              <div style={{
+                position: "absolute",
+                top: "-60px",
+                right: "-60px",
+                width: "200px",
+                height: "200px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,127,80,0.08) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }} />
+              <div style={{
+                position: "absolute",
+                bottom: "-40px",
+                left: "-40px",
+                width: "160px",
+                height: "160px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,127,80,0.05) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }} />
+
+              <div className="flex items-center gap-3 mb-6" style={{ position: "relative" }}>
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: accentBgMd }}
@@ -652,38 +689,145 @@ export default function PortfolioClient({
                 >
                   Technical Skills
                 </h3>
+                <div style={{
+                  flex: 1,
+                  height: "1px",
+                  background: "linear-gradient(90deg, var(--card-border) 0%, transparent 100%)",
+                  marginLeft: "0.5rem",
+                }} />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {Object.entries(skills).map(([category, items]) => (
-                  <div key={category} className="flex items-start gap-4">
-                    <div className="flex items-center gap-2 w-36 flex-shrink-0 pt-1">
-                      <FaCode size={11} style={{ color: "var(--accent)", flexShrink: 0 }} />
-                      <h4
-                        className="text-xs font-semibold uppercase tracking-wide"
-                        style={{ color: "var(--accent)" }}
-                      >
-                        {category}
-                      </h4>
+              {/* ── Underline Tab Navigation ── */}
+              {(() => {
+                const skillCategoryIcons: Record<string, React.ReactNode> = {
+                  "Programming": <FaCode size={13} />,
+                  "Networking": <FaNetworkWired size={13} />,
+                  "Systems & Cloud": <HiCloud size={14} />,
+                  "Security": <FaShieldAlt size={13} />,
+                  "Databases": <FaDatabase size={13} />,
+                  "Tools & Platforms": <FaToolbox size={13} />,
+                  "Web Protocols & APIs": <FaPlug size={13} />,
+                  "Interactive UI & Animations": <FaMagic size={13} />,
+                };
+                const categories = Object.keys(skills);
+                const currentTab = activeSkillTab || categories[0] || "";
+                const currentItems = skills[currentTab] || [];
+
+                return (
+                  <div style={{ position: "relative" }}>
+                    {/* Underline Tabs */}
+                    <div
+                      className="skill-tab-bar no-scrollbar"
+                      style={{
+                        display: "flex",
+                        gap: "0",
+                        overflowX: "auto",
+                        borderBottom: "2px solid var(--card-border)",
+                        marginBottom: "1.5rem",
+                        position: "relative",
+                      }}
+                    >
+                      {categories.map((cat) => {
+                        const isActive = cat === currentTab;
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() => setActiveSkillTab(cat)}
+                            className="skill-underline-tab"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                              padding: "0.625rem 1rem",
+                              fontSize: "0.8125rem",
+                              fontWeight: isActive ? 600 : 500,
+                              whiteSpace: "nowrap",
+                              color: isActive ? "var(--accent)" : "var(--muted)",
+                              background: "transparent",
+                              border: "none",
+                              borderBottom: `2px solid ${isActive ? "var(--accent)" : "transparent"}`,
+                              marginBottom: "-2px",
+                              cursor: "pointer",
+                              transition: "all 0.25s ease",
+                              position: "relative",
+                            }}
+                          >
+                            <span style={{
+                              display: "flex",
+                              alignItems: "center",
+                              opacity: isActive ? 1 : 0.6,
+                              transition: "opacity 0.25s ease",
+                            }}>
+                              {skillCategoryIcons[cat] || <FaCode size={13} />}
+                            </span>
+                            {cat}
+                            <span
+                              style={{
+                                fontSize: "0.625rem",
+                                padding: "1px 6px",
+                                borderRadius: "9999px",
+                                fontWeight: 700,
+                                background: isActive ? "rgba(255,127,80,0.12)" : "rgba(128,128,128,0.08)",
+                                color: isActive ? "var(--accent)" : "var(--muted)",
+                                transition: "all 0.25s ease",
+                              }}
+                            >
+                              {(skills[cat] || []).length}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {items.map((skill) => (
-                        <span
-                          key={skill}
-                          className="text-xs px-3 py-1.5 rounded-lg"
-                          style={{
-                            background: "rgba(255,255,255,0.04)",
-                            color: "var(--muted)",
-                            border: "1px solid var(--card-border)",
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
+
+                    {/* Skills Grid Display Area */}
+                    <div
+                      className="skill-pills-area"
+                      style={{
+                        borderRadius: "1rem",
+                        padding: "1.25rem",
+                        position: "relative",
+                      }}
+                    >
+                      <div
+                        key={currentTab}
+                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
+                        style={{ minHeight: "48px" }}
+                      >
+                        {currentItems.map((skill, idx) => (
+                          <div
+                            key={`${currentTab}-${skill}`}
+                            className="flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 group cursor-default"
+                            style={{
+                              animation: "skillItemIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both",
+                              animationDelay: `${idx * 45}ms`,
+                              border: "1px solid var(--card-border)",
+                              background: "var(--card-bg)",
+                            }}
+                          >
+                            <span
+                              className="w-1.5 h-1.5 rounded-full transition-all duration-300 group-hover:scale-125"
+                              style={{
+                                background: "var(--accent)",
+                                opacity: 0.7,
+                                flexShrink: 0,
+                              }}
+                            />
+                            <span
+                              className="text-xs md:text-sm font-medium transition-colors duration-300 group-hover:text-[var(--foreground)]"
+                              style={{
+                                color: "var(--muted)",
+                                lineHeight: "1.3",
+                              }}
+                            >
+                              {skill}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                );
+              })()}
             </div>
 
             {/* ── Row 2: Experience + Education ───────────────────────────── */}
