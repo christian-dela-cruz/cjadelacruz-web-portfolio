@@ -239,7 +239,9 @@ export default function PortfolioClient({
         duration: p.duration,
         github: p.github,
         status: p.status,
-        screenshots: p.screenshots || [],
+        screenshots: (p.screenshots || []).map((url: string) => 
+          url.replace("/portfolio-assets/Project/", "/portfolio-assets/Projects/")
+        ),
       }));
     }
     return initialProjects;

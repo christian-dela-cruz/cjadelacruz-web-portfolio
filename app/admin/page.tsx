@@ -420,7 +420,9 @@ export default function AdminPage() {
       setProjDuration(item?.duration || "");
       setProjGithub(item?.github || "#");
       setProjStatus(item?.status || "completed");
-      setProjScreenshots(item?.screenshots || []);
+      setProjScreenshots((item?.screenshots || []).map((url: string) => 
+        url.replace("/portfolio-assets/Project/", "/portfolio-assets/Projects/")
+      ));
     } else if (activeTab === "certifications") {
       setCertName(item?.name || "");
       setCertIssuer(item?.issuer || "");
