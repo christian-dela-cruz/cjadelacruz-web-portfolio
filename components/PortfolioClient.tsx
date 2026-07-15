@@ -638,7 +638,7 @@ export default function PortfolioClient({
       {/* ── ABOUT ─────────────────────────────────────────────────────────── */}
       <section
         id="about"
-        className="py-28 px-6 scroll-mt-16"
+        className="py-28 px-4 sm:px-6 scroll-mt-16"
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
         <div className="max-w-6xl mx-auto about-content-wrapper">
@@ -697,7 +697,7 @@ export default function PortfolioClient({
                 const categories = Object.keys(skills);
 
                 return (
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:block md:columns-2 lg:columns-3 xl:columns-4 gap-y-0">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:block md:columns-2 lg:columns-3 xl:columns-4 gap-y-0">
                     {categories.map((cat, categoryIdx) => {
                       const currentItems = skills[cat] || [];
                       const isExpanded = !!expandedCategories[cat];
@@ -706,7 +706,7 @@ export default function PortfolioClient({
                       return (
                         <div
                           key={cat}
-                          className={`skill-category-card skill-category-animated p-5 rounded-2xl flex flex-col justify-between animate-fade-in break-inside-avoid mb-4 md:mb-6 ${isExpanded ? "expanded" : ""}`}
+                          className={`skill-category-card skill-category-animated p-3.5 sm:p-5 rounded-2xl flex flex-col justify-between animate-fade-in break-inside-avoid mb-4 md:mb-6 ${isExpanded ? "expanded" : ""}`}
                           style={{
                             animationDelay: `${categoryIdx * 45}ms`,
                           }}
