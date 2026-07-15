@@ -8,6 +8,7 @@ import {
   FaEnvelope,
   FaDownload,
   FaArrowRight,
+  FaArrowUp,
   FaGraduationCap,
   FaBriefcase,
   FaCertificate,
@@ -306,7 +307,7 @@ export default function PortfolioClient({
   const [selectedSeminar, setSelectedSeminar] = useState<(typeof initialSeminars)[number] | null>(null);
   const [selectedCert, setSelectedCert] = useState<(typeof initialCertifications)[number] | null>(null);
   const [activeSeminarIndex, setActiveSeminarIndex] = useState(0);
-  const [activeSkillTab, setActiveSkillTab] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   const seminarSliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -430,6 +431,57 @@ export default function PortfolioClient({
     };
   }, []);
 
+  // Scroll-linked fade transitions for Hero and About Me sections
+  useEffect(() => {
+    const heroEl = document.querySelector(".hero-content-wrapper") as HTMLElement;
+    const aboutEl = document.querySelector(".about-content-wrapper") as HTMLElement;
+    const heroSection = document.getElementById("home") as HTMLElement;
+
+    if (!heroEl && !aboutEl) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = heroSection?.offsetHeight || 600;
+
+      // 1. Hero scroll effects: fade out, translate down (parallax), scale down slightly
+      if (heroEl) {
+        const heroFadeRange = 500;
+        const heroOpacity = Math.max(0, 1 - scrollY / heroFadeRange);
+        const heroScale = 1 - (scrollY / heroFadeRange) * 0.04;
+        const heroTranslateY = scrollY * 0.35; // Parallax translation down
+
+        if (scrollY < heroFadeRange + 100) {
+          heroEl.style.opacity = heroOpacity.toString();
+          heroEl.style.transform = `translateY(${heroTranslateY}px) scale(${heroScale})`;
+          heroEl.style.visibility = "visible";
+        } else {
+          heroEl.style.visibility = "hidden";
+        }
+      }
+
+      // 2. About Me scroll effects: fade in, translate up smoothly
+      if (aboutEl) {
+        // Starts revealing after scrollY > 80, fully visible at scrollY = 500
+        const startScroll = 80;
+        const endScroll = 500;
+        const aboutOpacity = Math.min(1, Math.max(0, (scrollY - startScroll) / (endScroll - startScroll)));
+        const aboutTranslateY = Math.max(0, 40 - aboutOpacity * 40); // Translates from 40px down to 0px
+
+        aboutEl.style.opacity = aboutOpacity.toString();
+        aboutEl.style.transform = `translateY(${aboutTranslateY}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Initial call to set initial offsets
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const scrollCerts = (dir: "left" | "right") => {
     certScrollRef.current?.scrollBy({ left: dir === "left" ? -275 : 275, behavior: "smooth" });
   };
@@ -464,7 +516,7 @@ export default function PortfolioClient({
           )}
         </div>
 
-        <div className="max-w-6xl w-full mx-auto relative z-10">
+        <div className="max-w-6xl w-full mx-auto relative z-10 hero-content-wrapper">
           <div className="flex flex-col-reverse lg:flex-row items-center gap-16">
             {/* Text */}
             <div className="flex-1 text-center lg:text-left">
@@ -626,7 +678,7 @@ export default function PortfolioClient({
         className="py-28 px-6 scroll-mt-16"
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto about-content-wrapper" style={{ opacity: 0, transform: "translateY(40px)" }}>
           <div className="mb-16 text-center">
             <h2
               className="text-4xl sm:text-5xl font-bold mb-4"
@@ -646,37 +698,8 @@ export default function PortfolioClient({
           <div className="flex flex-col gap-8">
 
             {/* ── Row 1: Technical Skills ──────────────────────────────────── */}
-            <div className="skills-section-card" style={{
-              background: "var(--card-bg, rgba(255,255,255,0.6))",
-              border: "1px solid var(--card-border)",
-              borderRadius: "1.25rem",
-              padding: "2rem",
-              position: "relative",
-              overflow: "hidden",
-            }}>
-              {/* Decorative gradient orbs */}
-              <div style={{
-                position: "absolute",
-                top: "-60px",
-                right: "-60px",
-                width: "200px",
-                height: "200px",
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(255,127,80,0.08) 0%, transparent 70%)",
-                pointerEvents: "none",
-              }} />
-              <div style={{
-                position: "absolute",
-                bottom: "-40px",
-                left: "-40px",
-                width: "160px",
-                height: "160px",
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(255,127,80,0.05) 0%, transparent 70%)",
-                pointerEvents: "none",
-              }} />
-
-              <div className="flex items-center gap-3 mb-6" style={{ position: "relative" }}>
+            <div className="w-full">
+              <div className="flex items-center gap-3 mb-8">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: accentBgMd }}
@@ -697,7 +720,6 @@ export default function PortfolioClient({
                 }} />
               </div>
 
-              {/* ── Underline Tab Navigation ── */}
               {(() => {
                 const skillCategoryIcons: Record<string, React.ReactNode> = {
                   "Programming": <FaCode size={13} />,
@@ -710,121 +732,108 @@ export default function PortfolioClient({
                   "Interactive UI & Animations": <FaMagic size={13} />,
                 };
                 const categories = Object.keys(skills);
-                const currentTab = activeSkillTab || categories[0] || "";
-                const currentItems = skills[currentTab] || [];
 
                 return (
-                  <div style={{ position: "relative" }}>
-                    {/* Underline Tabs */}
-                    <div
-                      className="skill-tab-bar no-scrollbar"
-                      style={{
-                        display: "flex",
-                        gap: "0",
-                        overflowX: "auto",
-                        borderBottom: "2px solid var(--card-border)",
-                        marginBottom: "1.5rem",
-                        position: "relative",
-                      }}
-                    >
-                      {categories.map((cat) => {
-                        const isActive = cat === currentTab;
-                        return (
-                          <button
-                            key={cat}
-                            onClick={() => setActiveSkillTab(cat)}
-                            className="skill-underline-tab"
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                              padding: "0.625rem 1rem",
-                              fontSize: "0.8125rem",
-                              fontWeight: isActive ? 600 : 500,
-                              whiteSpace: "nowrap",
-                              color: isActive ? "var(--accent)" : "var(--muted)",
-                              background: "transparent",
-                              border: "none",
-                              borderBottom: `2px solid ${isActive ? "var(--accent)" : "transparent"}`,
-                              marginBottom: "-2px",
-                              cursor: "pointer",
-                              transition: "all 0.25s ease",
-                              position: "relative",
-                            }}
-                          >
-                            <span style={{
-                              display: "flex",
-                              alignItems: "center",
-                              opacity: isActive ? 1 : 0.6,
-                              transition: "opacity 0.25s ease",
-                            }}>
-                              {skillCategoryIcons[cat] || <FaCode size={13} />}
-                            </span>
-                            {cat}
-                            <span
-                              style={{
-                                fontSize: "0.625rem",
-                                padding: "1px 6px",
-                                borderRadius: "9999px",
-                                fontWeight: 700,
-                                background: isActive ? "rgba(255,127,80,0.12)" : "rgba(128,128,128,0.08)",
-                                color: isActive ? "var(--accent)" : "var(--muted)",
-                                transition: "all 0.25s ease",
-                              }}
-                            >
-                              {(skills[cat] || []).length}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                  <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 [column-fill:_balance]">
+                    {categories.map((cat, categoryIdx) => {
+                      const currentItems = skills[cat] || [];
+                      const isExpanded = !!expandedCategories[cat];
+                      const visibleItems = isExpanded ? currentItems : currentItems.slice(0, 3);
 
-                    {/* Skills Grid Display Area */}
-                    <div
-                      className="skill-pills-area"
-                      style={{
-                        borderRadius: "1rem",
-                        padding: "1.25rem",
-                        position: "relative",
-                      }}
-                    >
-                      <div
-                        key={currentTab}
-                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
-                        style={{ minHeight: "48px" }}
-                      >
-                        {currentItems.map((skill, idx) => (
-                          <div
-                            key={`${currentTab}-${skill}`}
-                            className="flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 group cursor-default"
-                            style={{
-                              animation: "skillItemIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both",
-                              animationDelay: `${idx * 45}ms`,
-                              border: "1px solid var(--card-border)",
-                              background: "var(--card-bg)",
-                            }}
-                          >
-                            <span
-                              className="w-1.5 h-1.5 rounded-full transition-all duration-300 group-hover:scale-125"
-                              style={{
-                                background: "var(--accent)",
-                                opacity: 0.7,
-                                flexShrink: 0,
-                              }}
-                            />
-                            <span
-                              className="text-xs md:text-sm font-medium transition-colors duration-300 group-hover:text-[var(--foreground)]"
-                              style={{
-                                color: "var(--muted)",
-                                lineHeight: "1.3",
+                      return (
+                        <div
+                          key={cat}
+                          className="skill-category-card skill-category-animated p-5 rounded-2xl flex flex-col justify-between animate-fade-in break-inside-avoid mb-6"
+                          style={{
+                            animationDelay: `${categoryIdx * 45}ms`,
+                            height: isExpanded ? "auto" : "260px",
+                          }}
+                        >
+                          <div style={{ paddingBottom: isExpanded ? "0px" : "44px" }}>
+                            {/* Card Header */}
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center gap-2.5">
+                                <div
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                  style={{ background: accentBgMd }}
+                                >
+                                  <span style={{ color: "var(--accent)", display: "flex", alignItems: "center" }}>
+                                    {skillCategoryIcons[cat] || <FaCode size={13} />}
+                                  </span>
+                                </div>
+                                <h4
+                                  className="font-semibold text-sm"
+                                  style={{ color: "var(--foreground)" }}
+                                >
+                                  {cat}
+                                </h4>
+                              </div>
+                              <span
+                                className="text-[10px] px-2.5 py-0.5 rounded-full font-bold"
+                                style={{
+                                  background: "rgba(255,127,80,0.08)",
+                                  color: "var(--accent)",
+                                }}
+                              >
+                                {currentItems.length}
+                              </span>
+                            </div>
+
+                            {/* Skill Pills Container */}
+                            <div className="flex flex-wrap gap-2 content-start">
+                              {visibleItems.map((skill) => (
+                                <span
+                                  key={`${cat}-${skill}`}
+                                  className="skill-pill"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* View All / View Less button */}
+                          {currentItems.length > 3 && (
+                            <div
+                              className="pt-3 flex items-center justify-start animate-fade-in"
+                              style={isExpanded ? {
+                                borderTop: "1px solid var(--card-border)",
+                                marginTop: "1rem",
+                              } : {
+                                borderTop: "1px solid var(--card-border)",
+                                position: "absolute",
+                                bottom: "1.25rem",
+                                left: "1.25rem",
+                                right: "1.25rem",
                               }}
                             >
-                              {skill}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                              <button
+                                onClick={() => {
+                                  setExpandedCategories((prev) => ({
+                                    ...prev,
+                                    [cat]: !prev[cat],
+                                  }));
+                                }}
+                                className="text-xs font-semibold flex items-center gap-1 transition-colors duration-200 cursor-pointer"
+                                style={{ color: "var(--accent)" }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.color = "var(--accent-hover)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.color = "var(--accent)";
+                                }}
+                              >
+                                {isExpanded ? (
+                                  <>View Less</>
+                                ) : (
+                                  <>View All (+{currentItems.length - 3})</>
+                                )}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })()}
@@ -1637,68 +1646,66 @@ export default function PortfolioClient({
       </section>
 
       {/* ── CTA SECTION ────────────────────────────────────────────────────── */}
-      <section className="py-12 w-full flex justify-center items-center px-6 md:px-8 relative z-10 max-w-6xl mx-auto">
-        <div
-          className="w-full relative"
-          onMouseEnter={() => setIsCTAHovered(true)}
-          onMouseLeave={() => setIsCTAHovered(false)}
-        >
-          <div className="relative overflow-hidden rounded-[32px] sm:rounded-[48px] border border-[var(--card-border)] bg-[var(--card-bg)]/30 backdrop-blur-sm shadow-xl min-h-[500px] flex flex-col items-center justify-center transition-all duration-500 hover:border-[#FF7F50]/30 hover:shadow-2xl px-6 py-12 md:py-16">
-            {/* WebGL Shader Dithering Background */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen transition-opacity duration-500 w-full h-full">
-              {!shaderError && isWebGLSupported ? (
-                <ShaderErrorBoundary onError={() => setShaderError(true)}>
-                  <Suspense fallback={<div className="absolute inset-0 bg-transparent" />}>
-                    <Dithering
-                      colorBack="#00000000" // Transparent
-                      colorFront="#FF7F50"  // Accent Coral
-                      shape="warp"
-                      type="4x4"
-                      speed={isCTAHovered ? 0.5 : 0.15}
-                      className="size-full"
-                      minPixelRatio={1}
-                    />
-                  </Suspense>
-                </ShaderErrorBoundary>
-              ) : (
-                <ShaderFallback color="#FF7F50" speed={isCTAHovered ? 0.5 : 0.15} />
-              )}
+      <section
+        className="w-full relative z-10 py-12"
+        onMouseEnter={() => setIsCTAHovered(true)}
+        onMouseLeave={() => setIsCTAHovered(false)}
+      >
+        <div className="relative overflow-hidden w-full border-y border-[var(--card-border)] bg-[var(--card-bg)]/35 backdrop-blur-sm shadow-xl min-h-[600px] flex flex-col items-center justify-center transition-all duration-500 hover:border-y-[#FF7F50]/30 hover:shadow-2xl py-16">
+          {/* WebGL Shader Dithering Background */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-35 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen transition-opacity duration-500 w-full h-full">
+            {!shaderError && isWebGLSupported ? (
+              <ShaderErrorBoundary onError={() => setShaderError(true)}>
+                <Suspense fallback={<div className="absolute inset-0 bg-transparent" />}>
+                  <Dithering
+                    colorBack="#00000000" // Transparent
+                    colorFront="#FF7F50"  // Accent Coral
+                    shape="warp"
+                    type="4x4"
+                    speed={isCTAHovered ? 0.5 : 0.15}
+                    className="size-full"
+                    minPixelRatio={1}
+                  />
+                </Suspense>
+              </ShaderErrorBoundary>
+            ) : (
+              <ShaderFallback color="#FF7F50" speed={isCTAHovered ? 0.5 : 0.15} />
+            )}
+          </div>
+
+          <div className="relative z-10 px-6 max-w-3xl mx-auto text-center flex flex-col items-center">
+            {/* Pulsing Status Badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#FF7F50]/20 bg-[rgba(255,127,80,0.05)] px-4 py-1.5 text-xs font-semibold text-[#FF7F50] backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7F50] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7F50]"></span>
+              </span>
+              Open for Collaborations
             </div>
 
-            <div className="relative z-10 px-4 max-w-3xl mx-auto text-center flex flex-col items-center">
-              {/* Pulsing Status Badge */}
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#FF7F50]/20 bg-[rgba(255,127,80,0.05)] px-4 py-1.5 text-xs font-semibold text-[#FF7F50] backdrop-blur-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7F50] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7F50]"></span>
-                </span>
-                Open for Collaborations
-              </div>
+            {/* Headline */}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-[var(--foreground)] mb-6 leading-tight">
+              Ready to elevate <br />
+              <span className="text-[var(--muted)]">your next project?</span>
+            </h2>
 
-              {/* Headline */}
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-[var(--foreground)] mb-6 leading-tight">
-                Ready to elevate <br />
-                <span className="text-[var(--muted)]">your next project?</span>
-              </h2>
+            {/* Description */}
+            <p className="text-[var(--muted)] text-sm sm:text-base max-w-xl mb-8 leading-relaxed font-medium">
+              Looking for a skilled IT & Cybersecurity Specialist or a Full-Stack Developer?
+              Let's discuss how we can build secure, reliable, and premium systems together.
+            </p>
 
-              {/* Description */}
-              <p className="text-[var(--muted)] text-sm sm:text-base max-w-xl mb-8 leading-relaxed font-medium">
-                Looking for a skilled IT & Cybersecurity Specialist or a Full-Stack Developer?
-                Let's discuss how we can build secure, reliable, and premium systems together.
-              </p>
-
-              {/* Button */}
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#FF7F50] hover:bg-[#ff6a35] px-8 text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:ring-4 hover:ring-[#FF7F50]/20 cursor-pointer shadow-lg shadow-[#FF7F50]/25"
-              >
-                <span className="relative z-10">Let's Work Together</span>
-                <FaArrowRight size={12} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-            </div>
+            {/* Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#FF7F50] hover:bg-[#ff6a35] px-8 text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:ring-4 hover:ring-[#FF7F50]/20 cursor-pointer shadow-lg shadow-[#FF7F50]/25"
+            >
+              <span className="relative z-10">Let's Work Together</span>
+              <FaArrowRight size={12} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
       </section>
@@ -1707,7 +1714,6 @@ export default function PortfolioClient({
       <section
         id="contact"
         className="py-24 px-6 scroll-mt-16"
-        style={{ borderTop: "1px solid var(--card-border)" }}
       >
         <div className="max-w-6xl mx-auto">
           <div className="mb-14 text-center">
@@ -1726,175 +1732,89 @@ export default function PortfolioClient({
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Contact info */}
-            <div className="flex flex-col gap-4">
-              <h3
-                className="text-lg font-semibold mb-2"
-                style={{ color: "var(--foreground)" }}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {contactInfo.map(({ icon: Icon, label, href, display }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("mailto") ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                className="contact-card group relative p-6 rounded-2xl flex flex-col justify-between"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                  textDecoration: "none",
+                  height: "240px",
+                }}
               >
-                Contact Details
-              </h3>
-
-              {contactInfo.map(({ icon: Icon, label, href, display }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-2xl transition-all hover:-translate-y-0.5"
+                {/* Visual hover radial glow overlay */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
                   style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--card-border)",
-                    textDecoration: "none",
+                    background: `radial-gradient(circle at top right, rgba(255, 127, 80, 0.08), transparent 60%)`,
                   }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                      "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                      "var(--card-border)";
-                  }}
-                >
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: accentBg, color: "var(--accent)" }}
-                  >
-                    <Icon size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <p
-                      className="text-xs font-semibold uppercase tracking-wide mb-0.5"
-                      style={{ color: "var(--accent)" }}
+                />
+
+                <div className="flex flex-col gap-4">
+                  {/* Header: Icon + Title */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+                      style={{ background: accentBg, color: "var(--accent)" }}
+                    >
+                      <Icon size={18} />
+                    </div>
+                    <h4
+                      className="text-xs font-bold uppercase tracking-wider transition-colors duration-300 group-hover:text-[var(--accent)]"
+                      style={{ color: "var(--foreground)" }}
                     >
                       {label}
-                    </p>
-                    <p
-                      className="text-sm truncate"
-                      style={{ color: "var(--muted)" }}
-                    >
-                      {display}
-                    </p>
+                    </h4>
                   </div>
-                </a>
-              ))}
-            </div>
 
-            {/* Contact form */}
-            <div
-              className="rounded-2xl p-6 sm:p-8"
-              style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--card-border)",
-              }}
-            >
-              <h3
-                className="text-lg font-semibold mb-6"
-                style={{ color: "var(--foreground)" }}
-              >
-                Send a Message
-              </h3>
-
-              <form className="flex flex-col gap-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      className="block text-xs font-medium mb-1.5"
-                      style={{ color: "var(--muted)" }}
-                      htmlFor="contact-name"
-                    >
-                      Name
-                    </label>
-                    <input
-                      id="contact-name"
-                      type="text"
-                      placeholder="Your name"
-                      className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                      style={{
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid var(--card-border)",
-                        color: "var(--foreground)",
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      className="block text-xs font-medium mb-1.5"
-                      style={{ color: "var(--muted)" }}
-                      htmlFor="contact-email"
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="contact-email"
-                      type="email"
-                      placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                      style={{
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid var(--card-border)",
-                        color: "var(--foreground)",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    className="block text-xs font-medium mb-1.5"
+                  {/* Details / Handle */}
+                  <p
+                    className="text-[13px] font-medium break-all leading-relaxed"
                     style={{ color: "var(--muted)" }}
-                    htmlFor="contact-subject"
                   >
-                    Subject
-                  </label>
-                  <input
-                    id="contact-subject"
-                    type="text"
-                    placeholder="How can I help?"
-                    className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                    style={{
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid var(--card-border)",
-                      color: "var(--foreground)",
-                    }}
-                  />
+                    {display}
+                  </p>
                 </div>
 
-                <div>
-                  <label
-                    className="block text-xs font-medium mb-1.5"
-                    style={{ color: "var(--muted)" }}
-                    htmlFor="contact-message"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    rows={5}
-                    placeholder="Tell me about your project or just say hi..."
-                    className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none"
-                    style={{
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid var(--card-border)",
-                      color: "var(--foreground)",
-                    }}
-                  />
+                {/* Interactive indicator at bottom */}
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--accent)] group-hover:text-[var(--accent-hover)] transition-colors duration-300">
+                  <span>{href.startsWith("mailto") ? "Send Email" : "Visit Profile"}</span>
+                  <FaArrowRight size={10} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
-
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
-                  style={{ background: "var(--accent)", color: "#fff" }}
-                >
-                  <FaPaperPlane size={14} />
-                  Send Message
-                </button>
-              </form>
-            </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+      <div className="w-full h-px bg-[var(--card-border)] mt-12" />
+      <footer className="footer-container py-8 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-[var(--muted)] text-center sm:text-left">
+            &copy; {new Date().getFullYear()} Christian Dela Cruz. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <span className="text-[11px] font-medium text-[var(--muted)] uppercase tracking-wider">
+              Built with Next.js &amp; Tailwind CSS
+            </span>
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="back-to-top-btn text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>Back to Top</span>
+              <FaArrowUp size={10} className="transition-transform duration-300 group-hover:-translate-y-1" />
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
