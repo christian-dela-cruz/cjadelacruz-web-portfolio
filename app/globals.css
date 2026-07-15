@@ -275,6 +275,31 @@ body {
               background-color 0.3s ease;
   position: relative;
   overflow: hidden;
+  height: 190px; /* DEFAULT height on mobile */
+}
+
+@media (min-width: 640px) {
+  .skill-category-card {
+    height: 260px; /* Tablet/Desktop height */
+  }
+}
+
+.skill-category-card.expanded {
+  height: auto !important;
+}
+
+.skill-category-inner {
+  padding-bottom: 24px;
+}
+
+@media (min-width: 640px) {
+  .skill-category-inner {
+    padding-bottom: 44px;
+  }
+}
+
+.skill-category-card.expanded .skill-category-inner {
+  padding-bottom: 0px !important;
 }
 
 .skill-category-card:hover {
@@ -464,4 +489,12 @@ body {
   transform: translateY(0);
 }
 
-
+/* Contact Cards Responsive Heights */
+.contact-card {
+  height: 180px;
+}
+@media (min-width: 640px) {
+  .contact-card {
+    height: 240px;
+  }
+}

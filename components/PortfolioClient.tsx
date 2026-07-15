@@ -697,7 +697,7 @@ export default function PortfolioClient({
                 const categories = Object.keys(skills);
 
                 return (
-                  <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 [column-fill:_balance]">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:block md:columns-2 lg:columns-3 xl:columns-4 gap-y-0">
                     {categories.map((cat, categoryIdx) => {
                       const currentItems = skills[cat] || [];
                       const isExpanded = !!expandedCategories[cat];
@@ -706,13 +706,12 @@ export default function PortfolioClient({
                       return (
                         <div
                           key={cat}
-                          className="skill-category-card skill-category-animated p-5 rounded-2xl flex flex-col justify-between animate-fade-in break-inside-avoid mb-6"
+                          className={`skill-category-card skill-category-animated p-5 rounded-2xl flex flex-col justify-between animate-fade-in break-inside-avoid mb-4 md:mb-6 ${isExpanded ? "expanded" : ""}`}
                           style={{
                             animationDelay: `${categoryIdx * 45}ms`,
-                            height: isExpanded ? "auto" : "260px",
                           }}
                         >
-                          <div style={{ paddingBottom: isExpanded ? "0px" : "44px" }}>
+                          <div className="skill-category-inner">
                             {/* Card Header */}
                             <div className="flex items-center justify-between mb-4">
                               <div className="flex items-center gap-2.5">
@@ -1695,7 +1694,7 @@ export default function PortfolioClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {contactInfo.map(({ icon: Icon, label, href, display }) => (
               <a
                 key={label}
@@ -1707,7 +1706,6 @@ export default function PortfolioClient({
                   background: "var(--card-bg)",
                   border: "1px solid var(--card-border)",
                   textDecoration: "none",
-                  height: "240px",
                 }}
               >
                 {/* Visual hover radial glow overlay */}
