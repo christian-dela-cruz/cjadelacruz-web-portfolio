@@ -713,25 +713,25 @@ export default function PortfolioClient({
                         >
                           <div className="skill-category-inner">
                             {/* Card Header */}
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center gap-2.5">
+                            <div className="flex items-start justify-between mb-4 gap-1.5">
+                              <div className="flex items-start gap-2 flex-1 min-w-0">
                                 <div
-                                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                                   style={{ background: accentBgMd }}
                                 >
                                   <span style={{ color: "var(--accent)", display: "flex", alignItems: "center" }}>
-                                    {skillCategoryIcons[cat] || <FaCode size={13} />}
+                                    {skillCategoryIcons[cat] || <FaCode size={12} />}
                                   </span>
                                 </div>
                                 <h4
-                                  className="font-semibold text-sm"
-                                  style={{ color: "var(--foreground)" }}
+                                  className="font-semibold text-xs sm:text-sm leading-tight break-words flex-1 min-w-0"
+                                  style={{ color: "var(--foreground)", marginTop: "2px" }}
                                 >
                                   {cat}
                                 </h4>
                               </div>
                               <span
-                                className="text-[10px] px-2.5 py-0.5 rounded-full font-bold"
+                                className="text-[9px] sm:text-[10px] px-1.5 sm:px-2.5 py-0.5 rounded-full font-bold flex-shrink-0 mt-0.5"
                                 style={{
                                   background: "rgba(255,127,80,0.08)",
                                   color: "var(--accent)",
