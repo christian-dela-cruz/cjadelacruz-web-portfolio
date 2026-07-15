@@ -439,56 +439,7 @@ export default function PortfolioClient({
     };
   }, []);
 
-  // Scroll-linked fade transitions for Hero and About Me sections
-  useEffect(() => {
-    const heroEl = document.querySelector(".hero-content-wrapper") as HTMLElement;
-    const aboutEl = document.querySelector(".about-content-wrapper") as HTMLElement;
-    const heroSection = document.getElementById("home") as HTMLElement;
 
-    if (!heroEl && !aboutEl) return;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const heroHeight = heroSection?.offsetHeight || 600;
-
-      // 1. Hero scroll effects: fade out, translate down (parallax), scale down slightly
-      if (heroEl) {
-        const heroFadeRange = 500;
-        const heroOpacity = Math.max(0, 1 - scrollY / heroFadeRange);
-        const heroScale = 1 - (scrollY / heroFadeRange) * 0.04;
-        const heroTranslateY = scrollY * 0.35; // Parallax translation down
-
-        if (scrollY < heroFadeRange + 100) {
-          heroEl.style.opacity = heroOpacity.toString();
-          heroEl.style.transform = `translateY(${heroTranslateY}px) scale(${heroScale})`;
-          heroEl.style.visibility = "visible";
-        } else {
-          heroEl.style.visibility = "hidden";
-        }
-      }
-
-      // 2. About Me scroll effects: fade in, translate up smoothly
-      if (aboutEl) {
-        // Starts revealing after scrollY > 80, fully visible at scrollY = 500
-        const startScroll = 80;
-        const endScroll = 500;
-        const aboutOpacity = Math.min(1, Math.max(0, (scrollY - startScroll) / (endScroll - startScroll)));
-        const aboutTranslateY = Math.max(0, 40 - aboutOpacity * 40); // Translates from 40px down to 0px
-
-        aboutEl.style.opacity = aboutOpacity.toString();
-        aboutEl.style.transform = `translateY(${aboutTranslateY}px)`;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    
-    // Initial call to set initial offsets
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   const scrollCerts = (dir: "left" | "right") => {
     certScrollRef.current?.scrollBy({ left: dir === "left" ? -275 : 275, behavior: "smooth" });
@@ -690,7 +641,7 @@ export default function PortfolioClient({
         className="py-28 px-6 scroll-mt-16"
         style={{ borderTop: "1px solid var(--card-border)" }}
       >
-        <div className="max-w-6xl mx-auto about-content-wrapper" style={{ opacity: 0, transform: "translateY(40px)" }}>
+        <div className="max-w-6xl mx-auto about-content-wrapper">
           <div className="mb-16 text-center">
             <h2
               className="text-4xl sm:text-5xl font-bold mb-4"

@@ -464,10 +464,4 @@ body {
   transform: translateY(0);
 }
 
-/* Scroll Animation Hardware Acceleration */
-.hero-content-wrapper,
-.about-content-wrapper {
-  will-change: transform, opacity;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-}
+
