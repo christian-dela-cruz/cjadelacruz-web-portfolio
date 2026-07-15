@@ -147,6 +147,8 @@ export default function AdminPage() {
   const [profResumeUrl, setProfResumeUrl] = useState("");
   const [profCvUrl, setProfCvUrl] = useState("");
   const [profLogoImageUrl, setProfLogoImageUrl] = useState("");
+  const [profShowResume, setProfShowResume] = useState(true);
+  const [profShowCv, setProfShowCv] = useState(true);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
 
   // Editor Modal States
@@ -290,6 +292,8 @@ export default function AdminPage() {
         setProfResumeUrl(profRes.data.resume_url || "");
         setProfCvUrl(profRes.data.cv_url || "");
         setProfLogoImageUrl(profRes.data.logo_image_url || "");
+        setProfShowResume(profRes.data.show_resume !== false);
+        setProfShowCv(profRes.data.show_cv !== false);
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -564,6 +568,8 @@ export default function AdminPage() {
         resume_url: profResumeUrl,
         cv_url: profCvUrl,
         logo_image_url: profLogoImageUrl,
+        show_resume: profShowResume,
+        show_cv: profShowCv,
         updated_at: new Date().toISOString(),
       });
 
@@ -572,8 +578,12 @@ export default function AdminPage() {
       fetchData();
     } catch (err: any) {
       let errorMsg = err.message || "Failed to save profile";
-      if (err.message && err.message.includes("column") && err.message.includes("logo_image_url")) {
-        errorMsg += "\n\nIt seems the 'logo_image_url' column is missing from your profile table. Please run the SQL command provided in the setup alert box on this page within your Supabase SQL Editor.";
+      if (
+        err.message && 
+        err.message.includes("column") && 
+        (err.message.includes("logo_image_url") || err.message.includes("show_resume") || err.message.includes("show_cv"))
+      ) {
+        errorMsg += "\n\nIt seems the new columns ('show_resume' or 'show_cv') are missing from your profile table. Please run the ALTER TABLE SQL commands in the setup alert box at the bottom of the page inside your Supabase SQL Editor.";
       }
       alert("Profile update failed: " + errorMsg);
     } finally {
@@ -1264,7 +1274,13 @@ export default function AdminPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-[var(--foreground)]/80 block">Resume Document (PDF)</label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-[var(--foreground)]/80 block">Resume Document (PDF)</label>
+                        <label className="inline-flex items-center gap-2 cursor-pointer text-xs font-medium text-[var(--muted)]">
+                          <input type="checkbox" checked={profShowResume} onChange={(e) => setProfShowResume(e.target.checked)} className="rounded border-[var(--card-border)] text-[#FF7F50] focus:ring-0 cursor-pointer bg-[var(--background)]" />
+                          Visible on Portfolio
+                        </label>
+                      </div>
                       <div className="flex gap-2">
                         <input type="text" placeholder="Paste PDF link or upload a file" value={profResumeUrl}
                           onChange={(e) => setProfResumeUrl(e.target.value)}
@@ -1279,7 +1295,13 @@ export default function AdminPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-[var(--foreground)]/80 block">CV Document (PDF)</label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-[var(--foreground)]/80 block">CV Document (PDF)</label>
+                        <label className="inline-flex items-center gap-2 cursor-pointer text-xs font-medium text-[var(--muted)]">
+                          <input type="checkbox" checked={profShowCv} onChange={(e) => setProfShowCv(e.target.checked)} className="rounded border-[var(--card-border)] text-[#FF7F50] focus:ring-0 cursor-pointer bg-[var(--background)]" />
+                          Visible on Portfolio
+                        </label>
+                      </div>
                       <div className="flex gap-2">
                         <input type="text" placeholder="Paste PDF link or upload a file" value={profCvUrl}
                           onChange={(e) => setProfCvUrl(e.target.value)}
@@ -1324,11 +1346,13 @@ export default function AdminPage() {
                         <FaInfoCircle /> First-Time Setup: Database Action Required
                       </p>
                       <p>
-                        If your Supabase database was created before this update, you must add the new <code>logo_image_url</code> and <code>cv_url</code> columns to your <code>profile</code> table. Run these commands in your Supabase SQL Editor:
+                        If your Supabase database was created before this update, you must add the new columns to your <code>profile</code> table. Run these commands in your Supabase SQL Editor:
                       </p>
                       <pre className="bg-black/40 p-2 rounded-lg font-mono select-all overflow-x-auto text-[10px] text-left">
                         ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS logo_image_url TEXT DEFAULT &apos;/favicon.png&apos;;{"\n"}
-                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS cv_url TEXT DEFAULT &apos;/ChristianDelaCruz_CV.pdf&apos;;
+                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS cv_url TEXT DEFAULT &apos;/ChristianDelaCruz_CV.pdf&apos;;{"\n"}
+                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS show_resume BOOLEAN DEFAULT true;{"\n"}
+                        ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS show_cv BOOLEAN DEFAULT true;
                       </pre>
                     </div>
 

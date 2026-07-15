@@ -295,10 +295,16 @@ export default function PortfolioClient({
         description: databaseProfile.description || initialProfile.description,
         profile_image_url: databaseProfile.profile_image_url || initialProfile.profile_image_url,
         resume_url: databaseProfile.resume_url || initialProfile.resume_url,
-        cv_url: databaseProfile.cv_url || initialProfile.cv_url
+        cv_url: databaseProfile.cv_url || initialProfile.cv_url,
+        show_resume: databaseProfile.show_resume !== false,
+        show_cv: databaseProfile.show_cv !== false
       };
     }
-    return initialProfile;
+    return {
+      ...initialProfile,
+      show_resume: true,
+      show_cv: true
+    };
   });
 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
@@ -581,35 +587,39 @@ export default function PortfolioClient({
                   Contact Me
                 </a>
 
-                <a
-                  href={profile.resume_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
-                  style={{
-                    background: "var(--card-bg)",
-                    color: "var(--foreground)",
-                    border: "1px solid var(--card-border)",
-                  }}
-                >
-                  <FaDownload size={13} />
-                  View Resume
-                </a>
+                {profile.show_resume !== false && (
+                  <a
+                    href={profile.resume_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                    style={{
+                      background: "var(--card-bg)",
+                      color: "var(--foreground)",
+                      border: "1px solid var(--card-border)",
+                    }}
+                  >
+                    <FaDownload size={13} />
+                    View Resume
+                  </a>
+                )}
 
-                <a
-                  href={profile.cv_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
-                  style={{
-                    background: "var(--card-bg)",
-                    color: "var(--foreground)",
-                    border: "1px solid var(--card-border)",
-                  }}
-                >
-                  <FaDownload size={13} />
-                  View CV
-                </a>
+                {profile.show_cv !== false && (
+                  <a
+                    href={profile.cv_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95"
+                    style={{
+                      background: "var(--card-bg)",
+                      color: "var(--foreground)",
+                      border: "1px solid var(--card-border)",
+                    }}
+                  >
+                    <FaDownload size={13} />
+                    View CV
+                  </a>
+                )}
               </div>
 
               {/* Social icons */}
