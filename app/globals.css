@@ -275,31 +275,20 @@ body {
               background-color 0.3s ease;
   position: relative;
   overflow: hidden;
-  height: 190px; /* DEFAULT height on mobile */
+  min-height: 190px; /* DEFAULT height on mobile */
+  height: auto;
+  padding-bottom: 3.5rem; /* Room for absolute View All button */
 }
 
 @media (min-width: 640px) {
   .skill-category-card {
-    height: 260px; /* Tablet/Desktop height */
+    min-height: 260px; /* Tablet/Desktop height */
   }
 }
 
 .skill-category-card.expanded {
   height: auto !important;
-}
-
-.skill-category-inner {
-  padding-bottom: 24px;
-}
-
-@media (min-width: 640px) {
-  .skill-category-inner {
-    padding-bottom: 44px;
-  }
-}
-
-.skill-category-card.expanded .skill-category-inner {
-  padding-bottom: 0px !important;
+  padding-bottom: 1.25rem !important; /* Reset padding when button is normal layout flow */
 }
 
 .skill-category-card:hover {
